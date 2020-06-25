@@ -1,0 +1,14 @@
+name: SkyWars
+version: 1.0
+author: MCK
+api-version: 1.12
+main: me.therealmck.skywars.Main
+commands:
+  addworld:
+    description: Adds the world you are in as a SkyWars map.
+    usage: /addworld
+    permission: skywars.admin.addworld
+  addspawnpoint:
+    decription: Adds your current location as a spawn point to the SkyWars map you are currently in.
+    usage: /addspawnpoint
+    permission: skywars.admin.addspawnpoint
