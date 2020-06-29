@@ -3,6 +3,8 @@ version: 1.0
 author: MCK
 api-version: 1.12
 main: me.therealmck.skywars.Main
+softdepend:
+  - PlaceholderAPI
 commands:
   addworld:
     description: Adds the world you are in as a SkyWars map.

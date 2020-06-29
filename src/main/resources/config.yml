@@ -1,0 +1,214 @@
+# Below are options for loot levels. You can see detailed explanations in
+# configtemplate.yml.
+
+DefaultIslandSwordLevel: 1
+DefaultIslandBowLevel: 1
+DefaultIslandPearlLevel: 1
+DefaultIslandProjectileLevel: 1
+
+DefaultMidSwordLevel: 3
+DefaultMidBowLevel: 3
+DefaultMidPearlLevel: 3
+DefaultMidProjectileLevel: 3
+
+SwordLevels:
+  1:
+    chance: 50
+    rolls: 2
+    items:
+      - ==: org.bukkit.inventory.ItemStack
+        type: IRON_SWORD
+      - ==: org.bukkit.inventory.ItemStack
+        type: STONE_SWORD
+        meta:
+          ==: ItemMeta
+          meta-type: UNSPECIFIC
+          enchants:
+            DAMAGE_ALL: 1
+  2:
+    chance: 50
+    rolls: 2
+    items:
+      - ==: org.bukkit.inventory.ItemStack
+        type: IRON_SWORD
+        meta:
+          ==: ItemMeta
+          meta-type: UNSPECIFIC
+          enchants:
+            DAMAGE_ALL: 1
+  3:
+    chance: 50
+    rolls: 2
+    items:
+      - ==: org.bukkit.inventory.ItemStack
+        type: IRON_SWORD
+        meta:
+          ==: ItemMeta
+          meta-type: UNSPECIFIC
+          enchants:
+            FIRE_ASPECT: 1
+      - ==: org.bukkit.inventory.ItemStack
+        type: DIAMOND_SWORD
+  4:
+    chance: 50
+    rolls: 2
+    items:
+      - ==: org.bukkit.inventory.ItemStack
+        type: DIAMOND_SWORD
+        meta:
+          ==: ItemMeta
+          meta-type: UNSPECIFIC
+          enchants:
+            FIRE_ASPECT: 1
+            DAMAGE_ALL: 2
+
+BowLevels:
+  1:
+    chance: 50
+    rolls: 2
+    items:
+      - ==: org.bukkit.inventory.ItemStack
+        type: BOW
+      - ==: org.bukkit.inventory.ItemStack
+        type: ARROW
+        amount: 8
+  2:
+    chance: 50
+    rolls: 2
+    items:
+      - ==: org.bukkit.inventory.ItemStack
+        type: BOW
+        meta:
+          ==: ItemMeta
+          meta-type: UNSPECIFIC
+          enchants:
+            ARROW_KNOCKBACK: 1
+      - ==: org.bukkit.inventory.ItemStack
+        type: ARROW
+        amount: 8
+      - ==: org.bukkit.inventory.ItemStack
+        type: ARROW
+        amount: 16
+  3:
+    chance: 50
+    rolls: 2
+    items:
+      - ==: org.bukkit.inventory.ItemStack
+        type: BOW
+        meta:
+          ==: ItemMeta
+          meta-type: UNSPECIFIC
+          enchants:
+            ARROW_DAMAGE: 1
+      - ==: org.bukkit.inventory.ItemStack
+        type: ARROW
+        amount: 16
+      - ==: org.bukkit.inventory.ItemStack
+        type: ARROW
+        amount: 32
+  4:
+    chance: 50
+    rolls: 2
+    items:
+      - ==: org.bukkit.inventory.ItemStack
+        type: BOW
+        meta:
+          ==: ItemMeta
+          meta-type: UNSPECIFIC
+          enchants:
+            ARROW_DAMAGE: 2
+            ARROW_KNOCKBACK: 2
+            ARROW_INFINITE: 1
+      - ==: org.bukkit.inventory.ItemStack
+        type: ARROW
+        amount: 64
+
+PearlLevels:
+  1:
+    chance: 10
+    rolls: 1
+    items:
+      - ==: org.bukkit.inventory.ItemStack
+        type: ENDER_PEARL
+        amount: 1
+  2:
+    chance: 20
+    rolls: 1
+    items:
+      - ==: org.bukkit.inventory.ItemStack
+        type: ENDER_PEARL
+        amount: 1
+  3:
+    chance: 20
+    rolls: 2
+    items:
+      - ==: org.bukkit.inventory.ItemStack
+        type: ENDER_PEARL
+        amount: 1
+  4:
+    chance: 50
+    rolls: 5
+    items:
+      - ==: org.bukkit.inventory.ItemStack
+        type: ENDER_PEARL
+        amount: 2
+
+ProjectileLevels:
+  1:
+    chance: 50
+    rolls: 2
+    items:
+      - ==: org.bukkit.inventory.ItemStack
+        type: SNOWBALL
+        amount: 8
+      - ==: org.bukkit.inventory.ItemStack
+        type: EGG
+        amount: 8
+      - ==: org.bukkit.inventory.ItemStack
+        type: FISHING_ROD
+  2:
+    chance: 50
+    rolls: 2
+    items:
+      - ==: org.bukkit.inventory.ItemStack
+        type: SNOWBALL
+        amount: 12
+      - ==: org.bukkit.inventory.ItemStack
+        type: EGG
+        amount: 12
+      - ==: org.bukkit.inventory.ItemStack
+        type: FISHING_ROD
+  3:
+    chance: 50
+    rolls: 2
+    items:
+      - ==: org.bukkit.inventory.ItemStack
+        type: SNOWBALL
+        amount: 16
+      - ==: org.bukkit.inventory.ItemStack
+        type: EGG
+        amount: 16
+      - ==: org.bukkit.inventory.ItemStack
+        type: FISHING_ROD
+        meta:
+          ==: ItemMeta
+          meta-type: UNSPECIFIC
+          enchants:
+            KNOCKBACK: 1
+  4:
+    chance: 50
+    rolls: 2
+    items:
+      - ==: org.bukkit.inventory.ItemStack
+        type: SNOWBALL
+        amount: 64
+      - ==: org.bukkit.inventory.ItemStack
+        type: EGG
+        amount: 64
+      - ==: org.bukkit.inventory.ItemStack
+        type: FISHING_ROD
+        meta:
+          ==: ItemMeta
+          meta-type: UNSPECIFIC
+          enchants:
+            KNOCKBACK: 5
