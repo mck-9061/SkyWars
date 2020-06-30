@@ -14,3 +14,11 @@ commands:
     decription: Adds your current location as a spawn point to the SkyWars map you are currently in.
     usage: /addspawnpoint
     permission: skywars.admin.addspawnpoint
+  addislandchest:
+    description: Adds the chest you are looking at as an island chest.
+    usage: /addislandchest
+    permission: skywars.admin.addislandchest
+  addmidchest:
+    description: Adds the chest you are looking at as a mid chest.
+    usage: /addmidchest
+    permission: skywars.admin.addmidchest

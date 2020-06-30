@@ -3,17 +3,23 @@ package me.therealmck.skywars.data;
 import me.therealmck.skywars.Main;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SkyWarsMap {
     private World bukkitWorld;
     private List<Location> spawns;
-    private int playerCount;
+    private List<Block> islandChests;
+    private List<Block> midChests;
 
-    public SkyWarsMap(World bukkitWorld, int playerCount) {
+    public SkyWarsMap(World bukkitWorld) {
         this.bukkitWorld = bukkitWorld;
-        this.playerCount = playerCount;
+        this.spawns = new ArrayList<>();
+        this.islandChests = new ArrayList<>();
+        this.midChests = new ArrayList<>();
     }
 
     public World getBukkitWorld() {
@@ -24,20 +30,35 @@ public class SkyWarsMap {
         return spawns;
     }
 
-    public int getPlayerCount() {
-        return playerCount;
-    }
-
     public void addSpawn(Location spawn) {
         spawns.add(spawn);
+        ConfigurationSection section = Main.mapConfig.getConfigurationSection(getBukkitWorld().getName());
+        assert section != null;
+        section.set("Spawns", spawns);
+        Main.saveMapConfig();
     }
 
+    public void addIslandChest(Block chest) {
+        islandChests.add(chest);
+        ConfigurationSection section = Main.mapConfig.getConfigurationSection(getBukkitWorld().getName());
+        assert section != null;
+        section.set("IslandChests", islandChests);
+        Main.saveMapConfig();
+    }
 
-    public static SkyWarsMap fromBukkitWorld(World bukkitWorld) {
-        for (SkyWarsMap map : Main.maps) {
-            if (map.bukkitWorld.equals(bukkitWorld)) return map;
-        }
+    public void addMidChest(Block chest) {
+        midChests.add(chest);
+        ConfigurationSection section = Main.mapConfig.getConfigurationSection(getBukkitWorld().getName());
+        assert section != null;
+        section.set("MidChests", midChests);
+        Main.saveMapConfig();
+    }
 
-        return null;
+    public List<Block> getIslandChests() {
+        return islandChests;
+    }
+
+    public List<Block> getMidChests() {
+        return midChests;
     }
 }

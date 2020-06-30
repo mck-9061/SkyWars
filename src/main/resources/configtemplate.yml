@@ -1,22 +1,36 @@
-# Below are options for loot levels. You can see detailed explanations in
-# configtemplate.yml.
+# EDITING VALUES HERE WILL NOT CHANGE THE CONFIG.
+# EDIT CONFIG.YML INSTEAD.
 
+
+# The multiplier. Higher multiplier = more loot.
 DefaultIslandMultiplier: 1
+
+# The default levels of each type of loot found on starting islands.
+# Set to 0 to disable that type of loot.
 DefaultIslandSwordLevel: 1
 DefaultIslandBowLevel: 1
 DefaultIslandPearlLevel: 1
 DefaultIslandProjectileLevel: 1
 
 DefaultMidMultiplier: 1
+# The default levels of each type of loot found on mid islands.
 DefaultMidSwordLevel: 3
 DefaultMidBowLevel: 3
 DefaultMidPearlLevel: 3
 DefaultMidProjectileLevel: 3
 
+# Each type of loot has 4 levels.
+# In custom games, the host can choose which loot levels of each type of loot they want.
+# You can set whatever loot you like in any of the categories.
 SwordLevels:
   1:
+    # The chance that an item from this level will show up in a chest.
     chance: 50
+    # How many times the game should see if an item from here should be added to a chest.
+    # For example, if rolls are 2 and chance is 100, 2 items from this level will always show up in a chest.
     rolls: 2
+    # The items in this level.
+    # Each item has an equal chance of showing up in a chest.
     items:
       - ==: org.bukkit.inventory.ItemStack
         type: IRON_SWORD

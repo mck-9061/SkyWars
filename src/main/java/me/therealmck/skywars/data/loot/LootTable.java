@@ -10,15 +10,14 @@ public class LootTable {
     private BowLevel bowLevel;
     private ProjectileLevel projectileLevel;
     private PearlLevel pearlLevel;
+    private int multiplier;
 
-    private int chestItemsAverage;
-
-    public LootTable(SwordLevel swordLevel, BowLevel bowLevel, ProjectileLevel projectileLevel, PearlLevel pearlLevel, int chestItemsAverage) {
+    public LootTable(SwordLevel swordLevel, BowLevel bowLevel, ProjectileLevel projectileLevel, PearlLevel pearlLevel, int multiplier) {
         this.swordLevel = swordLevel;
         this.bowLevel = bowLevel;
         this.projectileLevel = projectileLevel;
         this.pearlLevel = pearlLevel;
-        this.chestItemsAverage = chestItemsAverage;
+        this.multiplier = multiplier;
     }
 
     public LootTable() {
@@ -26,7 +25,7 @@ public class LootTable {
         this.bowLevel = BowLevel.NO_BOWS;
         this.pearlLevel = PearlLevel.NO_PEARLS;
         this.projectileLevel = ProjectileLevel.NO_PROJECTILES;
-        this.chestItemsAverage = 0;
+        this.multiplier = 1;
     }
 
     public SwordLevel getSwordLevel() {
@@ -61,11 +60,11 @@ public class LootTable {
         this.pearlLevel = pearlLevel;
     }
 
-    public int getChestItemsAverage() {
-        return chestItemsAverage;
+    public int getMultiplier() {
+        return multiplier;
     }
 
-    public void setChestItemsAverage(int chestItemsAverage) {
-        this.chestItemsAverage = chestItemsAverage;
+    public void setMultiplier(int multiplier) {
+        this.multiplier = multiplier;
     }
 }
