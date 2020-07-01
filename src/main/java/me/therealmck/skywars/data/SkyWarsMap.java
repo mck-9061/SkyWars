@@ -22,6 +22,13 @@ public class SkyWarsMap {
         this.midChests = new ArrayList<>();
     }
 
+    public SkyWarsMap(World bukkitWorld, List<?> spawns, List<?> islandChests, List<?> midChests) {
+        this.bukkitWorld = bukkitWorld;
+        this.spawns = (List<Location>) spawns;
+        this.islandChests = (List<Block>) islandChests;
+        this.midChests = (List<Block>) midChests;
+    }
+
     public World getBukkitWorld() {
         return bukkitWorld;
     }

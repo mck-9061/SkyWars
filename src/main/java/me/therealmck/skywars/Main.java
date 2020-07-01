@@ -3,6 +3,7 @@ package me.therealmck.skywars;
 import me.therealmck.skywars.data.SkyWarsMap;
 import me.therealmck.skywars.placeholderapi.SkyWarsPlaceholderExpansion;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -27,6 +28,17 @@ public class Main extends JavaPlugin {
         //PlaceholderAPI
         if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){
             new SkyWarsPlaceholderExpansion(this).register();
+        }
+
+        // Get all maps from config
+        for (String key : mapConfig.getKeys(false)) {
+            try {
+                ConfigurationSection section = mapConfig.getConfigurationSection(key);
+                assert section != null;
+                maps.add(new SkyWarsMap(Bukkit.getWorld(key), section.getList("Spawns"), section.getList("IslandChests"), section.getList("MidChests")));
+            } catch (Exception e) {
+                System.out.println("Map "+key+" couldn't be loaded. Does it exist?");
+            }
         }
     }
 

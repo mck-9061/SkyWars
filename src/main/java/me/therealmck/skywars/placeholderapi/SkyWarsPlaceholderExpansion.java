@@ -72,7 +72,7 @@ public class SkyWarsPlaceholderExpansion extends PlaceholderExpansion {
      * This is the version of the expansion.
      * <br>You don't have to use numbers, since it is set as a String.
      *
-     * For convienience do we return the version from the plugin.yml
+     * For convenience we return the version from the plugin.yml
      *
      * @return The version as a String.
      */
@@ -101,6 +101,6 @@ public class SkyWarsPlaceholderExpansion extends PlaceholderExpansion {
 
         // We return null if an invalid placeholder (f.e. %someplugin_placeholder3%)
         // was provided
-        return "N/A";
+        return null;
     }
 }

@@ -1,9 +1,13 @@
 package me.therealmck.skywars.data.loot;
 
+import me.therealmck.skywars.Main;
 import me.therealmck.skywars.data.loot.enums.BowLevel;
 import me.therealmck.skywars.data.loot.enums.PearlLevel;
 import me.therealmck.skywars.data.loot.enums.ProjectileLevel;
 import me.therealmck.skywars.data.loot.enums.SwordLevel;
+import org.bukkit.configuration.ConfigurationSection;
+
+import java.util.ArrayList;
 
 public class LootTable {
     private SwordLevel swordLevel;
@@ -66,5 +70,34 @@ public class LootTable {
 
     public void setMultiplier(int multiplier) {
         this.multiplier = multiplier;
+    }
+
+
+    public Loot getSwordLoot() {
+        if (swordLevel.equals(SwordLevel.NO_SWORDS)) return new Loot(0, 0, new ArrayList<>());
+        String level = swordLevel.name().split("_")[1];
+        ConfigurationSection section = Main.skyWarsConfig.getConfigurationSection("SwordLevels."+level);
+        return new Loot(section.getInt("chance"), section.getInt("rolls"), section.getList("items"));
+    }
+
+    public Loot getBowLoot() {
+        if (bowLevel.equals(BowLevel.NO_BOWS)) return new Loot(0, 0, new ArrayList<>());
+        String level = bowLevel.name().split("_")[1];
+        ConfigurationSection section = Main.skyWarsConfig.getConfigurationSection("BowLevels."+level);
+        return new Loot(section.getInt("chance"), section.getInt("rolls"), section.getList("items"));
+    }
+
+    public Loot getPearlLoot() {
+        if (pearlLevel.equals(PearlLevel.NO_PEARLS)) return new Loot(0, 0, new ArrayList<>());
+        String level = pearlLevel.name().split("_")[1];
+        ConfigurationSection section = Main.skyWarsConfig.getConfigurationSection("PearlLevels."+level);
+        return new Loot(section.getInt("chance"), section.getInt("rolls"), section.getList("items"));
+    }
+
+    public Loot getProjectileLoot() {
+        if (projectileLevel.equals(ProjectileLevel.NO_PROJECTILES)) return new Loot(0, 0, new ArrayList<>());
+        String level = projectileLevel.name().split("_")[1];
+        ConfigurationSection section = Main.skyWarsConfig.getConfigurationSection("ProjectileLevels."+level);
+        return new Loot(section.getInt("chance"), section.getInt("rolls"), section.getList("items"));
     }
 }
