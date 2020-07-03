@@ -14,6 +14,10 @@ public class Game {
     private List<GamePlayer> players;
     private SkyWarsSettings settings;
 
+    public Game() {
+
+    }
+
 
 
     public void fillChests() {
@@ -71,5 +75,29 @@ public class Game {
                 }
             }
         }
+    }
+
+    public SkyWarsMap getMap() {
+        return map;
+    }
+
+    public void setMap(SkyWarsMap map) {
+        this.map = map;
+    }
+
+    public List<GamePlayer> getPlayers() {
+        return players;
+    }
+
+    public void addPlayer(GamePlayer player) {
+        this.players.add(player);
+    }
+
+    public SkyWarsSettings getSettings() {
+        return settings;
+    }
+
+    public void setSettings(SkyWarsSettings settings) {
+        this.settings = settings;
     }
 }

@@ -22,3 +22,6 @@ commands:
     description: Adds the chest you are looking at as a mid chest.
     usage: /addmidchest
     permission: skywars.admin.addmidchest
+  skywars:
+    description: Main SkyWars command.
+    usage: /skywars [create/join/help]

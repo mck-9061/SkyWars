@@ -1,5 +1,6 @@
 package me.therealmck.skywars;
 
+import me.therealmck.skywars.data.Game;
 import me.therealmck.skywars.data.SkyWarsMap;
 import me.therealmck.skywars.placeholderapi.SkyWarsPlaceholderExpansion;
 import org.bukkit.Bukkit;
@@ -7,14 +8,17 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 public class Main extends JavaPlugin {
     public static List<SkyWarsMap> maps;
+    public static HashMap<Player, Game> activeCustomGames;
 
 
     @Override
