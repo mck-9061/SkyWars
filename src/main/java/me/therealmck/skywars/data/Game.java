@@ -31,6 +31,8 @@ public class Game {
             if (islandChest instanceof Chest) {
                 Inventory inv = ((Chest) islandChest).getBlockInventory();
                 Random r = new Random();
+                
+                
 
                 for (int i = 0; i < islandTable.getSwordLoot().getRolls(); i++) {
                     boolean shouldFill = r.nextInt(100) < islandTable.getSwordLoot().getChance();

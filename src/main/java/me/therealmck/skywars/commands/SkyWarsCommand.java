@@ -1,8 +1,12 @@
 package me.therealmck.skywars.commands;
 
+import me.therealmck.skywars.Main;
+import me.therealmck.skywars.data.Game;
+import me.therealmck.skywars.data.players.GamePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 public class SkyWarsCommand implements CommandExecutor {
@@ -20,7 +24,12 @@ public class SkyWarsCommand implements CommandExecutor {
 
                 break;
             case "create":
+                if (commandSender instanceof Player) {
+                    Game createdGame = new Game();
+                    createdGame.addPlayer(new GamePlayer((Player) commandSender));
+                    Main.activeCustomGames.put((Player) commandSender, createdGame);
 
+                }
 
                 break;
             case "join":
