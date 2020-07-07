@@ -1,6 +1,7 @@
 package me.therealmck.skywars;
 
 import me.therealmck.skywars.data.Game;
+import me.therealmck.skywars.data.Queue;
 import me.therealmck.skywars.data.SkyWarsMap;
 import me.therealmck.skywars.placeholderapi.SkyWarsPlaceholderExpansion;
 import org.bukkit.Bukkit;
@@ -19,6 +20,7 @@ import java.util.List;
 public class Main extends JavaPlugin {
     public static List<SkyWarsMap> maps;
     public static HashMap<Player, Game> activeCustomGames;
+    public static Queue queue = new Queue();
 
 
     @Override
