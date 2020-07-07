@@ -3,6 +3,7 @@ package me.therealmck.skywars.commands;
 import me.therealmck.skywars.Main;
 import me.therealmck.skywars.data.Game;
 import me.therealmck.skywars.data.players.GamePlayer;
+import me.therealmck.skywars.guis.customgame.MainCustomGameGui;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -28,6 +29,9 @@ public class SkyWarsCommand implements CommandExecutor {
                     Game createdGame = new Game();
                     createdGame.addPlayer(new GamePlayer((Player) commandSender));
                     Main.activeCustomGames.put((Player) commandSender, createdGame);
+
+                    MainCustomGameGui gui = new MainCustomGameGui((Player) commandSender, createdGame);
+                    ((Player) commandSender).openInventory(gui.getBukkitInventory());
 
                 }
 
