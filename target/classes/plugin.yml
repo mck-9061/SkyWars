@@ -1,0 +1,27 @@
+name: SkyWars
+version: 1.0
+author: MCK
+api-version: 1.13
+main: me.therealmck.skywars.Main
+softdepend:
+  - PlaceholderAPI
+commands:
+  addworld:
+    description: Adds the world you are in as a SkyWars map.
+    usage: /addworld
+    permission: skywars.admin.addworld
+  addspawnpoint:
+    decription: Adds your current location as a spawn point to the SkyWars map you are currently in.
+    usage: /addspawnpoint
+    permission: skywars.admin.addspawnpoint
+  addislandchest:
+    description: Adds the chest you are looking at as an island chest.
+    usage: /addislandchest
+    permission: skywars.admin.addislandchest
+  addmidchest:
+    description: Adds the chest you are looking at as a mid chest.
+    usage: /addmidchest
+    permission: skywars.admin.addmidchest
+  skywars:
+    description: Main SkyWars command.
+    usage: /skywars [create/join/help]
