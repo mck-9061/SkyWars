@@ -2,6 +2,7 @@ package me.therealmck.skywars;
 
 import me.therealmck.skywars.commands.SkyWarsCommand;
 import me.therealmck.skywars.data.Game;
+import me.therealmck.skywars.data.Queue;
 import me.therealmck.skywars.data.SkyWarsMap;
 import me.therealmck.skywars.guis.listeners.*;
 import me.therealmck.skywars.placeholderapi.SkyWarsPlaceholderExpansion;
@@ -20,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Main extends JavaPlugin {
+    public static Queue queue = new Queue();
     public static List<SkyWarsMap> maps = new ArrayList<>();
     public static HashMap<Player, Game> activeCustomGames = new HashMap<>();
 
