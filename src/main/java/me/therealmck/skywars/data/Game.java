@@ -2,10 +2,16 @@ package me.therealmck.skywars.data;
 
 import me.therealmck.skywars.data.loot.LootTable;
 import me.therealmck.skywars.data.players.GamePlayer;
+import me.therealmck.skywars.utils.Utils;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.WorldCreator;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.inventory.Inventory;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -15,7 +21,8 @@ public class Game {
     private SkyWarsSettings settings;
 
     public Game() {
-
+        this.players = new ArrayList<>();
+        this.settings = new SkyWarsSettings();
     }
 
 
@@ -84,7 +91,28 @@ public class Game {
     }
 
     public void setMap(SkyWarsMap map) {
+        World world = map.getBukkitWorld();
+        // Copy world to backup
+        Utils.unloadWorld(world.getName()+"_back");
+        Utils.copyFileStructure(world.getWorldFolder(), new File(Bukkit.getWorldContainer(), world.getName()+"_back"));
+        new WorldCreator(world.getName()+"_back").createWorld();
         this.map = map;
+    }
+
+    public void restoreBackup() {
+        World world = map.getBukkitWorld();
+        String worldName = world.getName();
+        World backupWorld = Bukkit.getWorld(world.getName()+"_back");
+
+        Utils.unloadWorld(worldName);
+        Utils.copyFileStructure(backupWorld.getWorldFolder(), new File(Bukkit.getWorldContainer(), worldName));
+        new WorldCreator(worldName).createWorld();
+
+        File oldWorld = backupWorld.getWorldFolder();
+        Utils.unloadWorld(oldWorld.getName());
+        oldWorld.delete();
+
+        this.map = new SkyWarsMap(Bukkit.getWorld(worldName));
     }
 
     public List<GamePlayer> getPlayers() {
@@ -102,4 +130,6 @@ public class Game {
     public void setSettings(SkyWarsSettings settings) {
         this.settings = settings;
     }
+
+    public void wipePlayers() { this.players = new ArrayList<>(); }
 }

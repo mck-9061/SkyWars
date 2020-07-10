@@ -12,10 +12,10 @@ public class SkyWarsSettings {
     private LootTable islandLootTable;
     private LootTable midLootTable;
 
-    private Boolean anvilRainEvent;
-    private Boolean blockDecayEvent;
-    private Boolean horseMountEvent;
-    private Boolean zombieHordeEvent;
+    private Boolean anvilRainEvent = false;
+    private Boolean blockDecayEvent = false;
+    private Boolean horseMountEvent = false;
+    private Boolean zombieHordeEvent = false;
 
 
     public SkyWarsSettings(int maxHealth, int jumpMultiplier, int speedMultiplier, LootTable table, LootTable midTable) {

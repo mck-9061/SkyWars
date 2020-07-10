@@ -1,7 +1,9 @@
 package me.therealmck.skywars;
 
+import me.therealmck.skywars.commands.SkyWarsCommand;
 import me.therealmck.skywars.data.Game;
 import me.therealmck.skywars.data.SkyWarsMap;
+import me.therealmck.skywars.guis.listeners.*;
 import me.therealmck.skywars.placeholderapi.SkyWarsPlaceholderExpansion;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -13,12 +15,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class Main extends JavaPlugin {
-    public static List<SkyWarsMap> maps;
-    public static HashMap<Player, Game> activeCustomGames;
+    public static List<SkyWarsMap> maps = new ArrayList<>();
+    public static HashMap<Player, Game> activeCustomGames = new HashMap<>();
 
 
     @Override
@@ -44,6 +47,16 @@ public class Main extends JavaPlugin {
                 System.out.println("Map "+key+" couldn't be loaded. Does it exist?");
             }
         }
+
+        // Commands
+        getCommand("skywars").setExecutor(new SkyWarsCommand());
+
+        // Event listeners
+        getServer().getPluginManager().registerEvents(new EventChooserGuiListener(), this);
+        getServer().getPluginManager().registerEvents(new IslandLootGuiListener(), this);
+        getServer().getPluginManager().registerEvents(new MainCustomGameGuiListener(), this);
+        getServer().getPluginManager().registerEvents(new MidLootGuiListener(), this);
+        getServer().getPluginManager().registerEvents(new ModifierGuiListener(), this);
     }
 
     @Override

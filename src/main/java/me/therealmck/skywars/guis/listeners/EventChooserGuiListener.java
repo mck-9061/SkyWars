@@ -31,12 +31,18 @@ public class EventChooserGuiListener implements Listener {
                     Main.activeCustomGames.remove(event.getWhoClicked());
                     Main.activeCustomGames.put((Player) event.getWhoClicked(), game);
 
+                    event.getWhoClicked().closeInventory();
+                    event.getWhoClicked().openInventory((new EventChooserGui((Player) event.getWhoClicked(), game)).getBukkitInventory());
+
                     break;
                 case 12:
                     settings.setBlockDecayEvent(!settings.isBlockDecayEvent());
                     game.setSettings(settings);
                     Main.activeCustomGames.remove(event.getWhoClicked());
                     Main.activeCustomGames.put((Player) event.getWhoClicked(), game);
+
+                    event.getWhoClicked().closeInventory();
+                    event.getWhoClicked().openInventory((new EventChooserGui((Player) event.getWhoClicked(), game)).getBukkitInventory());
 
                     break;
                 case 14:
@@ -45,12 +51,18 @@ public class EventChooserGuiListener implements Listener {
                     Main.activeCustomGames.remove(event.getWhoClicked());
                     Main.activeCustomGames.put((Player) event.getWhoClicked(), game);
 
+                    event.getWhoClicked().closeInventory();
+                    event.getWhoClicked().openInventory((new EventChooserGui((Player) event.getWhoClicked(), game)).getBukkitInventory());
+
                     break;
                 case 16:
                     settings.setZombieHordeEvent(!settings.isZombieHordeEvent());
                     game.setSettings(settings);
                     Main.activeCustomGames.remove(event.getWhoClicked());
                     Main.activeCustomGames.put((Player) event.getWhoClicked(), game);
+
+                    event.getWhoClicked().closeInventory();
+                    event.getWhoClicked().openInventory((new EventChooserGui((Player) event.getWhoClicked(), game)).getBukkitInventory());
 
                     break;
                 case 26:

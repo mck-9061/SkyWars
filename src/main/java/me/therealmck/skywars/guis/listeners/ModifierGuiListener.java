@@ -4,6 +4,8 @@ import me.therealmck.skywars.Main;
 import me.therealmck.skywars.data.Game;
 import me.therealmck.skywars.data.SkyWarsSettings;
 import me.therealmck.skywars.guis.customgame.MainCustomGameGui;
+import me.therealmck.skywars.guis.customgame.MidLootGui;
+import me.therealmck.skywars.guis.customgame.ModifierGui;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -33,6 +35,9 @@ public class ModifierGuiListener implements Listener {
                     Main.activeCustomGames.remove(event.getWhoClicked());
                     Main.activeCustomGames.put((Player) event.getWhoClicked(), game);
 
+                    event.getWhoClicked().closeInventory();
+                    event.getWhoClicked().openInventory((new ModifierGui((Player) event.getWhoClicked(), game)).getBukkitInventory());
+
                     break;
                 case 13:
                     int currentSpeedLevel = settings.getSpeedMultiplier();
@@ -43,6 +48,9 @@ public class ModifierGuiListener implements Listener {
                     game.setSettings(settings);
                     Main.activeCustomGames.remove(event.getWhoClicked());
                     Main.activeCustomGames.put((Player) event.getWhoClicked(), game);
+
+                    event.getWhoClicked().closeInventory();
+                    event.getWhoClicked().openInventory((new ModifierGui((Player) event.getWhoClicked(), game)).getBukkitInventory());
 
                     break;
                 case 15:
@@ -56,6 +64,9 @@ public class ModifierGuiListener implements Listener {
                     game.setSettings(settings);
                     Main.activeCustomGames.remove(event.getWhoClicked());
                     Main.activeCustomGames.put((Player) event.getWhoClicked(), game);
+
+                    event.getWhoClicked().closeInventory();
+                    event.getWhoClicked().openInventory((new ModifierGui((Player) event.getWhoClicked(), game)).getBukkitInventory());
 
                     break;
                 case 26:

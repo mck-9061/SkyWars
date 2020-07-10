@@ -8,6 +8,8 @@ import me.therealmck.skywars.data.loot.enums.BowLevel;
 import me.therealmck.skywars.data.loot.enums.PearlLevel;
 import me.therealmck.skywars.data.loot.enums.ProjectileLevel;
 import me.therealmck.skywars.data.loot.enums.SwordLevel;
+import me.therealmck.skywars.guis.customgame.EventChooserGui;
+import me.therealmck.skywars.guis.customgame.IslandLootGui;
 import me.therealmck.skywars.guis.customgame.MainCustomGameGui;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -45,6 +47,10 @@ public class IslandLootGuiListener implements Listener {
                     game.setSettings(settings);
                     Main.activeCustomGames.remove(event.getWhoClicked());
                     Main.activeCustomGames.put((Player) event.getWhoClicked(), game);
+
+                    event.getWhoClicked().closeInventory();
+                    event.getWhoClicked().openInventory((new IslandLootGui((Player) event.getWhoClicked(), game)).getBukkitInventory());
+
                     break;
                 case 12:
                     BowLevel currentBowLevel = table.getBowLevel();
@@ -62,6 +68,9 @@ public class IslandLootGuiListener implements Listener {
                     game.setSettings(settings);
                     Main.activeCustomGames.remove(event.getWhoClicked());
                     Main.activeCustomGames.put((Player) event.getWhoClicked(), game);
+
+                    event.getWhoClicked().closeInventory();
+                    event.getWhoClicked().openInventory((new IslandLootGui((Player) event.getWhoClicked(), game)).getBukkitInventory());
 
                     break;
                 case 14:
@@ -81,6 +90,9 @@ public class IslandLootGuiListener implements Listener {
                     Main.activeCustomGames.remove(event.getWhoClicked());
                     Main.activeCustomGames.put((Player) event.getWhoClicked(), game);
 
+                    event.getWhoClicked().closeInventory();
+                    event.getWhoClicked().openInventory((new IslandLootGui((Player) event.getWhoClicked(), game)).getBukkitInventory());
+
                     break;
                 case 16:
                     ProjectileLevel currentProjectileLevel = table.getProjectileLevel();
@@ -98,6 +110,9 @@ public class IslandLootGuiListener implements Listener {
                     game.setSettings(settings);
                     Main.activeCustomGames.remove(event.getWhoClicked());
                     Main.activeCustomGames.put((Player) event.getWhoClicked(), game);
+
+                    event.getWhoClicked().closeInventory();
+                    event.getWhoClicked().openInventory((new IslandLootGui((Player) event.getWhoClicked(), game)).getBukkitInventory());
 
                     break;
                 case 26:

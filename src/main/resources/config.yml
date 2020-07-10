@@ -1,5 +1,8 @@
-# Below are options for loot levels. You can see detailed explanations in
+# Below are options for loot levels and other options. You can see detailed explanations in
 # configtemplate.yml.
+
+MinimumPlayers: 12
+MaximumPlayers: 24
 
 DefaultIslandMultiplier: 1
 DefaultIslandSwordLevel: 1

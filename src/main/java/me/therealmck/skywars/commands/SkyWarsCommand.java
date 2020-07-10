@@ -22,6 +22,7 @@ public class SkyWarsCommand implements CommandExecutor {
                 commandSender.sendMessage("§6/skywars help§b: Display this help menu");
                 commandSender.sendMessage("§6/skywars create§b: Create a custom game of SkyWars");
                 commandSender.sendMessage("§6/skywars join [IGN of host]§b: Join the specified host's game of SkyWars");
+                commandSender.sendMessage("§6/skywars kit§b: Pick the kit you use for SkyWars games");
 
                 break;
             case "create":
