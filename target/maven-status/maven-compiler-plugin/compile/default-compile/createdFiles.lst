@@ -19,8 +19,10 @@ me\therealmck\skywars\data\players\GamePlayer.class
 me\therealmck\skywars\guis\customgame\EventChooserGui.class
 me\therealmck\skywars\guis\listeners\MidLootGuiListener.class
 me\therealmck\skywars\data\SkyWarsMap.class
+me\therealmck\skywars\data\Queue.class
 me\therealmck\skywars\guis\customgame\MidLootGui.class
 me\therealmck\skywars\guis\customgame\MainCustomGameGui.class
+me\therealmck\skywars\Main$1.class
 me\therealmck\skywars\data\loot\Loot.class
 me\therealmck\skywars\data\loot\enums\ProjectileLevel.class
 me\therealmck\skywars\data\loot\enums\SwordLevel.class

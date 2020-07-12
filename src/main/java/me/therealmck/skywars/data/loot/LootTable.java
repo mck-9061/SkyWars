@@ -25,6 +25,7 @@ public class LootTable {
     }
 
     public LootTable() {
+        // TODO: add new types of loot, also default to config values
         this.swordLevel = SwordLevel.NO_SWORDS;
         this.bowLevel = BowLevel.NO_BOWS;
         this.pearlLevel = PearlLevel.NO_PEARLS;
