@@ -5,6 +5,7 @@ api-version: 1.13
 main: me.therealmck.skywars.Main
 softdepend:
   - PlaceholderAPI
+  - MultiverseCore
 commands:
   addworld:
     description: Adds the world you are in as a SkyWars map.

@@ -12,8 +12,8 @@ import java.util.List;
 public class SkyWarsMap {
     private World bukkitWorld;
     private List<Location> spawns;
-    private List<Block> islandChests;
-    private List<Block> midChests;
+    private List<Location> islandChests;
+    private List<Location> midChests;
 
     public SkyWarsMap(World bukkitWorld) {
         this.bukkitWorld = bukkitWorld;
@@ -25,8 +25,8 @@ public class SkyWarsMap {
     public SkyWarsMap(World bukkitWorld, List<?> spawns, List<?> islandChests, List<?> midChests) {
         this.bukkitWorld = bukkitWorld;
         this.spawns = (List<Location>) spawns;
-        this.islandChests = (List<Block>) islandChests;
-        this.midChests = (List<Block>) midChests;
+        this.islandChests = (List<Location>) islandChests;
+        this.midChests = (List<Location>) midChests;
     }
 
     public World getBukkitWorld() {
@@ -46,7 +46,7 @@ public class SkyWarsMap {
     }
 
     public void addIslandChest(Block chest) {
-        islandChests.add(chest);
+        islandChests.add(chest.getLocation());
         ConfigurationSection section = Main.mapConfig.getConfigurationSection(getBukkitWorld().getName());
         assert section != null;
         section.set("IslandChests", islandChests);
@@ -54,18 +54,18 @@ public class SkyWarsMap {
     }
 
     public void addMidChest(Block chest) {
-        midChests.add(chest);
+        midChests.add(chest.getLocation());
         ConfigurationSection section = Main.mapConfig.getConfigurationSection(getBukkitWorld().getName());
         assert section != null;
         section.set("MidChests", midChests);
         Main.saveMapConfig();
     }
 
-    public List<Block> getIslandChests() {
+    public List<Location> getIslandChests() {
         return islandChests;
     }
 
-    public List<Block> getMidChests() {
+    public List<Location> getMidChests() {
         return midChests;
     }
 }

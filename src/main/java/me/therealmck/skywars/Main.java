@@ -1,6 +1,6 @@
 package me.therealmck.skywars;
 
-import me.therealmck.skywars.commands.SkyWarsCommand;
+import me.therealmck.skywars.commands.*;
 import me.therealmck.skywars.data.Game;
 import me.therealmck.skywars.data.Queue;
 import me.therealmck.skywars.data.SkyWarsMap;
@@ -13,6 +13,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,30 +29,42 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Config
-        createMapConfig();
-        createPlayerDataConfig();
-        createSkyWarsConfig();
-        saveResource("configtemplate.yml", true);
+        // Get all maps from config
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                // Config
+                createMapConfig();
+                createPlayerDataConfig();
+                createSkyWarsConfig();
+                saveResource("configtemplate.yml", true);
+
+
+                for (String key : mapConfig.getKeys(false)) {
+                    try {
+                        ConfigurationSection section = mapConfig.getConfigurationSection(key);
+                        assert section != null;
+                        System.out.println(Bukkit.getWorld(key));
+                        maps.add(new SkyWarsMap(Bukkit.getWorld(key), section.getList("Spawns"), section.getList("IslandChests"), section.getList("MidChests")));
+                    } catch (Exception e) {
+                        System.out.println("Map "+key+" couldn't be loaded. Does it exist?");
+                    }
+                }
+            }
+        }.runTaskLater(this, 1);
 
         //PlaceholderAPI
         if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){
             new SkyWarsPlaceholderExpansion(this).register();
         }
 
-        // Get all maps from config
-        for (String key : mapConfig.getKeys(false)) {
-            try {
-                ConfigurationSection section = mapConfig.getConfigurationSection(key);
-                assert section != null;
-                maps.add(new SkyWarsMap(Bukkit.getWorld(key), section.getList("Spawns"), section.getList("IslandChests"), section.getList("MidChests")));
-            } catch (Exception e) {
-                System.out.println("Map "+key+" couldn't be loaded. Does it exist?");
-            }
-        }
 
         // Commands
         getCommand("skywars").setExecutor(new SkyWarsCommand());
+        getCommand("addislandchest").setExecutor(new AddIslandChest());
+        getCommand("addmidchest").setExecutor(new AddMidChest());
+        getCommand("addspawnpoint").setExecutor(new AddSpawnPoint());
+        getCommand("addworld").setExecutor(new AddWorld());
 
         // Event listeners
         getServer().getPluginManager().registerEvents(new EventChooserGuiListener(), this);

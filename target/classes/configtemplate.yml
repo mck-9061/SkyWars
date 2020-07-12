@@ -1,6 +1,12 @@
 # EDITING VALUES HERE WILL NOT CHANGE THE CONFIG.
 # EDIT CONFIG.YML INSTEAD.
 
+# The amount of players required in a game before it will start.
+MinimumPlayers: 12
+# The maximum amount of players allowed in a game.
+# There MUST be as many spawn points on a map as half this amount.
+MaximumPlayers: 24
+
 
 # The multiplier. Higher multiplier = more loot.
 DefaultIslandMultiplier: 1

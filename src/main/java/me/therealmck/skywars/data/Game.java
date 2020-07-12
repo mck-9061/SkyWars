@@ -3,9 +3,7 @@ package me.therealmck.skywars.data;
 import me.therealmck.skywars.data.loot.LootTable;
 import me.therealmck.skywars.data.players.GamePlayer;
 import me.therealmck.skywars.utils.Utils;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
-import org.bukkit.WorldCreator;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.inventory.Inventory;
@@ -30,13 +28,14 @@ public class Game {
     public void fillChests() {
         LootTable islandTable = settings.getIslandLootTable();
         LootTable midTable = settings.getMidLootTable();
-        List<Block> islandChests = map.getIslandChests();
-        List<Block> midChests = map.getMidChests();
+        List<Location> islandChests = map.getIslandChests();
+        List<Location> midChests = map.getMidChests();
 
 
-        for (Block islandChest : islandChests) {
-            if (islandChest instanceof Chest) {
-                Inventory inv = ((Chest) islandChest).getBlockInventory();
+        for (Location islandChestLoc : islandChests) {
+            Block islandChest = islandChestLoc.getBlock();
+            if (islandChest.getType().equals(Material.CHEST)) {
+                Inventory inv = ((Chest) islandChest.getState()).getBlockInventory();
                 Random r = new Random();
                 
                 
@@ -61,9 +60,10 @@ public class Game {
         }
 
 
-        for (Block midChest : midChests) {
-            if (midChest instanceof Chest) {
-                Inventory inv = ((Chest) midChest).getBlockInventory();
+        for (Location midChestLoc : midChests) {
+            Block midChest = midChestLoc.getBlock();
+            if (midChest.getType().equals(Material.CHEST)) {
+                Inventory inv = ((Chest) midChest.getState()).getBlockInventory();
                 Random r = new Random();
 
                 for (int i = 0; i < midTable.getSwordLoot().getRolls(); i++) {
