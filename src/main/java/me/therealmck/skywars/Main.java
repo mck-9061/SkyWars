@@ -26,7 +26,6 @@ public class Main extends JavaPlugin {
     public static List<SkyWarsMap> maps = new ArrayList<>();
     public static HashMap<Player, Game> activeCustomGames = new HashMap<>();
 
-
     @Override
     public void onEnable() {
         // Get all maps from config

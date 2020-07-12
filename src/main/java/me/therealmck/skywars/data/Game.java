@@ -6,6 +6,7 @@ import me.therealmck.skywars.utils.Utils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
 import java.io.File;
@@ -17,10 +18,12 @@ public class Game {
     private SkyWarsMap map;
     private List<GamePlayer> players;
     private SkyWarsSettings settings;
+    private List<Team> teams;
 
     public Game() {
         this.players = new ArrayList<>();
         this.settings = new SkyWarsSettings();
+        this.teams = new ArrayList<>();
     }
 
 
@@ -132,4 +135,31 @@ public class Game {
     }
 
     public void wipePlayers() { this.players = new ArrayList<>(); }
+
+    public boolean warpPlayers() {
+        // Warp players to starting points.
+        if (map.getSpawns().size() < players.size()/2) return false;
+        else {
+            List<Location> editableSpawnList = map.getSpawns();
+
+            for (Team team : teams) {
+                GamePlayer p1 = team.getPlayer1();
+                GamePlayer p2 = team.getPlayer2();
+
+                Random r = new Random();
+                Location spawn = editableSpawnList.get(r.nextInt(editableSpawnList.size()));
+                editableSpawnList.remove(spawn);
+
+                p1.getBukkitPlayer().teleport(spawn);
+                p2.getBukkitPlayer().teleport(spawn);
+            }
+            return true;
+        }
+    }
+
+    public void beginGame() {
+        // Begin the game. Chests have already been filled and players have already been teleported.
+
+
+    }
 }
