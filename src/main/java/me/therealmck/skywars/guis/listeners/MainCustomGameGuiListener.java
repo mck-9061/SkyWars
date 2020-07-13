@@ -56,16 +56,17 @@ public class MainCustomGameGuiListener implements Listener {
 
 
                     if (maps.isEmpty()) {
-                        // TODO: Make queue functional
                         for (GamePlayer p : activeGame.getPlayers()) {
                             p.getBukkitPlayer().sendMessage("There are no maps currently available and your game has been placed into a queue.");
                         }
+                        Main.queue.addGame(activeGame);
                     } else {
                         Random r = new Random();
                         SkyWarsMap map = maps.get(r.nextInt(maps.size()));
 
                         activeGame.setMap(map);
                         activeGame.fillChests();
+                        activeGame.beginGame();
                     }
 
 

@@ -51,14 +51,6 @@ public class Queue {
 
             game.setMap(map);
             game.fillChests();
-
-            boolean teleported = game.warpPlayers();
-            if (!teleported) {
-                for (GamePlayer p : game.getPlayers()) {
-                    p.getBukkitPlayer().sendMessage("If you're seeing this message, the plugin was set up incorrectly. Please message an admin.");
-                }
-            }
-
             game.beginGame();
         } else {
             // Process fast pass queue before regular queue
@@ -67,15 +59,20 @@ public class Queue {
             int maxPlayers = Main.skyWarsConfig.getInt("MaximumPlayers");
 
             for (Player p : fastPassQueue) {
-                if (game.getPlayers().size() < maxPlayers) game.addPlayer(new GamePlayer(p));
-                fastPassQueue.remove(p);
+                if (game.getPlayers().size() < maxPlayers) {
+                    game.addPlayer(new GamePlayer(p));
+                    fastPassQueue.remove(p);
+                }
             }
 
             for (Player p : regularQueue) {
-                if (game.getPlayers().size() < maxPlayers) game.addPlayer(new GamePlayer(p));
-                regularQueue.remove(p);
+                if (game.getPlayers().size() < maxPlayers) {
+                    game.addPlayer(new GamePlayer(p));
+                    regularQueue.remove(p);
+                }
             }
 
+            Main.waitingGames.add(game);
 
         }
     }

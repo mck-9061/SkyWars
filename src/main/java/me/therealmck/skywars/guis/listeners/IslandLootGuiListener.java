@@ -4,10 +4,7 @@ import me.therealmck.skywars.Main;
 import me.therealmck.skywars.data.Game;
 import me.therealmck.skywars.data.SkyWarsSettings;
 import me.therealmck.skywars.data.loot.LootTable;
-import me.therealmck.skywars.data.loot.enums.BowLevel;
-import me.therealmck.skywars.data.loot.enums.PearlLevel;
-import me.therealmck.skywars.data.loot.enums.ProjectileLevel;
-import me.therealmck.skywars.data.loot.enums.SwordLevel;
+import me.therealmck.skywars.data.loot.enums.*;
 import me.therealmck.skywars.guis.customgame.EventChooserGui;
 import me.therealmck.skywars.guis.customgame.IslandLootGui;
 import me.therealmck.skywars.guis.customgame.MainCustomGameGui;
@@ -31,7 +28,7 @@ public class IslandLootGuiListener implements Listener {
             LootTable table = settings.getIslandLootTable();
 
             switch (event.getSlot()) {
-                case 10:
+                case 9:
                     SwordLevel currentLevel = table.getSwordLevel();
                     SwordLevel changeTo;
                     if (currentLevel.equals(SwordLevel.NO_SWORDS)) changeTo = SwordLevel.LEVEL_1;
@@ -52,7 +49,7 @@ public class IslandLootGuiListener implements Listener {
                     event.getWhoClicked().openInventory((new IslandLootGui((Player) event.getWhoClicked(), game)).getBukkitInventory());
 
                     break;
-                case 12:
+                case 11:
                     BowLevel currentBowLevel = table.getBowLevel();
                     BowLevel changeToBow;
                     if (currentBowLevel.equals(BowLevel.NO_BOWS)) changeToBow = BowLevel.LEVEL_1;
@@ -73,7 +70,7 @@ public class IslandLootGuiListener implements Listener {
                     event.getWhoClicked().openInventory((new IslandLootGui((Player) event.getWhoClicked(), game)).getBukkitInventory());
 
                     break;
-                case 14:
+                case 12:
                     PearlLevel currentPearlLevel = table.getPearlLevel();
                     PearlLevel changeToPearl;
                     if (currentPearlLevel.equals(PearlLevel.NO_PEARLS)) changeToPearl = PearlLevel.LEVEL_1;
@@ -94,7 +91,7 @@ public class IslandLootGuiListener implements Listener {
                     event.getWhoClicked().openInventory((new IslandLootGui((Player) event.getWhoClicked(), game)).getBukkitInventory());
 
                     break;
-                case 16:
+                case 14:
                     ProjectileLevel currentProjectileLevel = table.getProjectileLevel();
                     ProjectileLevel changeToProjectile;
                     if (currentProjectileLevel.equals(ProjectileLevel.NO_PROJECTILES)) changeToProjectile = ProjectileLevel.LEVEL_1;
@@ -106,6 +103,48 @@ public class IslandLootGuiListener implements Listener {
                     }
 
                     table.setProjectileLevel(changeToProjectile);
+                    settings.setIslandLootTable(table);
+                    game.setSettings(settings);
+                    Main.activeCustomGames.remove(event.getWhoClicked());
+                    Main.activeCustomGames.put((Player) event.getWhoClicked(), game);
+
+                    event.getWhoClicked().closeInventory();
+                    event.getWhoClicked().openInventory((new IslandLootGui((Player) event.getWhoClicked(), game)).getBukkitInventory());
+
+                    break;
+                case 15:
+                    ArmorLevel currentArmorLevel = table.getArmorLevel();
+                    ArmorLevel changeToArmor;
+                    if (currentArmorLevel.equals(ArmorLevel.NO_ARMOR)) changeToArmor = ArmorLevel.LEVEL_1;
+                    else if (currentArmorLevel.equals(ArmorLevel.LEVEL_4)) changeToArmor = ArmorLevel.NO_ARMOR;
+                    else {
+                        int current = Integer.parseInt(currentArmorLevel.name().split("_")[1]);
+                        current++;
+                        changeToArmor = ArmorLevel.valueOf("LEVEL_"+current);
+                    }
+
+                    table.setArmorLevel(changeToArmor);
+                    settings.setIslandLootTable(table);
+                    game.setSettings(settings);
+                    Main.activeCustomGames.remove(event.getWhoClicked());
+                    Main.activeCustomGames.put((Player) event.getWhoClicked(), game);
+
+                    event.getWhoClicked().closeInventory();
+                    event.getWhoClicked().openInventory((new IslandLootGui((Player) event.getWhoClicked(), game)).getBukkitInventory());
+
+                    break;
+                case 17:
+                    MiscLevel currentMiscLevel = table.getMiscLevel();
+                    MiscLevel changeToMisc;
+                    if (currentMiscLevel.equals(MiscLevel.NO_MISC)) changeToMisc = MiscLevel.LEVEL_1;
+                    else if (currentMiscLevel.equals(MiscLevel.LEVEL_4)) changeToMisc = MiscLevel.NO_MISC;
+                    else {
+                        int current = Integer.parseInt(currentMiscLevel.name().split("_")[1]);
+                        current++;
+                        changeToMisc = MiscLevel.valueOf("LEVEL_"+current);
+                    }
+
+                    table.setMiscLevel(changeToMisc);
                     settings.setIslandLootTable(table);
                     game.setSettings(settings);
                     Main.activeCustomGames.remove(event.getWhoClicked());

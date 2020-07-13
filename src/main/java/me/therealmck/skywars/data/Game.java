@@ -44,20 +44,28 @@ public class Game {
                 
 
                 for (int i = 0; i < islandTable.getSwordLoot().getRolls(); i++) {
-                    boolean shouldFill = r.nextInt(100) < islandTable.getSwordLoot().getChance();
+                    boolean shouldFill = r.nextInt(100) <= islandTable.getSwordLoot().getChance();
                     if (shouldFill) inv.setItem(r.nextInt(inv.getSize()), islandTable.getSwordLoot().getItems().get(r.nextInt(islandTable.getSwordLoot().getItems().size())));
                 }
                 for (int i = 0; i < islandTable.getBowLoot().getRolls(); i++) {
-                    boolean shouldFill = r.nextInt(100) < islandTable.getBowLoot().getChance();
+                    boolean shouldFill = r.nextInt(100) <= islandTable.getBowLoot().getChance();
                     if (shouldFill) inv.setItem(r.nextInt(inv.getSize()), islandTable.getBowLoot().getItems().get(r.nextInt(islandTable.getBowLoot().getItems().size())));
                 }
                 for (int i = 0; i < islandTable.getPearlLoot().getRolls(); i++) {
-                    boolean shouldFill = r.nextInt(100) < islandTable.getPearlLoot().getChance();
+                    boolean shouldFill = r.nextInt(100) <= islandTable.getPearlLoot().getChance();
                     if (shouldFill) inv.setItem(r.nextInt(inv.getSize()), islandTable.getPearlLoot().getItems().get(r.nextInt(islandTable.getPearlLoot().getItems().size())));
                 }
                 for (int i = 0; i < islandTable.getProjectileLoot().getRolls(); i++) {
-                    boolean shouldFill = r.nextInt(100) < islandTable.getProjectileLoot().getChance();
+                    boolean shouldFill = r.nextInt(100) <= islandTable.getProjectileLoot().getChance();
                     if (shouldFill) inv.setItem(r.nextInt(inv.getSize()), islandTable.getProjectileLoot().getItems().get(r.nextInt(islandTable.getProjectileLoot().getItems().size())));
+                }
+                for (int i = 0; i < islandTable.getArmorLoot().getRolls(); i++) {
+                    boolean shouldFill = r.nextInt(100) <= islandTable.getArmorLoot().getChance();
+                    if (shouldFill) inv.setItem(r.nextInt(inv.getSize()), islandTable.getArmorLoot().getItems().get(r.nextInt(islandTable.getArmorLoot().getItems().size())));
+                }
+                for (int i = 0; i < islandTable.getMiscLoot().getRolls(); i++) {
+                    boolean shouldFill = r.nextInt(100) <= islandTable.getMiscLoot().getChance();
+                    if (shouldFill) inv.setItem(r.nextInt(inv.getSize()), islandTable.getMiscLoot().getItems().get(r.nextInt(islandTable.getMiscLoot().getItems().size())));
                 }
             }
         }
@@ -70,20 +78,28 @@ public class Game {
                 Random r = new Random();
 
                 for (int i = 0; i < midTable.getSwordLoot().getRolls(); i++) {
-                    boolean shouldFill = r.nextInt(100) < midTable.getSwordLoot().getChance();
+                    boolean shouldFill = r.nextInt(100) <= midTable.getSwordLoot().getChance();
                     if (shouldFill) inv.setItem(r.nextInt(inv.getSize()), midTable.getSwordLoot().getItems().get(r.nextInt(midTable.getSwordLoot().getItems().size())));
                 }
                 for (int i = 0; i < midTable.getBowLoot().getRolls(); i++) {
-                    boolean shouldFill = r.nextInt(100) < midTable.getBowLoot().getChance();
+                    boolean shouldFill = r.nextInt(100) <= midTable.getBowLoot().getChance();
                     if (shouldFill) inv.setItem(r.nextInt(inv.getSize()), midTable.getBowLoot().getItems().get(r.nextInt(midTable.getBowLoot().getItems().size())));
                 }
                 for (int i = 0; i < midTable.getPearlLoot().getRolls(); i++) {
-                    boolean shouldFill = r.nextInt(100) < midTable.getPearlLoot().getChance();
+                    boolean shouldFill = r.nextInt(100) <= midTable.getPearlLoot().getChance();
                     if (shouldFill) inv.setItem(r.nextInt(inv.getSize()), midTable.getPearlLoot().getItems().get(r.nextInt(midTable.getPearlLoot().getItems().size())));
                 }
                 for (int i = 0; i < midTable.getProjectileLoot().getRolls(); i++) {
-                    boolean shouldFill = r.nextInt(100) < midTable.getProjectileLoot().getChance();
+                    boolean shouldFill = r.nextInt(100) <= midTable.getProjectileLoot().getChance();
                     if (shouldFill) inv.setItem(r.nextInt(inv.getSize()), midTable.getProjectileLoot().getItems().get(r.nextInt(midTable.getProjectileLoot().getItems().size())));
+                }
+                for (int i = 0; i < midTable.getArmorLoot().getRolls(); i++) {
+                    boolean shouldFill = r.nextInt(100) <= midTable.getArmorLoot().getChance();
+                    if (shouldFill) inv.setItem(r.nextInt(inv.getSize()), midTable.getArmorLoot().getItems().get(r.nextInt(midTable.getArmorLoot().getItems().size())));
+                }
+                for (int i = 0; i < midTable.getMiscLoot().getRolls(); i++) {
+                    boolean shouldFill = r.nextInt(100) <= midTable.getMiscLoot().getChance();
+                    if (shouldFill) inv.setItem(r.nextInt(inv.getSize()), midTable.getMiscLoot().getItems().get(r.nextInt(midTable.getMiscLoot().getItems().size())));
                 }
             }
         }
@@ -155,11 +171,29 @@ public class Game {
             }
             return true;
         }
+
+        // TODO: construct cage and let out after 10 seconds
     }
 
     public void beginGame() {
-        // Begin the game. Chests have already been filled and players have already been teleported.
+        // Begin the game. Chests have already been filled.
+        // Show every player an inventory to choose teams, then warp teams once everyone has picked a teammate.
 
 
+        // Once teams have been picked, warp teams.
+        warpPlayers();
+
+    }
+
+    public void setPlayers(List<GamePlayer> players) {
+        this.players = players;
+    }
+
+    public List<Team> getTeams() {
+        return teams;
+    }
+
+    public void setTeams(List<Team> teams) {
+        this.teams = teams;
     }
 }

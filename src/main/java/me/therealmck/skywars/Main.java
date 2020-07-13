@@ -25,6 +25,8 @@ public class Main extends JavaPlugin {
     public static Queue queue = new Queue();
     public static List<SkyWarsMap> maps = new ArrayList<>();
     public static HashMap<Player, Game> activeCustomGames = new HashMap<>();
+    public static List<Game> waitingGames;
+    public static List<Game> runningGames;
 
     @Override
     public void onEnable() {
@@ -71,6 +73,25 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new MainCustomGameGuiListener(), this);
         getServer().getPluginManager().registerEvents(new MidLootGuiListener(), this);
         getServer().getPluginManager().registerEvents(new ModifierGuiListener(), this);
+
+
+        // Begin task to update games
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                List<Game> toRemove = new ArrayList<>();
+                for (Game game : waitingGames) {
+                    if (game.getPlayers().size() >= skyWarsConfig.getInt("MinimumPlayers")) {
+                        toRemove.add(game);
+                        runningGames.add(game);
+                        game.fillChests();
+                        game.beginGame();
+                    }
+                }
+
+                waitingGames.removeAll(toRemove);
+            }
+        }.runTaskTimer(this, 0L, 20L);
     }
 
     @Override
