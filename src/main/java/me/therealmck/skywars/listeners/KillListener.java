@@ -50,7 +50,7 @@ public class KillListener implements Listener {
         killer.addKill();
 
         // Save stats of killed player
-        killed.saveStats(false);
+        if (!game.isCustom()) killed.saveStats(false);
         killed.setDead(true);
 
         event.setCancelled(true);
@@ -70,7 +70,7 @@ public class KillListener implements Listener {
             ((Player) event.getDamager()).setGameMode(GameMode.SPECTATOR);
             ((Player) event.getDamager()).setHealth(20);
             ((Player) event.getDamager()).sendTitle("§6§lVICTORY!", "§6Run /skywars lobby to return.", 0, 120, 0);
-            killer.saveStats(true);
+            if (!game.isCustom()) killer.saveStats(true);
 
             World map = game.getMap().getBukkitWorld();
 

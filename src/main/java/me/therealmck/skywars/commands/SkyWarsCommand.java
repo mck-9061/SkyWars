@@ -4,6 +4,8 @@ import me.therealmck.skywars.Main;
 import me.therealmck.skywars.data.Game;
 import me.therealmck.skywars.data.players.GamePlayer;
 import me.therealmck.skywars.guis.customgame.MainCustomGameGui;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -29,6 +31,7 @@ public class SkyWarsCommand implements CommandExecutor {
             case "create":
                 if (commandSender instanceof Player) {
                     Game createdGame = new Game();
+                    createdGame.setCustom(true);
                     createdGame.addPlayer(new GamePlayer((Player) commandSender));
                     Main.activeCustomGames.put((Player) commandSender, createdGame);
 
@@ -42,10 +45,33 @@ public class SkyWarsCommand implements CommandExecutor {
 
 
                 break;
+            case "kit":
+                break;
+            case "lobby":
+                if (commandSender instanceof Player) {
+                    Location lobby = Main.skyWarsConfig.getLocation("LobbyLocation");
+
+                    boolean shouldTp = true;
+                    Game leavingGame = null;
+                    GamePlayer gp = null;
+                    for (Game game : Main.runningGames) {
+                        for (GamePlayer player : game.getPlayers()) {
+                            if (player.getBukkitPlayer().equals(commandSender) && !(((Player) commandSender)).getGameMode().equals(GameMode.SPECTATOR)) {
+                                shouldTp = false;
+                            } else if (player.getBukkitPlayer().equals(commandSender) && ((Player) commandSender).getGameMode().equals(GameMode.SPECTATOR)) {
+                                leavingGame = game;
+                                gp = player;
+                            }
+                        }
+                    }
+
+                    if (shouldTp) {
+                        ((Player) commandSender).teleport(lobby);
+                        if (leavingGame != null) leavingGame.removePlayer(gp);
+                    }
+                }
+                break;
         }
-
-
-
         return true;
     }
 }

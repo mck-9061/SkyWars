@@ -21,6 +21,7 @@ public class Game {
     private List<GamePlayer> players;
     private SkyWarsSettings settings;
     private List<Team> teams;
+    private boolean isCustom = false;
 
     public Game() {
         this.players = new ArrayList<>();
@@ -203,5 +204,17 @@ public class Game {
                 players = new ArrayList<>();
             }
         }.runTaskLater(Main.instance, delay);
+    }
+
+    public boolean isCustom() {
+        return isCustom;
+    }
+
+    public void setCustom(boolean custom) {
+        isCustom = custom;
+    }
+
+    public void removePlayer(GamePlayer player) {
+        players.remove(player);
     }
 }
