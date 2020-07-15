@@ -42,20 +42,23 @@ public class Queue {
         customGameQueue.add(game);
     }
 
-    public void processQueue(SkyWarsMap map) {
+    public void processQueue(Game oldGame) {
         // Logic to add queued players and games to a running game.
         if (!customGameQueue.isEmpty()) {
             // Add a queued custom game to a running game.
             Game game = customGameQueue.get(0);
             customGameQueue.remove(game);
 
-            game.setMap(map);
+            game.setMap(oldGame.getMap());
             game.fillChests();
             game.beginGame();
+            Main.waitingGames.remove(oldGame);
+            Main.runningGames.add(game);
+
         } else {
             // Process fast pass queue before regular queue
             Game game = new Game();
-            game.setMap(map);
+            game.setMap(oldGame.getMap());
             int maxPlayers = Main.skyWarsConfig.getInt("MaximumPlayers");
 
             for (Player p : fastPassQueue) {
@@ -72,6 +75,7 @@ public class Queue {
                 }
             }
 
+            Main.waitingGames.remove(oldGame);
             Main.waitingGames.add(game);
 
         }

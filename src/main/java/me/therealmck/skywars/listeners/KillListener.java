@@ -3,10 +3,13 @@ package me.therealmck.skywars.listeners;
 import me.therealmck.skywars.Main;
 import me.therealmck.skywars.data.Game;
 import me.therealmck.skywars.data.players.GamePlayer;
+import org.bukkit.GameMode;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +33,64 @@ public class KillListener implements Listener {
                 break;
             }
             else players.clear();
+        }
+
+        if (game == null) return;
+
+        GamePlayer killer = null;
+        GamePlayer killed = null;
+
+        for (GamePlayer p : game.getPlayers()) {
+            if (p.getBukkitPlayer().equals(event.getDamager())) killer = p;
+            if (p.getBukkitPlayer().equals(event.getEntity())) killed = p;
+        }
+
+        if (killer == null || killed == null) return;
+
+        killer.addKill();
+
+        // Save stats of killed player
+        killed.saveStats(false);
+        killed.setDead(true);
+
+        event.setCancelled(true);
+        ((Player) event.getEntity()).setGameMode(GameMode.SPECTATOR);
+        ((Player) event.getEntity()).setHealth(20);
+        ((Player) event.getEntity()).sendTitle("§c§lYOU DIED!", "§cRun /skywars lobby to return.", 0, 80, 0);
+
+        // Check if killer has won
+        boolean won = true;
+        for (GamePlayer gp : game.getPlayers()) {
+            if (gp.equals(killer)) continue;
+
+            if (!gp.isDead()) won = false;
+        }
+
+        if (won) {
+            ((Player) event.getDamager()).setGameMode(GameMode.SPECTATOR);
+            ((Player) event.getDamager()).setHealth(20);
+            ((Player) event.getDamager()).sendTitle("§6§lVICTORY!", "§6Run /skywars lobby to return.", 0, 120, 0);
+            killer.saveStats(true);
+
+            World map = game.getMap().getBukkitWorld();
+
+            // Boot all players after 6 seconds, reset the game, then process the queue
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    for (Player p : players) {
+                        if (map.getPlayers().contains(p)) {
+                            p.setGameMode(GameMode.SURVIVAL);
+                            p.teleport(Main.skyWarsConfig.getLocation("LobbyLocation"));
+                        }
+                    }
+                }
+            }.runTaskLater(Main.instance, 120);
+            game.wipePlayersWithDelay(120);
+            game.restoreBackup();
+            Main.runningGames.remove(game);
+            Main.waitingGames.add(game);
+            Main.queue.processQueue(game);
         }
     }
 }

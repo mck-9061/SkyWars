@@ -1,5 +1,6 @@
 package me.therealmck.skywars.data;
 
+import me.therealmck.skywars.Main;
 import me.therealmck.skywars.data.loot.LootTable;
 import me.therealmck.skywars.data.players.GamePlayer;
 import me.therealmck.skywars.utils.Utils;
@@ -8,6 +9,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -127,10 +129,6 @@ public class Game {
         Utils.copyFileStructure(backupWorld.getWorldFolder(), new File(Bukkit.getWorldContainer(), worldName));
         new WorldCreator(worldName).createWorld();
 
-        File oldWorld = backupWorld.getWorldFolder();
-        Utils.unloadWorld(oldWorld.getName());
-        oldWorld.delete();
-
         this.map = new SkyWarsMap(Bukkit.getWorld(worldName));
     }
 
@@ -179,6 +177,7 @@ public class Game {
         // Begin the game. Chests have already been filled.
         // Show every player an inventory to choose teams, then warp teams once everyone has picked a teammate.
 
+        // TODO: Team picker
 
         // Once teams have been picked, warp teams.
         warpPlayers();
@@ -195,5 +194,14 @@ public class Game {
 
     public void setTeams(List<Team> teams) {
         this.teams = teams;
+    }
+
+    public void wipePlayersWithDelay(int delay) {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                players = new ArrayList<>();
+            }
+        }.runTaskLater(Main.instance, delay);
     }
 }

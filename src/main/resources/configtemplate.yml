@@ -1,11 +1,17 @@
 # EDITING VALUES HERE WILL NOT CHANGE THE CONFIG.
 # EDIT CONFIG.YML INSTEAD.
 
+# Set where the game will kick players out to and also where to go to when running /skywars lobby.
+# Set this position with /setlobby in your SkyWars lobby.
+LobbyLocation:
+
 # The amount of players required in a game before it will start.
 MinimumPlayers: 12
 # The maximum amount of players allowed in a game.
 # There MUST be as many spawn points on a map as half this amount.
-MaximumPlayers: 24
+# Due to how matchmaking works it's recommended to make sure this is the same as the minimum.
+# It must also be an even number.
+MaximumPlayers: 12
 
 
 # The multiplier. Higher multiplier = more loot.

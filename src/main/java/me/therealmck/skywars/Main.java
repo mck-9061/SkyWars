@@ -12,6 +12,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -27,9 +28,11 @@ public class Main extends JavaPlugin {
     public static HashMap<Player, Game> activeCustomGames = new HashMap<>();
     public static List<Game> waitingGames;
     public static List<Game> runningGames;
+    public static Plugin instance;
 
     @Override
     public void onEnable() {
+        instance = this;
         // Get all maps from config
         new BukkitRunnable() {
             @Override
