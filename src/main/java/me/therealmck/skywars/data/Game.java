@@ -217,4 +217,12 @@ public class Game {
     public void removePlayer(GamePlayer player) {
         players.remove(player);
     }
+
+    public Team getTeam(GamePlayer player) {
+        Team toReturn = null;
+        for (Team team : teams) {
+            if (team.getPlayer1().equals(player) || team.getPlayer2().equals(player)) toReturn = team;
+        }
+        return toReturn;
+    }
 }

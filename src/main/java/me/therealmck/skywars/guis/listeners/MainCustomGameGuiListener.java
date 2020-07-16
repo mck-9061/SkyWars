@@ -46,7 +46,6 @@ public class MainCustomGameGuiListener implements Listener {
                     event.getWhoClicked().openInventory((new EventChooserGui((Player) event.getWhoClicked(), Main.activeCustomGames.get(event.getWhoClicked()))).getBukkitInventory());
                     break;
                 case 18:
-                    // TODO: Teams
                     List<SkyWarsMap> maps = new ArrayList<>();
                     Game activeGame = Main.activeCustomGames.get(event.getWhoClicked());
 

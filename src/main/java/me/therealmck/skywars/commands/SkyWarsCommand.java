@@ -67,7 +67,10 @@ public class SkyWarsCommand implements CommandExecutor {
 
                     if (shouldTp) {
                         ((Player) commandSender).teleport(lobby);
-                        if (leavingGame != null) leavingGame.removePlayer(gp);
+                        if (leavingGame != null) {
+                            leavingGame.removePlayer(gp);
+                            ((Player) commandSender).setGameMode(GameMode.SURVIVAL);
+                        }
                     }
                 }
                 break;

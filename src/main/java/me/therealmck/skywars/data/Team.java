@@ -25,4 +25,8 @@ public class Team {
     public void setPlayer2(GamePlayer player2) {
         this.player2 = player2;
     }
+
+    public boolean containsPlayer(GamePlayer player) {
+        return player.equals(player1) || player.equals(player2);
+    }
 }

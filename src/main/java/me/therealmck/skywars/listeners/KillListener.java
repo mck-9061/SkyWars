@@ -2,6 +2,7 @@ package me.therealmck.skywars.listeners;
 
 import me.therealmck.skywars.Main;
 import me.therealmck.skywars.data.Game;
+import me.therealmck.skywars.data.Team;
 import me.therealmck.skywars.data.players.GamePlayer;
 import org.bukkit.GameMode;
 import org.bukkit.World;
@@ -59,11 +60,13 @@ public class KillListener implements Listener {
         ((Player) event.getEntity()).sendTitle("§c§lYOU DIED!", "§cRun /skywars lobby to return.", 0, 80, 0);
 
         // Check if killer has won
+        // TODO: Change this to team-based system
         boolean won = true;
+        Team team = game.getTeam(killer);
         for (GamePlayer gp : game.getPlayers()) {
             if (gp.equals(killer)) continue;
 
-            if (!gp.isDead()) won = false;
+            if (gp.getBukkitPlayer().getGameMode().equals(GameMode.SURVIVAL) && !team.containsPlayer(gp)) won = false;
         }
 
         if (won) {
