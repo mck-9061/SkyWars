@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -60,7 +61,6 @@ public class KillListener implements Listener {
         ((Player) event.getEntity()).sendTitle("§c§lYOU DIED!", "§cRun /skywars lobby to return.", 0, 80, 0);
 
         // Check if killer has won
-        // TODO: Change this to team-based system
         boolean won = true;
         Team team = game.getTeam(killer);
         for (GamePlayer gp : game.getPlayers()) {
@@ -70,12 +70,19 @@ public class KillListener implements Listener {
         }
 
         if (won) {
-            ((Player) event.getDamager()).setGameMode(GameMode.SPECTATOR);
-            ((Player) event.getDamager()).setHealth(20);
-            ((Player) event.getDamager()).sendTitle("§6§lVICTORY!", "§6Run /skywars lobby to return.", 0, 120, 0);
-            if (!game.isCustom()) killer.saveStats(true);
+
+            team.getPlayer1().getBukkitPlayer().setGameMode(GameMode.SPECTATOR);
+            team.getPlayer1().getBukkitPlayer().setHealth(20);
+            team.getPlayer1().getBukkitPlayer().sendTitle("§6§lVICTORY!", "§6Run /skywars lobby to return.", 0, 120, 0);
+            if (!game.isCustom()) team.getPlayer1().saveStats(true);
+
+            team.getPlayer2().getBukkitPlayer().setGameMode(GameMode.SPECTATOR);
+            team.getPlayer2().getBukkitPlayer().setHealth(20);
+            team.getPlayer2().getBukkitPlayer().sendTitle("§6§lVICTORY!", "§6Run /skywars lobby to return.", 0, 120, 0);
+            if (!game.isCustom()) team.getPlayer2().saveStats(true);
 
             World map = game.getMap().getBukkitWorld();
+
 
             // Boot all players after 6 seconds, reset the game, then process the queue
             new BukkitRunnable() {
@@ -84,7 +91,7 @@ public class KillListener implements Listener {
                     for (Player p : players) {
                         if (map.getPlayers().contains(p)) {
                             p.setGameMode(GameMode.SURVIVAL);
-                            p.teleport(Main.skyWarsConfig.getLocation("LobbyLocation"));
+                            p.teleport(Main.skyWarsConfig.getLocation("LobbyLocation"), PlayerTeleportEvent.TeleportCause.PLUGIN);
                         }
                     }
                 }

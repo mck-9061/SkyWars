@@ -20,7 +20,7 @@ public class TeleportCanceller implements Listener {
             }
         }
 
-        if (shouldCancel && event.getCause().equals(PlayerTeleportEvent.TeleportCause.COMMAND)) {
+        if (shouldCancel && (event.getCause().equals(PlayerTeleportEvent.TeleportCause.COMMAND) || event.getCause().equals(PlayerTeleportEvent.TeleportCause.UNKNOWN))) {
             event.setCancelled(true);
             p.sendMessage("You can't teleport out while a game is running!");
         }
