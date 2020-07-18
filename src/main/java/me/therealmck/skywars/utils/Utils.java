@@ -1,10 +1,10 @@
 package me.therealmck.skywars.utils;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -56,5 +56,21 @@ public class Utils {
     public static boolean unloadWorld(String worldName) {
         World world = Bukkit.getWorld(worldName);
         return world!=null && Bukkit.getServer().unloadWorld(world, false);
+    }
+
+    public static ItemStack getPlayerSkull(Player paramPlayer, String name) {
+        ItemStack skull = new ItemStack(Material.PLAYER_HEAD, 1);
+
+        SkullMeta meta = (SkullMeta) skull.getItemMeta();
+        meta.setOwningPlayer(paramPlayer);
+        meta.setDisplayName(name);
+        skull.setItemMeta(meta);
+
+        return skull;
+    }
+
+    public static OfflinePlayer getPlayerFromSkull(ItemStack skull) {
+        SkullMeta meta = (SkullMeta) skull.getItemMeta();
+        return meta.getOwningPlayer();
     }
 }

@@ -3,6 +3,7 @@ package me.therealmck.skywars.data;
 import me.therealmck.skywars.Main;
 import me.therealmck.skywars.data.loot.LootTable;
 import me.therealmck.skywars.data.players.GamePlayer;
+import me.therealmck.skywars.guis.TeamPickerGui;
 import me.therealmck.skywars.utils.Utils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -13,6 +14,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -22,6 +24,8 @@ public class Game {
     private SkyWarsSettings settings;
     private List<Team> teams;
     private boolean isCustom = false;
+    private HashMap<Player, Integer> teammatePrefs = new HashMap<>();
+    private TeamPickerGui teamPickerGui;
 
     public Game() {
         this.players = new ArrayList<>();
@@ -152,6 +156,8 @@ public class Game {
     public void wipePlayers() { this.players = new ArrayList<>(); }
 
     public boolean warpPlayers() {
+        // TODO: Process teams
+
         // Warp players to starting points.
         if (map.getSpawns().size() < players.size()/2) return false;
         else {
@@ -172,17 +178,21 @@ public class Game {
         }
 
         // TODO: construct cage and let out after 10 seconds
+        // TODO: Kits
     }
 
     public void beginGame() {
         // Begin the game. Chests have already been filled.
         // Show every player an inventory to choose teams, then warp teams once everyone has picked a teammate.
 
-        // TODO: Team picker
+        teamPickerGui = new TeamPickerGui(players.get(0).getBukkitPlayer(), this);
+        teammatePrefs = new HashMap<>();
+        for (GamePlayer player : players) {
+            player.getBukkitPlayer().openInventory(teamPickerGui.getBukkitInventory());
+        }
 
-        // Once teams have been picked, warp teams.
-        warpPlayers();
-
+        // Give players 15 seconds to pick teammates, then warp them
+        Bukkit.getScheduler().runTaskLater(Main.instance, this::warpPlayers, 300);
     }
 
     public void setPlayers(List<GamePlayer> players) {
@@ -224,5 +234,13 @@ public class Game {
             if (team.getPlayer1().equals(player) || team.getPlayer2().equals(player)) toReturn = team;
         }
         return toReturn;
+    }
+
+    public HashMap<Player, Integer> getTeammatePrefs() {
+        return teammatePrefs;
+    }
+
+    public void setTeammatePref(Player player, Integer slot) {
+        teammatePrefs.put(player, slot);
     }
 }

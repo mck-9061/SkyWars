@@ -26,9 +26,11 @@ public class Main extends JavaPlugin {
     public static Queue queue = new Queue();
     public static List<SkyWarsMap> maps = new ArrayList<>();
     public static HashMap<Player, Game> activeCustomGames = new HashMap<>();
-    public static List<Game> waitingGames;
-    public static List<Game> runningGames;
+    public static List<Game> waitingGames = new ArrayList<>();
+    public static List<Game> runningGames = new ArrayList<>();
     public static Plugin instance;
+
+    public static List<Player> preventInventoryCloseList = new ArrayList<>();
 
     @Override
     public void onEnable() {
