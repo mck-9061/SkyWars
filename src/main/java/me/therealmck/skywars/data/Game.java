@@ -10,6 +10,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
@@ -156,7 +157,48 @@ public class Game {
     public void wipePlayers() { this.players = new ArrayList<>(); }
 
     public boolean warpPlayers() {
-        // TODO: Process teams
+        List<GamePlayer> random = new ArrayList<>();
+        List<GamePlayer> editList = new ArrayList<>(players);
+
+        for (GamePlayer player : players) {
+            if (!editList.contains(player)) continue;
+
+            int slot = teammatePrefs.get(player.getBukkitPlayer());
+            if (slot > 26) random.add(player);
+            else {
+                Player preffered = (Player) Utils.getPlayerFromSkull(teamPickerGui.getBukkitInventory().getItem(slot));
+                GamePlayer gp = null;
+                for (GamePlayer g : players) if (g.getBukkitPlayer().equals(preffered)) gp = g;
+
+                if (Utils.getPlayerFromSkull(teamPickerGui.getBukkitInventory().getItem(teammatePrefs.get(preffered))).equals(player.getBukkitPlayer()) || random.contains(gp)) {
+                    editList.remove(player);
+                    editList.remove(gp);
+                    random.remove(gp);
+
+                    Team team = new Team();
+                    team.setPlayer1(player);
+                    team.setPlayer2(gp);
+                    teams.add(team);
+                } else random.add(player);
+            }
+        }
+
+        List<GamePlayer> available = new ArrayList<>(random);
+        for (GamePlayer player : random) {
+            Random r = new Random();
+            available.remove(player);
+            GamePlayer teammate = null;
+            if (!(available.size() == 0)) teammate = available.get(r.nextInt(available.size()));
+
+            available.remove(teammate);
+            Team team = new Team();
+            team.setPlayer1(player);
+            team.setPlayer2(teammate);
+
+            teams.add(team);
+        }
+
+
 
         // Warp players to starting points.
         if (map.getSpawns().size() < players.size()/2) return false;
