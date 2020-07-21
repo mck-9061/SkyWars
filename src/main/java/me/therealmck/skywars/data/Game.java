@@ -198,6 +198,8 @@ public class Game {
             teams.add(team);
         }
 
+        List<Block> cageBlocks = new ArrayList<>();
+
 
 
         // Warp players to starting points.
@@ -213,13 +215,70 @@ public class Game {
                 Location spawn = editableSpawnList.get(r.nextInt(editableSpawnList.size()));
                 editableSpawnList.remove(spawn);
 
+                // construct cage
+                Location cageBaseBlock = spawn.clone();
+                cageBaseBlock.setY(cageBaseBlock.getY() + 10);
+
+                List<Block> ironBlocks = new ArrayList<>();
+                List<Block> ironBars = new ArrayList<>();
+
+                ironBlocks.add(cageBaseBlock.getBlock());
+                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+1, cageBaseBlock.getBlockY(), cageBaseBlock.getBlockZ()).getBlock());
+                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-1, cageBaseBlock.getBlockY(), cageBaseBlock.getBlockZ()).getBlock());
+                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX(), cageBaseBlock.getBlockY(), cageBaseBlock.getBlockZ()+1).getBlock());
+                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX(), cageBaseBlock.getBlockY(), cageBaseBlock.getBlockZ()-1).getBlock());
+                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+1, cageBaseBlock.getBlockY(), cageBaseBlock.getBlockZ()+1).getBlock());
+                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+1, cageBaseBlock.getBlockY(), cageBaseBlock.getBlockZ()-1).getBlock());
+                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-1, cageBaseBlock.getBlockY(), cageBaseBlock.getBlockZ()+1).getBlock());
+                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-1, cageBaseBlock.getBlockY(), cageBaseBlock.getBlockZ()-1).getBlock());
+
+                for (int height = 1; height < 4; height++) {
+                    ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+2, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()-1).getBlock());
+                    ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+2, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()).getBlock());
+                    ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+2, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()+1).getBlock());
+                    ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-2, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()-1).getBlock());
+                    ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-2, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()).getBlock());
+                    ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-2, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()+1).getBlock());
+                    ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-1, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()+2).getBlock());
+                    ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX(), cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()+2).getBlock());
+                    ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+1, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()+2).getBlock());
+                    ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-1, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()-2).getBlock());
+                    ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX(), cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()-2).getBlock());
+                    ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+1, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()-2).getBlock());
+                }
+
+                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX(), cageBaseBlock.getBlockY()+3, cageBaseBlock.getBlockZ()).getBlock());
+                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+1, cageBaseBlock.getBlockY()+3, cageBaseBlock.getBlockZ()).getBlock());
+                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-1, cageBaseBlock.getBlockY()+3, cageBaseBlock.getBlockZ()).getBlock());
+                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX(), cageBaseBlock.getBlockY()+3, cageBaseBlock.getBlockZ()+1).getBlock());
+                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX(), cageBaseBlock.getBlockY()+3, cageBaseBlock.getBlockZ()-1).getBlock());
+                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+1, cageBaseBlock.getBlockY()+3, cageBaseBlock.getBlockZ()+1).getBlock());
+                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+1, cageBaseBlock.getBlockY()+3, cageBaseBlock.getBlockZ()-1).getBlock());
+                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-1, cageBaseBlock.getBlockY()+3, cageBaseBlock.getBlockZ()+1).getBlock());
+                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-1, cageBaseBlock.getBlockY()+3, cageBaseBlock.getBlockZ()-1).getBlock());
+
+                cageBlocks.addAll(ironBars);
+                cageBlocks.addAll(ironBlocks);
+
+                for (Block b : ironBlocks) b.setType(Material.IRON_BLOCK);
+                for (Block b : ironBars) b.setType(Material.IRON_BARS);
+
                 p1.getBukkitPlayer().teleport(spawn);
                 p2.getBukkitPlayer().teleport(spawn);
             }
+
+            Bukkit.getScheduler().runTaskLater(Main.instance, () -> { for (GamePlayer player : players) player.getBukkitPlayer().sendTitle("5", "", 0, 20, 0); }, 200);
+            Bukkit.getScheduler().runTaskLater(Main.instance, () -> { for (GamePlayer player : players) player.getBukkitPlayer().sendTitle("4", "", 0, 20, 0); }, 220);
+            Bukkit.getScheduler().runTaskLater(Main.instance, () -> { for (GamePlayer player : players) player.getBukkitPlayer().sendTitle("3", "", 0, 20, 0); }, 240);
+            Bukkit.getScheduler().runTaskLater(Main.instance, () -> { for (GamePlayer player : players) player.getBukkitPlayer().sendTitle("2", "", 0, 20, 0); }, 260);
+            Bukkit.getScheduler().runTaskLater(Main.instance, () -> { for (GamePlayer player : players) player.getBukkitPlayer().sendTitle("1", "", 0, 20, 0); }, 280);
+
+            Bukkit.getScheduler().runTaskLater(Main.instance, () -> {
+                for (Block b : cageBlocks) b.setType(Material.AIR);
+            }, 300);
             return true;
         }
 
-        // TODO: construct cage and let out after 10 seconds
         // TODO: Kits
     }
 
@@ -235,6 +294,8 @@ public class Game {
 
         // Give players 15 seconds to pick teammates, then warp them
         Bukkit.getScheduler().runTaskLater(Main.instance, this::warpPlayers, 300);
+
+        // TODO: Modifiers
     }
 
     public void setPlayers(List<GamePlayer> players) {

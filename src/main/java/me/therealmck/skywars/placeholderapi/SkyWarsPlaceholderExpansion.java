@@ -3,7 +3,10 @@ package me.therealmck.skywars.placeholderapi;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.therealmck.skywars.Main;
 import org.apache.commons.lang.WordUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
+import java.text.DecimalFormat;
 
 public class SkyWarsPlaceholderExpansion extends PlaceholderExpansion {
     private Main plugin;
@@ -97,10 +100,39 @@ public class SkyWarsPlaceholderExpansion extends PlaceholderExpansion {
     @Override
     public String onPlaceholderRequest(Player player, String identifier){
 
-        // TODO: Placeholders
+        switch (identifier) {
+            case "kills": return String.valueOf(Main.playerDataConfig.getInt(player.getUniqueId().toString()+".kills"));
+            case "wins": return String.valueOf(Main.playerDataConfig.getInt(player.getUniqueId().toString()+".wins"));
+            case "deaths": return String.valueOf(Main.playerDataConfig.getInt(player.getUniqueId().toString()+".deaths"));
+            case "kd":
+                double kills = Main.playerDataConfig.getInt(player.getUniqueId().toString()+".kills");
+                double deaths = Main.playerDataConfig.getInt(player.getUniqueId().toString()+".deaths");
 
-        // We return null if an invalid placeholder (f.e. %someplugin_placeholder3%)
-        // was provided
-        return null;
+                DecimalFormat numberFormat = new DecimalFormat("#.00");
+
+                return String.valueOf(numberFormat.format(kills/deaths));
+            default:
+                String[] a = identifier.split("_");
+
+                if (a.length != 2) return null;
+
+                Player player1 = Bukkit.getPlayer(a[0]);
+
+                if (player1 == null) return null;
+
+                switch (a[1]) {
+                    case "kills": return String.valueOf(Main.playerDataConfig.getInt(player1.getUniqueId().toString()+".kills"));
+                    case "wins": return String.valueOf(Main.playerDataConfig.getInt(player1.getUniqueId().toString()+".wins"));
+                    case "deaths": return String.valueOf(Main.playerDataConfig.getInt(player1.getUniqueId().toString()+".deaths"));
+                    case "kd":
+                        double kills1 = Main.playerDataConfig.getInt(player1.getUniqueId().toString()+".kills");
+                        double deaths1 = Main.playerDataConfig.getInt(player1.getUniqueId().toString()+".deaths");
+
+                        DecimalFormat numberFormat1 = new DecimalFormat("#.00");
+
+                        return String.valueOf(numberFormat1.format(kills1/deaths1));
+                    default: return null;
+                }
+        }
     }
 }
