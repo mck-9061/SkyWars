@@ -9,6 +9,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -20,6 +21,7 @@ public class DeathListener implements Listener {
     // Just in case a player dies on their own (void etc.)
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
+
         GamePlayer killed = null;
         Game game = null;
 
@@ -47,7 +49,8 @@ public class DeathListener implements Listener {
             // Check if a team has won
             List<Team> aliveTeams = new ArrayList<>();
             for (Team team : game.getTeams()) {
-                if (!team.getPlayer1().isDead() || !team.getPlayer2().isDead()) aliveTeams.add(team);
+                if ((!team.getPlayer1().isDead() && game.getPlayers().contains(team.getPlayer1()))
+                        || (!team.getPlayer2().isDead() && game.getPlayers().contains(team.getPlayer2()))) aliveTeams.add(team);
             }
 
             if (aliveTeams.size() == 1) {

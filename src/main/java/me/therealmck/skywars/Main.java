@@ -5,6 +5,7 @@ import me.therealmck.skywars.data.Game;
 import me.therealmck.skywars.data.Queue;
 import me.therealmck.skywars.data.SkyWarsMap;
 import me.therealmck.skywars.guis.listeners.*;
+import me.therealmck.skywars.listeners.*;
 import me.therealmck.skywars.placeholderapi.SkyWarsPlaceholderExpansion;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -78,6 +79,14 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new MainCustomGameGuiListener(), this);
         getServer().getPluginManager().registerEvents(new MidLootGuiListener(), this);
         getServer().getPluginManager().registerEvents(new ModifierGuiListener(), this);
+
+        getServer().getPluginManager().registerEvents(new DeathListener(), this);
+        getServer().getPluginManager().registerEvents(new DisconnectListener(), this);
+        getServer().getPluginManager().registerEvents(new InventoryCloseListener(), this);
+        getServer().getPluginManager().registerEvents(new KillListener(), this);
+        getServer().getPluginManager().registerEvents(new LoginListener(), this);
+        getServer().getPluginManager().registerEvents(new TeammateDamageListener(), this);
+        getServer().getPluginManager().registerEvents(new TeleportCanceller(), this);
 
 
         // Begin task to update games

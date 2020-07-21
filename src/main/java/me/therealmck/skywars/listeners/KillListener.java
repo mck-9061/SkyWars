@@ -33,8 +33,7 @@ public class KillListener implements Listener {
             if (players.contains((Player) event.getDamager()) && players.contains((Player) event.getEntity())) {
                 game = g;
                 break;
-            }
-            else players.clear();
+            } else players.clear();
         }
 
         if (game == null) return;
@@ -59,48 +58,5 @@ public class KillListener implements Listener {
         ((Player) event.getEntity()).setGameMode(GameMode.SPECTATOR);
         ((Player) event.getEntity()).setHealth(20);
         ((Player) event.getEntity()).sendTitle("§c§lYOU DIED!", "§cRun /skywars lobby to return.", 0, 80, 0);
-
-        // Check if killer has won
-        boolean won = true;
-        Team team = game.getTeam(killer);
-        for (GamePlayer gp : game.getPlayers()) {
-            if (gp.equals(killer)) continue;
-
-            if (gp.getBukkitPlayer().getGameMode().equals(GameMode.SURVIVAL) && !team.containsPlayer(gp)) won = false;
-        }
-
-        if (won) {
-
-            team.getPlayer1().getBukkitPlayer().setGameMode(GameMode.SPECTATOR);
-            team.getPlayer1().getBukkitPlayer().setHealth(20);
-            team.getPlayer1().getBukkitPlayer().sendTitle("§6§lVICTORY!", "§6Run /skywars lobby to return.", 0, 120, 0);
-            if (!game.isCustom()) team.getPlayer1().saveStats(true);
-
-            team.getPlayer2().getBukkitPlayer().setGameMode(GameMode.SPECTATOR);
-            team.getPlayer2().getBukkitPlayer().setHealth(20);
-            team.getPlayer2().getBukkitPlayer().sendTitle("§6§lVICTORY!", "§6Run /skywars lobby to return.", 0, 120, 0);
-            if (!game.isCustom()) team.getPlayer2().saveStats(true);
-
-            World map = game.getMap().getBukkitWorld();
-
-
-            // Boot all players after 6 seconds, reset the game, then process the queue
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    for (Player p : players) {
-                        if (map.getPlayers().contains(p)) {
-                            p.setGameMode(GameMode.SURVIVAL);
-                            p.teleport(Main.skyWarsConfig.getLocation("LobbyLocation"), PlayerTeleportEvent.TeleportCause.PLUGIN);
-                        }
-                    }
-                }
-            }.runTaskLater(Main.instance, 120);
-            game.wipePlayersWithDelay(120);
-            game.restoreBackup();
-            Main.runningGames.remove(game);
-            Main.waitingGames.add(game);
-            Main.queue.processQueue(game);
-        }
     }
 }
