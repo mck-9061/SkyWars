@@ -30,8 +30,8 @@ public class SkyWarsSettings {
         this.maxHealth = 20;
         this.jumpMultiplier = 1;
         this.speedMultiplier = 1;
-        this.islandLootTable = new LootTable();
-        this.midLootTable = new LootTable();
+        this.islandLootTable = new LootTable(true);
+        this.midLootTable = new LootTable(false);
     }
 
     public int getMaxHealth() {

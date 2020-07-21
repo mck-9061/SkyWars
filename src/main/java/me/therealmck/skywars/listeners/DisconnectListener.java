@@ -2,6 +2,7 @@ package me.therealmck.skywars.listeners;
 
 import me.therealmck.skywars.Main;
 import me.therealmck.skywars.data.Game;
+import me.therealmck.skywars.data.SkyWarsSettings;
 import me.therealmck.skywars.data.Team;
 import me.therealmck.skywars.data.players.GamePlayer;
 import org.bukkit.GameMode;
@@ -80,6 +81,7 @@ public class DisconnectListener implements Listener {
                 }.runTaskLater(Main.instance, 120);
                 g.wipePlayersWithDelay(120);
                 g.restoreBackup();
+                g.setSettings(new SkyWarsSettings());
                 Main.runningGames.remove(g);
                 Main.waitingGames.add(g);
                 Main.queue.processQueue(g);

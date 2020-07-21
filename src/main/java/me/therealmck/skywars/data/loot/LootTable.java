@@ -35,6 +35,29 @@ public class LootTable {
         this.multiplier = 1;
     }
 
+    public LootTable(boolean island) {
+        // true: return default island loot
+        // false: return default mid loot
+
+        if (island) {
+            this.swordLevel = SwordLevel.valueOf(Main.skyWarsConfig.getString("DefaultIslandSwordLevel"));
+            this.bowLevel = BowLevel.valueOf(Main.skyWarsConfig.getString("DefaultIslandBowLevel"));
+            this.pearlLevel = PearlLevel.valueOf(Main.skyWarsConfig.getString("DefaultIslandPearlLevel"));
+            this.projectileLevel = ProjectileLevel.valueOf(Main.skyWarsConfig.getString("DefaultIslandProjectileLevel"));
+            this.armorLevel = ArmorLevel.valueOf(Main.skyWarsConfig.getString("DefaultIslandArmorLevel"));
+            this.miscLevel = MiscLevel.valueOf(Main.skyWarsConfig.getString("DefaultIslandMiscLevel"));
+            this.multiplier = Main.skyWarsConfig.getInt("DefaultIslandMultiplier");
+        } else {
+            this.swordLevel = SwordLevel.valueOf(Main.skyWarsConfig.getString("DefaultMidSwordLevel"));
+            this.bowLevel = BowLevel.valueOf(Main.skyWarsConfig.getString("DefaultMidBowLevel"));
+            this.pearlLevel = PearlLevel.valueOf(Main.skyWarsConfig.getString("DefaultMidPearlLevel"));
+            this.projectileLevel = ProjectileLevel.valueOf(Main.skyWarsConfig.getString("DefaultMidProjectileLevel"));
+            this.armorLevel = ArmorLevel.valueOf(Main.skyWarsConfig.getString("DefaultMidArmorLevel"));
+            this.miscLevel = MiscLevel.valueOf(Main.skyWarsConfig.getString("DefaultMidMiscLevel"));
+            this.multiplier = Main.skyWarsConfig.getInt("DefaultMidMultiplier");
+        }
+    }
+
     public SwordLevel getSwordLevel() {
         return swordLevel;
     }

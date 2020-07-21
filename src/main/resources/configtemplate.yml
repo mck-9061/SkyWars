@@ -18,18 +18,23 @@ MaximumPlayers: 12
 DefaultIslandMultiplier: 1
 
 # The default levels of each type of loot found on starting islands.
-# Set to 0 to disable that type of loot.
+# Set to NO_{TYPE} to disable that type of loot.
+# There are only 4 levels of loot, don't try to add more.
 DefaultIslandSwordLevel: 1
-DefaultIslandBowLevel: 1
+DefaultIslandBowLevel: 2
 DefaultIslandPearlLevel: 1
-DefaultIslandProjectileLevel: 1
+DefaultIslandProjectileLevel: NO_PROJECTILES
+DefaultIslandArmorLevel: 1
+DefaultIslandMiscLevel: 1
 
 DefaultMidMultiplier: 1
 # The default levels of each type of loot found on mid islands.
 DefaultMidSwordLevel: 3
-DefaultMidBowLevel: 3
-DefaultMidPearlLevel: 3
-DefaultMidProjectileLevel: 3
+DefaultMidBowLevel: 4
+DefaultMidPearlLevel: 4
+DefaultMidProjectileLevel: 2
+DefaultMidArmorLevel: NO_ARMOR
+DefaultMidMiscLevel: 1
 
 # Each type of loot has 4 levels.
 # In custom games, the host can choose which loot levels of each type of loot they want.

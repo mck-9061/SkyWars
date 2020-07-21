@@ -57,6 +57,12 @@ public class Main extends JavaPlugin {
                         System.out.println("Map "+key+" couldn't be loaded. Does it exist?");
                     }
                 }
+
+                for (SkyWarsMap map : maps) {
+                    Game game = new Game();
+                    game.setMap(map);
+                    waitingGames.add(game);
+                }
             }
         }.runTaskLater(this, 1);
 
@@ -88,6 +94,8 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new TeammateDamageListener(), this);
         getServer().getPluginManager().registerEvents(new TeleportCanceller(), this);
 
+        getServer().getPluginManager().registerEvents(new NPCClickListener(), this);
+
 
         // Begin task to update games
         new BukkitRunnable() {
@@ -105,7 +113,7 @@ public class Main extends JavaPlugin {
 
                 waitingGames.removeAll(toRemove);
             }
-        }.runTaskTimer(this, 0L, 20L);
+        }.runTaskTimer(this, 0L, 60L);
     }
 
     @Override

@@ -3,6 +3,7 @@ package me.therealmck.skywars.data;
 import me.therealmck.skywars.Main;
 import me.therealmck.skywars.data.players.GamePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,11 +12,25 @@ public class Queue {
     private List<Player> regularQueue;
     private List<Player> fastPassQueue;
     private List<Game> customGameQueue;
+    private BukkitRunnable reminder;
 
     public Queue() {
         this.regularQueue = new ArrayList<>();
         this.fastPassQueue = new ArrayList<>();
         this.customGameQueue = new ArrayList<>();
+
+        reminder = new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (Player p : regularQueue) p.sendMessage("Postion "+regularQueue.indexOf(p)+" in the queue.");
+                for (Player p : fastPassQueue) p.sendMessage("Postion "+fastPassQueue.indexOf(p)+" in the Fast Pass queue.");
+                for (Game game : customGameQueue) {
+                    for (GamePlayer gp : game.getPlayers()) gp.getBukkitPlayer().sendMessage("Postion "+customGameQueue.indexOf(game)+" in the Custom Game queue.");
+                }
+            }
+        };
+
+        reminder.runTaskTimer(Main.instance, 0, 200);
     }
 
     public List<Player> getRegularQueue() {
@@ -65,6 +80,11 @@ public class Queue {
                 if (game.getPlayers().size() < maxPlayers) {
                     game.addPlayer(new GamePlayer(p));
                     fastPassQueue.remove(p);
+
+                    for (GamePlayer gp : game.getPlayers()) gp.getBukkitPlayer().sendMessage(p.getDisplayName()
+                            + " joined the game! (" + game.getPlayers().size() + "/" + Main.skyWarsConfig.getInt("MaximumPlayers") + ")");
+
+
                 }
             }
 
@@ -72,6 +92,11 @@ public class Queue {
                 if (game.getPlayers().size() < maxPlayers) {
                     game.addPlayer(new GamePlayer(p));
                     regularQueue.remove(p);
+
+                    for (GamePlayer gp : game.getPlayers()) gp.getBukkitPlayer().sendMessage(p.getDisplayName()
+                            + " joined the game! (" + game.getPlayers().size() + "/" + Main.skyWarsConfig.getInt("MaximumPlayers") + ")");
+
+
                 }
             }
 

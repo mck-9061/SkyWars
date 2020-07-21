@@ -46,24 +46,27 @@ public class MainCustomGameGuiListener implements Listener {
                     event.getWhoClicked().openInventory((new EventChooserGui((Player) event.getWhoClicked(), Main.activeCustomGames.get(event.getWhoClicked()))).getBukkitInventory());
                     break;
                 case 18:
-                    List<SkyWarsMap> maps = new ArrayList<>();
+                    List<Game> games = new ArrayList<>();
                     Game activeGame = Main.activeCustomGames.get(event.getWhoClicked());
 
-                    for (SkyWarsMap skyWarsMap : Main.maps) {
-                        if (skyWarsMap.getBukkitWorld().getPlayers().isEmpty()) maps.add(skyWarsMap);
+                    for (Game game : Main.waitingGames) {
+                        if (game.getPlayers().isEmpty()) games.add(game);
                     }
 
 
-                    if (maps.isEmpty()) {
+                    if (games.isEmpty()) {
                         for (GamePlayer p : activeGame.getPlayers()) {
                             p.getBukkitPlayer().sendMessage("There are no maps currently available and your game has been placed into a queue.");
                         }
                         Main.queue.addGame(activeGame);
                     } else {
                         Random r = new Random();
-                        SkyWarsMap map = maps.get(r.nextInt(maps.size()));
+                        Game game = games.get(r.nextInt(games.size()));
 
-                        activeGame.setMap(map);
+                        Main.waitingGames.remove(game);
+                        Main.runningGames.add(game);
+
+                        activeGame.setMap(game.getMap());
                         activeGame.fillChests();
                         activeGame.beginGame();
                     }

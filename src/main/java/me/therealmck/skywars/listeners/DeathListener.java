@@ -2,6 +2,7 @@ package me.therealmck.skywars.listeners;
 
 import me.therealmck.skywars.Main;
 import me.therealmck.skywars.data.Game;
+import me.therealmck.skywars.data.SkyWarsSettings;
 import me.therealmck.skywars.data.Team;
 import me.therealmck.skywars.data.players.GamePlayer;
 import org.bukkit.GameMode;
@@ -85,6 +86,7 @@ public class DeathListener implements Listener {
                 }.runTaskLater(Main.instance, 120);
                 game.wipePlayersWithDelay(120);
                 game.restoreBackup();
+                game.setSettings(new SkyWarsSettings());
                 Main.runningGames.remove(game);
                 Main.waitingGames.add(game);
                 Main.queue.processQueue(game);
