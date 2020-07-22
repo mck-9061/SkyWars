@@ -25,6 +25,14 @@ public class DisconnectListener implements Listener {
         GamePlayer gp = null;
         Game g = null;
 
+        for (Game game : Main.waitingGames) {
+            for (GamePlayer player : game.getPlayers()) {
+                if (player.getBukkitPlayer().getUniqueId().equals(event.getPlayer().getUniqueId())) {
+                    game.removePlayer(player);
+                }
+            }
+        }
+
         for (Game game : Main.runningGames) {
             for (GamePlayer player : game.getPlayers()) {
                 if (player.getBukkitPlayer().getUniqueId().equals(event.getPlayer().getUniqueId())) {
@@ -46,7 +54,8 @@ public class DisconnectListener implements Listener {
             // Check if a team has won
             List<Team> aliveTeams = new ArrayList<>();
             for (Team team : g.getTeams()) {
-                if (!team.getPlayer1().isDead() || !team.getPlayer2().isDead()) aliveTeams.add(team);
+                if ((!team.getPlayer1().isDead() && g.getPlayers().contains(team.getPlayer1()))
+                        || (!team.getPlayer2().isDead() && g.getPlayers().contains(team.getPlayer2()))) aliveTeams.add(team);
             }
 
             if (aliveTeams.size() == 1) {

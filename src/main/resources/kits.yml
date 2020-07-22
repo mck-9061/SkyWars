@@ -1,0 +1,14 @@
+default:
+  permission: 'skywars.kit.default'
+  icon:
+    ==: org.bukkit.inventory.ItemStack
+    type: IRON_SWORD
+  items:
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_SWORD
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_BOOTS
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_CHESTPLATE
+    - ==: org.bukkit.inventory.ItemStack
+      type: IRON_LEGGINGS

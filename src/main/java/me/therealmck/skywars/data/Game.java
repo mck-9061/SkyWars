@@ -27,6 +27,7 @@ public class Game {
     private boolean isCustom = false;
     private HashMap<Player, Integer> teammatePrefs = new HashMap<>();
     private TeamPickerGui teamPickerGui;
+    private HashMap<Player, Kit> kits = new HashMap<>();
 
     public Game() {
         this.players = new ArrayList<>();
@@ -154,9 +155,20 @@ public class Game {
         this.settings = settings;
     }
 
-    public void wipePlayers() { this.players = new ArrayList<>(); }
+    public void wipePlayers() {
+        this.players = new ArrayList<>();
+        kits = new HashMap<>();
+        teammatePrefs = new HashMap<>();
+    }
 
     public boolean warpPlayers() {
+        for (GamePlayer player : players) {
+            Main.preventInventoryCloseList.remove(player.getBukkitPlayer());
+            player.getBukkitPlayer().closeInventory();
+            player.getBukkitPlayer().getInventory().setItem(0, Utils.getItemStackWithNameAndLore(Material.CHEST, "§6Select Kit", new ArrayList<>()));
+            Main.pregame.add(player.getBukkitPlayer());
+        }
+
         List<GamePlayer> random = new ArrayList<>();
         List<GamePlayer> editList = new ArrayList<>(players);
 
@@ -217,7 +229,7 @@ public class Game {
 
                 // construct cage
                 Location cageBaseBlock = spawn.clone();
-                cageBaseBlock.setY(cageBaseBlock.getY() + 10);
+                cageBaseBlock.setY(cageBaseBlock.getY() + 4);
 
                 List<Block> ironBlocks = new ArrayList<>();
                 List<Block> ironBars = new ArrayList<>();
@@ -275,11 +287,18 @@ public class Game {
 
             Bukkit.getScheduler().runTaskLater(Main.instance, () -> {
                 for (Block b : cageBlocks) b.setType(Material.AIR);
+
+                for (GamePlayer player : players) {
+                    player.getBukkitPlayer().getInventory().setItem(0, new ItemStack(Material.AIR));
+                    player.getBukkitPlayer().closeInventory();
+                    Main.pregame.remove(player.getBukkitPlayer());
+                    if (kits.containsKey(player.getBukkitPlayer())) {
+                        for (ItemStack item : kits.get(player.getBukkitPlayer()).getItems()) player.getBukkitPlayer().getInventory().addItem(item.clone());
+                    }
+                }
             }, 300);
             return true;
         }
-
-        // TODO: Kits
     }
 
     public void beginGame() {
@@ -290,10 +309,15 @@ public class Game {
         teammatePrefs = new HashMap<>();
         for (GamePlayer player : players) {
             player.getBukkitPlayer().openInventory(teamPickerGui.getBukkitInventory());
+            Main.preventInventoryCloseList.add(player.getBukkitPlayer());
+            teammatePrefs.put(player.getBukkitPlayer(), 35);
         }
 
         // Give players 15 seconds to pick teammates, then warp them
-        Bukkit.getScheduler().runTaskLater(Main.instance, this::warpPlayers, 300);
+
+        Bukkit.getScheduler().runTaskLater(Main.instance, () -> {
+            warpPlayers();
+        }, 300);
 
         // TODO: Modifiers
     }
@@ -317,6 +341,8 @@ public class Game {
                 players = new ArrayList<>();
             }
         }.runTaskLater(Main.instance, delay);
+        kits = new HashMap<>();
+        teammatePrefs = new HashMap<>();
     }
 
     public boolean isCustom() {
@@ -346,4 +372,6 @@ public class Game {
     public void setTeammatePref(Player player, Integer slot) {
         teammatePrefs.put(player, slot);
     }
+
+    public void setKit(Player player, Kit kit) { kits.put(player, kit); }
 }

@@ -2,6 +2,7 @@ package me.therealmck.skywars;
 
 import me.therealmck.skywars.commands.*;
 import me.therealmck.skywars.data.Game;
+import me.therealmck.skywars.data.Kit;
 import me.therealmck.skywars.data.Queue;
 import me.therealmck.skywars.data.SkyWarsMap;
 import me.therealmck.skywars.guis.listeners.*;
@@ -29,7 +30,9 @@ public class Main extends JavaPlugin {
     public static HashMap<Player, Game> activeCustomGames = new HashMap<>();
     public static List<Game> waitingGames = new ArrayList<>();
     public static List<Game> runningGames = new ArrayList<>();
+    public static List<Kit> kits = new ArrayList<>();
     public static Plugin instance;
+    public static List<Player> pregame = new ArrayList<>();
 
     public static List<Player> preventInventoryCloseList = new ArrayList<>();
 
@@ -44,6 +47,7 @@ public class Main extends JavaPlugin {
                 createMapConfig();
                 createPlayerDataConfig();
                 createSkyWarsConfig();
+                createKitsConfig();
                 saveResource("configtemplate.yml", true);
 
 
@@ -62,6 +66,11 @@ public class Main extends JavaPlugin {
                     Game game = new Game();
                     game.setMap(map);
                     waitingGames.add(game);
+                }
+
+
+                for (String key : kitsConfig.getKeys(false)) {
+                    kits.add(new Kit(key));
                 }
             }
         }.runTaskLater(this, 1);
@@ -195,6 +204,32 @@ public class Main extends JavaPlugin {
     public static void savePlayerDataConfig() {
         try {
             playerDataConfig.save(playerDataFile);
+        } catch (Exception e) {e.printStackTrace();}
+    }
+
+
+
+    public static File kitsFile;
+    public static FileConfiguration kitsConfig;
+
+    private void createKitsConfig() {
+        kitsFile = new File(getDataFolder(), "kits.yml");
+        if (!kitsFile.exists()) {
+            kitsFile.getParentFile().mkdirs();
+            saveResource("kits.yml", false);
+        }
+
+        kitsConfig = new YamlConfiguration();
+        try {
+            kitsConfig.load(kitsFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void saveKitsConfig() {
+        try {
+            kitsConfig.save(kitsFile);
         } catch (Exception e) {e.printStackTrace();}
     }
 }
