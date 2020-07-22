@@ -5,6 +5,7 @@ import me.therealmck.skywars.data.Game;
 import me.therealmck.skywars.data.Kit;
 import me.therealmck.skywars.data.Queue;
 import me.therealmck.skywars.data.SkyWarsMap;
+import me.therealmck.skywars.guis.KitGui;
 import me.therealmck.skywars.guis.listeners.*;
 import me.therealmck.skywars.listeners.*;
 import me.therealmck.skywars.placeholderapi.SkyWarsPlaceholderExpansion;
@@ -104,6 +105,7 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new TeleportCanceller(), this);
 
         getServer().getPluginManager().registerEvents(new NPCClickListener(), this);
+        getServer().getPluginManager().registerEvents(new KitGuiOpenListener(), this);
 
 
         // Begin task to update games

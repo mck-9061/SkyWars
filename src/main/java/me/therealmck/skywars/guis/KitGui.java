@@ -8,26 +8,31 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 
 import java.util.HashMap;
 
 public class KitGui implements Listener {
-    private Inventory bukkitInventory;
-    private HashMap<Integer, Kit> slots = new HashMap<>();
+    public static Inventory bukkitInventory;
+    public static HashMap<Integer, Kit> slots = new HashMap<>();
     private Game game;
+    private Player player;
 
     public KitGui(Player player, Game game) {
-        this.bukkitInventory = Bukkit.createInventory(player, 54, "§6Select Kit");
         this.game = game;
+        this.player = player;
+    }
+
+    public static void init() {
+        bukkitInventory = Bukkit.createInventory(null, 54, "§6Select Kit");
+
         int count = 0;
 
         for (Kit kit : Main.kits) {
-            if (player.hasPermission(kit.getPermission())) {
-                bukkitInventory.setItem(count, kit.getIcon());
-                slots.put(count, kit);
-                count++;
-            }
+            bukkitInventory.setItem(count, kit.getIcon());
+            slots.put(count, kit);
+            count++;
         }
     }
 
@@ -40,19 +45,7 @@ public class KitGui implements Listener {
     }
 
 
-    @EventHandler
-    public void onInventoryClick(InventoryClickEvent event) {
-        if (event.getClickedInventory() == null) return;
-        
-        if (!Main.pregame.contains(event.getWhoClicked())) return;
-        if (!event.getView().getTitle().equals("§6Select Kit")) return;
 
-        event.setCancelled(true);
 
-        int slot = event.getSlot();
 
-        if (slots.containsKey(slot)) {
-
-        }
-    }
 }
