@@ -2,6 +2,7 @@ package me.therealmck.skywars.guis.listeners;
 
 import me.therealmck.skywars.Main;
 import me.therealmck.skywars.data.Game;
+import me.therealmck.skywars.data.Kit;
 import me.therealmck.skywars.data.players.GamePlayer;
 import me.therealmck.skywars.guis.KitGui;
 import org.bukkit.Material;
@@ -57,8 +58,12 @@ public class KitGuiOpenListener implements Listener {
 
         int slot = event.getSlot();
 
-        if (KitGui.slots.containsKey(slot)) {
-            game.setKit((Player) event.getWhoClicked(), KitGui.slots.get(slot));
+        if (Main.kits.size() <= slot+1) {
+            Kit kit = new Kit(Main.kits.get(slot));
+            if (event.getWhoClicked().hasPermission(kit.getPermission())) {
+                game.setKit((Player) event.getWhoClicked(), kit);
+                event.getWhoClicked().sendMessage("Kit selected!");
+            }
         }
     }
 }

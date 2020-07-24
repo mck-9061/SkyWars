@@ -25,10 +25,15 @@ public class DisconnectListener implements Listener {
         GamePlayer gp = null;
         Game g = null;
 
+        GamePlayer toRemove = null;
+        Game toRemoveGame = null;
+
         for (Game game : Main.waitingGames) {
             for (GamePlayer player : game.getPlayers()) {
                 if (player.getBukkitPlayer().getUniqueId().equals(event.getPlayer().getUniqueId())) {
-                    game.removePlayer(player);
+                    toRemove = player;
+                    toRemoveGame = game;
+                    break;
                 }
             }
         }
@@ -89,12 +94,11 @@ public class DisconnectListener implements Listener {
                     }
                 }.runTaskLater(Main.instance, 120);
                 g.wipePlayersWithDelay(120);
-                g.restoreBackup();
-                g.setSettings(new SkyWarsSettings());
-                Main.runningGames.remove(g);
-                Main.waitingGames.add(g);
-                Main.queue.processQueue(g);
             }
+        }
+
+        if (toRemove != null) {
+            toRemoveGame.removePlayer(toRemove);
         }
     }
 }

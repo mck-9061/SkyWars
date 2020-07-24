@@ -21,13 +21,15 @@ public class TeammateDamageListener implements Listener {
         List<Player> players = new ArrayList<>();
 
         for (Game g : Main.runningGames) {
-            for (GamePlayer gp : game.getPlayers()) players.add(gp.getBukkitPlayer());
+            for (GamePlayer gp : g.getPlayers()) players.add(gp.getBukkitPlayer());
             if (players.contains((Player) event.getDamager()) && players.contains((Player) event.getEntity())) {
                 game = g;
                 break;
             }
             else players.clear();
         }
+
+        if (game == null) return;
 
         Team team = null;
         for (Team t : game.getTeams()) {

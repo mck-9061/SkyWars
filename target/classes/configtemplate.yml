@@ -1,29 +1,40 @@
 # EDITING VALUES HERE WILL NOT CHANGE THE CONFIG.
 # EDIT CONFIG.YML INSTEAD.
 
+# Set where the game will kick players out to and also where to go to when running /skywars lobby.
+# Set this position with /setlobby in your SkyWars lobby.
+LobbyLocation:
+
 # The amount of players required in a game before it will start.
 MinimumPlayers: 12
 # The maximum amount of players allowed in a game.
 # There MUST be as many spawn points on a map as half this amount.
-MaximumPlayers: 24
+# Due to how matchmaking works it's recommended to make sure this is the same as the minimum.
+# It must also be an even number.
+MaximumPlayers: 12
 
 
 # The multiplier. Higher multiplier = more loot.
 DefaultIslandMultiplier: 1
 
 # The default levels of each type of loot found on starting islands.
-# Set to 0 to disable that type of loot.
-DefaultIslandSwordLevel: 1
-DefaultIslandBowLevel: 1
-DefaultIslandPearlLevel: 1
-DefaultIslandProjectileLevel: 1
+# Set to NO_{TYPE} to disable that type of loot.
+# There are only 4 levels of loot, don't try to add more.
+DefaultIslandSwordLevel: LEVEL_1
+DefaultIslandBowLevel: LEVEL_2
+DefaultIslandPearlLevel: LEVEL_1
+DefaultIslandProjectileLevel: NO_PROJECTILES
+DefaultIslandArmorLevel: LEVEL_1
+DefaultIslandMiscLevel: LEVEL_1
 
 DefaultMidMultiplier: 1
 # The default levels of each type of loot found on mid islands.
-DefaultMidSwordLevel: 3
-DefaultMidBowLevel: 3
-DefaultMidPearlLevel: 3
-DefaultMidProjectileLevel: 3
+DefaultMidSwordLevel: LEVEL_3
+DefaultMidBowLevel: LEVEL_4
+DefaultMidPearlLevel: LEVEL_4
+DefaultMidProjectileLevel: LEVEL_2
+DefaultMidArmorLevel: NO_ARMOR
+DefaultMidMiscLevel: LEVEL_1
 
 # Each type of loot has 4 levels.
 # In custom games, the host can choose which loot levels of each type of loot they want.

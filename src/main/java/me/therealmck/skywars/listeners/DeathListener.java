@@ -85,11 +85,6 @@ public class DeathListener implements Listener {
                     }
                 }.runTaskLater(Main.instance, 120);
                 game.wipePlayersWithDelay(120);
-                game.restoreBackup();
-                game.setSettings(new SkyWarsSettings());
-                Main.runningGames.remove(game);
-                Main.waitingGames.add(game);
-                Main.queue.processQueue(game);
             }
         }
     }

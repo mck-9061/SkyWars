@@ -13,39 +13,26 @@ import org.bukkit.inventory.Inventory;
 
 import java.util.HashMap;
 
-public class KitGui implements Listener {
-    public static Inventory bukkitInventory;
-    public static HashMap<Integer, Kit> slots = new HashMap<>();
+public class KitGui {
+    private Inventory bukkitInventory;
     private Game game;
     private Player player;
 
     public KitGui(Player player, Game game) {
         this.game = game;
         this.player = player;
-    }
 
-    public static void init() {
         bukkitInventory = Bukkit.createInventory(null, 54, "§6Select Kit");
 
         int count = 0;
 
         for (Kit kit : Main.kits) {
-            bukkitInventory.setItem(count, kit.getIcon());
-            slots.put(count, kit);
-            count++;
+            bukkitInventory.setItem(count, kit.getIcon(player));
         }
     }
 
     public Inventory getBukkitInventory() {
+
         return bukkitInventory;
     }
-
-    public HashMap<Integer, Kit> getSlots() {
-        return slots;
-    }
-
-
-
-
-
 }

@@ -8,6 +8,7 @@ import me.therealmck.skywars.utils.Utils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -136,7 +137,9 @@ public class Game {
         Utils.copyFileStructure(backupWorld.getWorldFolder(), new File(Bukkit.getWorldContainer(), worldName));
         new WorldCreator(worldName).createWorld();
 
-        this.map = new SkyWarsMap(Bukkit.getWorld(worldName));
+        ConfigurationSection section = Main.mapConfig.getConfigurationSection(worldName);
+
+        this.map = new SkyWarsMap(Bukkit.getWorld(worldName), section.getList("Spawns"), section.getList("IslandChests"), section.getList("MidChests"));
     }
 
     public List<GamePlayer> getPlayers() {
@@ -162,6 +165,7 @@ public class Game {
     }
 
     public boolean warpPlayers() {
+        System.out.println("warp players called");
         for (GamePlayer player : players) {
             Main.preventInventoryCloseList.remove(player.getBukkitPlayer());
             player.getBukkitPlayer().closeInventory();
@@ -170,37 +174,46 @@ public class Game {
         }
 
         List<GamePlayer> random = new ArrayList<>();
+        List<GamePlayer> chosen = new ArrayList<>();
         List<GamePlayer> editList = new ArrayList<>(players);
 
         for (GamePlayer player : players) {
             if (!editList.contains(player)) continue;
 
             int slot = teammatePrefs.get(player.getBukkitPlayer());
-            if (slot > 26) random.add(player);
+            if (teamPickerGui.getBukkitInventory().getItem(slot).getType().equals(Material.RED_STAINED_GLASS_PANE)) random.add(player);
+            if (teamPickerGui.getBukkitInventory().getItem(slot).getType().equals(Material.BARRIER)) random.add(player);
             else {
-                Player preffered = (Player) Utils.getPlayerFromSkull(teamPickerGui.getBukkitInventory().getItem(slot));
-                GamePlayer gp = null;
-                for (GamePlayer g : players) if (g.getBukkitPlayer().equals(preffered)) gp = g;
-
-                if (Utils.getPlayerFromSkull(teamPickerGui.getBukkitInventory().getItem(teammatePrefs.get(preffered))).equals(player.getBukkitPlayer()) || random.contains(gp)) {
-                    editList.remove(player);
-                    editList.remove(gp);
-                    random.remove(gp);
-
-                    Team team = new Team();
-                    team.setPlayer1(player);
-                    team.setPlayer2(gp);
-                    teams.add(team);
-                } else random.add(player);
+                chosen.add(player);
             }
+        }
+
+        for (GamePlayer player : chosen) {
+            int slot = teammatePrefs.get(player.getBukkitPlayer());
+
+            Player preffered = Bukkit.getPlayer(Utils.getPlayerFromSkull(teamPickerGui.getBukkitInventory().getItem(slot)).getName());
+            GamePlayer gp = null;
+            for (GamePlayer g : players) if (g.getBukkitPlayer().equals(preffered)) gp = g;
+
+            if (random.contains(gp) || Utils.getPlayerFromSkull(teamPickerGui.getBukkitInventory().getItem(teammatePrefs.get(preffered))).equals(player.getBukkitPlayer())) {
+                editList.remove(player);
+                editList.remove(gp);
+                random.remove(gp);
+
+                Team team = new Team();
+                team.setPlayer1(player);
+                team.setPlayer2(gp);
+                teams.add(team);
+            } else random.add(player);
         }
 
         List<GamePlayer> available = new ArrayList<>(random);
         for (GamePlayer player : random) {
-            Random r = new Random();
+            if (!available.contains(player)) continue;
+
             available.remove(player);
             GamePlayer teammate = null;
-            if (!(available.size() == 0)) teammate = available.get(r.nextInt(available.size()));
+            if (!(available.size() == 0)) teammate = available.get(0);
 
             available.remove(teammate);
             Team team = new Team();
@@ -210,12 +223,16 @@ public class Game {
             teams.add(team);
         }
 
+        System.out.print("teams found");
+
         List<Block> cageBlocks = new ArrayList<>();
 
 
 
         // Warp players to starting points.
-        if (map.getSpawns().size() < players.size()/2) return false;
+        System.out.println(map.getSpawns().size());
+        System.out.println(players.size());
+        if (map.getSpawns().size() <= players.size()/2) return false;
         else {
             List<Location> editableSpawnList = map.getSpawns();
 
@@ -275,8 +292,14 @@ public class Game {
                 for (Block b : ironBlocks) b.setType(Material.IRON_BLOCK);
                 for (Block b : ironBars) b.setType(Material.IRON_BARS);
 
+                System.out.println("cages made");
+
+                spawn.setY(spawn.getY()+5);
+
                 p1.getBukkitPlayer().teleport(spawn);
                 p2.getBukkitPlayer().teleport(spawn);
+
+                System.out.println("players teleported");
             }
 
             Bukkit.getScheduler().runTaskLater(Main.instance, () -> { for (GamePlayer player : players) player.getBukkitPlayer().sendTitle("5", "", 0, 20, 0); }, 200);
@@ -316,6 +339,10 @@ public class Game {
         // Give players 15 seconds to pick teammates, then warp them
 
         Bukkit.getScheduler().runTaskLater(Main.instance, () -> {
+            for (GamePlayer player : players) {
+                Main.preventInventoryCloseList.remove(player.getBukkitPlayer());
+                player.getBukkitPlayer().closeInventory();
+            }
             warpPlayers();
         }, 300);
 
@@ -335,14 +362,20 @@ public class Game {
     }
 
     public void wipePlayersWithDelay(int delay) {
+        Game game = this;
         new BukkitRunnable() {
             @Override
             public void run() {
                 players = new ArrayList<>();
+                kits = new HashMap<>();
+                teammatePrefs = new HashMap<>();
+                restoreBackup();
+                setSettings(new SkyWarsSettings());
+                Main.runningGames.remove(game);
+                Main.waitingGames.add(game);
+                Main.queue.processQueue(game);
             }
         }.runTaskLater(Main.instance, delay);
-        kits = new HashMap<>();
-        teammatePrefs = new HashMap<>();
     }
 
     public boolean isCustom() {

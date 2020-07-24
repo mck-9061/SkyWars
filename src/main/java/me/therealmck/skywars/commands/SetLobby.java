@@ -12,6 +12,7 @@ public class SetLobby implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         if (commandSender instanceof Player && commandSender.hasPermission("skywars.admin.setlobby")) {
             Main.skyWarsConfig.set("LobbyLocation", ((Player) commandSender).getLocation());
+            Main.saveSkyWarConfig();
             commandSender.sendMessage("Success!");
         } else {
             commandSender.sendMessage("Something went wrong. You may not be a player, or you may not have permission.");

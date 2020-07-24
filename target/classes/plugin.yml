@@ -3,6 +3,8 @@ version: 1.0
 author: MCK
 api-version: 1.13
 main: me.therealmck.skywars.Main
+depend:
+  - Citizens
 softdepend:
   - PlaceholderAPI
   - MultiverseCore
@@ -26,3 +28,7 @@ commands:
   skywars:
     description: Main SkyWars command.
     usage: /skywars [create/join/help]
+  setlobby:
+    description: Set the SkyWars lobby location.
+    usage: /setlobby
+    permission: skywars.admin.setlobby

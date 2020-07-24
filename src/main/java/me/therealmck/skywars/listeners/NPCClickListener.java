@@ -18,6 +18,16 @@ public class NPCClickListener implements Listener {
                 if (game.getPlayers().size() < Main.skyWarsConfig.getInt("MaximumPlayers")) {
                     toJoin = game;
                 }
+
+                for (GamePlayer p : game.getPlayers()) {
+                    if (p.getBukkitPlayer().equals(event.getClicker())) return;
+                }
+            }
+
+            for (Game game : Main.runningGames) {
+                for (GamePlayer p : game.getPlayers()) {
+                    if (p.getBukkitPlayer().equals(event.getClicker())) return;
+                }
             }
 
             if (toJoin != null) {

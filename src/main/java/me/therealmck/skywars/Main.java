@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Main extends JavaPlugin {
-    public static Queue queue = new Queue();
+    public static Queue queue;
     public static List<SkyWarsMap> maps = new ArrayList<>();
     public static HashMap<Player, Game> activeCustomGames = new HashMap<>();
     public static List<Game> waitingGames = new ArrayList<>();
@@ -40,6 +40,7 @@ public class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+        queue = new Queue();
         // Get all maps from config
         new BukkitRunnable() {
             @Override
@@ -88,6 +89,7 @@ public class Main extends JavaPlugin {
         getCommand("addmidchest").setExecutor(new AddMidChest());
         getCommand("addspawnpoint").setExecutor(new AddSpawnPoint());
         getCommand("addworld").setExecutor(new AddWorld());
+        getCommand("setlobby").setExecutor(new SetLobby());
 
         // Event listeners
         getServer().getPluginManager().registerEvents(new EventChooserGuiListener(), this);
@@ -106,6 +108,7 @@ public class Main extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new NPCClickListener(), this);
         getServer().getPluginManager().registerEvents(new KitGuiOpenListener(), this);
+        getServer().getPluginManager().registerEvents(new TeamPickerGuiListener(), this);
 
 
         // Begin task to update games

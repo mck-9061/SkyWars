@@ -2,15 +2,22 @@ package me.therealmck.skywars.commands;
 
 import me.therealmck.skywars.Main;
 import me.therealmck.skywars.data.Game;
+import me.therealmck.skywars.data.Kit;
 import me.therealmck.skywars.data.players.GamePlayer;
 import me.therealmck.skywars.guis.customgame.MainCustomGameGui;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SkyWarsCommand implements CommandExecutor {
     @Override
@@ -24,8 +31,11 @@ public class SkyWarsCommand implements CommandExecutor {
                 commandSender.sendMessage("§6/skywars help§b: Display this help menu");
                 commandSender.sendMessage("§6/skywars create§b: Create a custom game of SkyWars");
                 commandSender.sendMessage("§6/skywars join [IGN of host]§b: Join the specified host's game of SkyWars");
-                commandSender.sendMessage("§6/skywars kit§b: Pick the kit you use for SkyWars games");
                 commandSender.sendMessage("§6/skywars lobby§b: Teleport to the SkyWars lobby");
+
+                if (commandSender.hasPermission("skywars.admin")) {
+                    commandSender.sendMessage("§6/skywars kit [name] [permission]§b: Create a SkyWars kit out of your inventory. Hold the item for the icon in your main hand.");
+                }
 
                 break;
             case "create":
@@ -46,6 +56,40 @@ public class SkyWarsCommand implements CommandExecutor {
 
                 break;
             case "kit":
+                if (commandSender.hasPermission("skywars.admin") && commandSender instanceof Player) {
+                    List<ItemStack> items = new ArrayList<>();
+
+                    for (ItemStack item : ((Player) commandSender).getInventory()) items.add(item.clone());
+
+                    try {
+                        for (Kit kit : Main.kits) {
+                            if (kit.getName().equals(args[0])) {
+                                commandSender.sendMessage("A kit with that name already exists.");
+                                return true;
+                            }
+                        }
+
+                        if (args[1] == null) {
+                            commandSender.sendMessage("Invalid syntax!");
+                            return false;
+                        }
+                        ConfigurationSection section = Main.kitsConfig.createSection(args[0]);
+                        section.set("permission", args[1]);
+                        section.set("icon", ((Player) commandSender).getInventory().getItemInMainHand().clone());
+                        section.set("items", items);
+
+                        Main.saveKitsConfig();
+
+                        Main.kits.add(new Kit(args[0]));
+                        commandSender.sendMessage("Added kit successfully.");
+                    } catch (Exception e) {
+                        commandSender.sendMessage("Invalid syntax!");
+                        return false;
+                    }
+                } else {
+                    commandSender.sendMessage("Something went wrong. You may not have permission or you may not be a player.");
+                }
+
                 break;
             case "lobby":
                 if (commandSender instanceof Player) {

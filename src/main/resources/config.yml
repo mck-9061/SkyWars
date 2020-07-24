@@ -7,20 +7,20 @@ MinimumPlayers: 12
 MaximumPlayers: 12
 
 DefaultIslandMultiplier: 1
-DefaultIslandSwordLevel: 1
-DefaultIslandBowLevel: 1
-DefaultIslandPearlLevel: 1
-DefaultIslandProjectileLevel: 1
-DefaultIslandArmorLevel: 1
-DefaultIslandMiscLevel: 1
+DefaultIslandSwordLevel: LEVEL_1
+DefaultIslandBowLevel: LEVEL_1
+DefaultIslandPearlLevel: LEVEL_1
+DefaultIslandProjectileLevel: LEVEL_1
+DefaultIslandArmorLevel: LEVEL_1
+DefaultIslandMiscLevel: LEVEL_1
 
 DefaultMidMultiplier: 1
-DefaultMidSwordLevel: 3
-DefaultMidBowLevel: 3
-DefaultMidPearlLevel: 3
-DefaultMidProjectileLevel: 3
-DefaultMidArmorLevel: 1
-DefaultMidMiscLevel: 1
+DefaultMidSwordLevel: LEVEL_3
+DefaultMidBowLevel: LEVEL_3
+DefaultMidPearlLevel: LEVEL_3
+DefaultMidProjectileLevel: LEVEL_3
+DefaultMidArmorLevel: LEVEL_3
+DefaultMidMiscLevel: LEVEL_3
 
 SwordLevels:
   1:
