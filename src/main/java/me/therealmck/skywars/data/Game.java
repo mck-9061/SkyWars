@@ -9,10 +9,16 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.FallingBlock;
+import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -29,6 +35,7 @@ public class Game {
     private HashMap<Player, Integer> teammatePrefs = new HashMap<>();
     private TeamPickerGui teamPickerGui;
     private HashMap<Player, Kit> kits = new HashMap<>();
+    private List<BukkitRunnable> tasks = new ArrayList<>();
 
     public Game() {
         this.players = new ArrayList<>();
@@ -320,6 +327,91 @@ public class Game {
                     }
                 }
             }, 300);
+
+            // Modifiers
+            for (GamePlayer player : players) {
+                player.getBukkitPlayer().setMaxHealth(settings.getMaxHealth());
+                player.getBukkitPlayer().setWalkSpeed((float) (0.2*settings.getSpeedMultiplier()));
+                if (settings.getJumpMultiplier() > 1) {
+                    player.getBukkitPlayer().addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 9999, settings.getJumpMultiplier()-1));
+                }
+            }
+
+            Random r = new Random();
+            // Schedule random events
+            if (settings.isZombieHordeEvent()) {
+                BukkitRunnable task = new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        for (GamePlayer player : players) player.getBukkitPlayer().sendMessage("Zombie horde event!");
+                        Random r = new Random();
+                        for (int i = 0; i < 20; i++) {
+                            Location spawn = map.getMidChests().get(r.nextInt(map.getMidChests().size()));
+                            spawn.setY(spawn.getY()+1);
+                            map.getBukkitWorld().spawnEntity(spawn, EntityType.ZOMBIE);
+                        }
+                    }
+                };
+                task.runTaskLater(Main.instance, r.nextInt(6700)+300);
+                tasks.add(task);
+            }
+
+            if (settings.isAnvilRainEvent()) {
+                BukkitRunnable task = new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        for (GamePlayer player : players) player.getBukkitPlayer().sendMessage("Anvil rain event!");
+                        Random r = new Random();
+                        for (int i = 0; i < 20; i++) {
+                            new BukkitRunnable() {
+                                @Override
+                                public void run() {
+                                    Location spawn = players.get(r.nextInt(players.size())).getBukkitPlayer().getLocation();
+                                    spawn.setY(spawn.getY()+8);
+                                    spawn.setX(spawn.getX()+(r.nextInt(10)-5));
+                                    spawn.setZ(spawn.getZ()+(r.nextInt(10)-5));
+                                    map.getBukkitWorld().spawnFallingBlock(spawn, Material.ANVIL, (byte) 0);
+                                }
+                            }.runTaskLater(Main.instance, i*5);
+                        }
+                    }
+                };
+                task.runTaskLater(Main.instance, r.nextInt(6700)+300);
+                tasks.add(task);
+            }
+
+            if (settings.isHorseMountEvent()) {
+                BukkitRunnable task = new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        for (GamePlayer player : players) {
+                            player.getBukkitPlayer().sendMessage("Horse mount event!");
+
+                            Horse horse = (Horse) map.getBukkitWorld().spawnEntity(player.getBukkitPlayer().getLocation(), EntityType.HORSE);
+                            horse.getInventory().setSaddle(new ItemStack(Material.SADDLE));
+
+                            horse.addPassenger(player.getBukkitPlayer());
+                        }
+                    }
+                };
+                task.runTaskLater(Main.instance, r.nextInt(6700)+300);
+                tasks.add(task);
+            }
+
+            if (settings.isBlockDecayEvent()) {
+                BukkitRunnable task = new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        for (GamePlayer player : players) {
+                            player.getBukkitPlayer().sendMessage("Block decay event!");
+
+                            // TODO: This
+                        }
+                    }
+                };
+                task.runTaskLater(Main.instance, r.nextInt(6700)+300);
+                tasks.add(task);
+            }
             return true;
         }
     }
@@ -345,8 +437,6 @@ public class Game {
             }
             warpPlayers();
         }, 300);
-
-        // TODO: Modifiers
     }
 
     public void setPlayers(List<GamePlayer> players) {
@@ -366,9 +456,11 @@ public class Game {
         new BukkitRunnable() {
             @Override
             public void run() {
+                tasks = new ArrayList<>();
                 players = new ArrayList<>();
                 kits = new HashMap<>();
                 teammatePrefs = new HashMap<>();
+                teams = new ArrayList<>();
                 restoreBackup();
                 setSettings(new SkyWarsSettings());
                 Main.runningGames.remove(game);
@@ -376,6 +468,12 @@ public class Game {
                 Main.queue.processQueue(game);
             }
         }.runTaskLater(Main.instance, delay);
+    }
+
+    public void cancelTasks() {
+        for (BukkitRunnable task : tasks) {
+            task.cancel();
+        }
     }
 
     public boolean isCustom() {

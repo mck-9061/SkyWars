@@ -14,6 +14,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -49,6 +51,10 @@ public class DisconnectListener implements Listener {
         }
 
         if (gp != null) {
+            gp.getBukkitPlayer().setMaxHealth(20);
+            gp.getBukkitPlayer().setWalkSpeed((float) (0.2));
+            for (PotionEffect effect : gp.getBukkitPlayer().getActivePotionEffects()) gp.getBukkitPlayer().removePotionEffect(effect.getType());
+
             if (!g.isCustom()) gp.saveStats(false);
             g.removePlayer(gp);
 
@@ -93,7 +99,9 @@ public class DisconnectListener implements Listener {
                         }
                     }
                 }.runTaskLater(Main.instance, 120);
+                g.cancelTasks();
                 g.wipePlayersWithDelay(120);
+
             }
         }
 

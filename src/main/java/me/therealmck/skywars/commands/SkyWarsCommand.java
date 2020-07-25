@@ -5,6 +5,7 @@ import me.therealmck.skywars.data.Game;
 import me.therealmck.skywars.data.Kit;
 import me.therealmck.skywars.data.players.GamePlayer;
 import me.therealmck.skywars.guis.customgame.MainCustomGameGui;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,6 +15,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -52,7 +55,20 @@ public class SkyWarsCommand implements CommandExecutor {
 
                 break;
             case "join":
+                if (!(commandSender instanceof Player)) return false;
+                try {
+                    Player p = Bukkit.getPlayer(args[0]);
+                    Game game = Main.activeCustomGames.get(p);
 
+                    if (game.getPlayers().size() < Main.skyWarsConfig.getInt("MaximumPlayers")) {
+                        game.addPlayer(new GamePlayer((Player) commandSender));
+                        for (GamePlayer gp : game.getPlayers())
+                            gp.getBukkitPlayer().sendMessage(commandSender.getName()
+                                    + " joined the game! (" + game.getPlayers().size() + "/" + Main.skyWarsConfig.getInt("MaximumPlayers") + ")");
+                    } else commandSender.sendMessage("This game is full.");
+                } catch (Exception e) {
+                    commandSender.sendMessage("You didn't specify a player or that player isn't hosting a game.");
+                }
 
                 break;
             case "kit":
@@ -112,6 +128,10 @@ public class SkyWarsCommand implements CommandExecutor {
                     if (shouldTp) {
                         ((Player) commandSender).teleport(lobby);
                         if (leavingGame != null) {
+                            ((Player) commandSender).setMaxHealth(20);
+                            ((Player) commandSender).setWalkSpeed((float) 0.2);
+                            for (PotionEffect effect : ((Player) commandSender).getActivePotionEffects()) ((Player) commandSender).removePotionEffect(effect.getType());
+
                             leavingGame.removePlayer(gp);
                             ((Player) commandSender).setGameMode(GameMode.SURVIVAL);
                         }

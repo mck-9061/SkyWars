@@ -13,6 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -41,6 +42,10 @@ public class DeathListener implements Listener {
             if (!game.isCustom()) killed.saveStats(false);
             killed.setDead(true);
 
+            killed.getBukkitPlayer().setMaxHealth(20);
+            killed.getBukkitPlayer().setWalkSpeed((float) (0.2));
+            for (PotionEffect effect : killed.getBukkitPlayer().getActivePotionEffects()) killed.getBukkitPlayer().removePotionEffect(effect.getType());
+
             event.getEntity().setGameMode(GameMode.SPECTATOR);
             event.getEntity().setHealth(20);
             event.getEntity().sendTitle("§c§lYOU DIED!", "§cRun /skywars lobby to return.", 0, 80, 0);
@@ -61,11 +66,17 @@ public class DeathListener implements Listener {
                 won.getPlayer1().getBukkitPlayer().setHealth(20);
                 won.getPlayer1().getBukkitPlayer().sendTitle("§6§lVICTORY!", "§6Run /skywars lobby to return.", 0, 120, 0);
                 if (!game.isCustom()) won.getPlayer1().saveStats(true);
+                won.getPlayer1().getBukkitPlayer().setMaxHealth(20);
+                won.getPlayer1().getBukkitPlayer().setWalkSpeed((float) (0.2));
+                for (PotionEffect effect : won.getPlayer1().getBukkitPlayer().getActivePotionEffects()) won.getPlayer1().getBukkitPlayer().removePotionEffect(effect.getType());
 
                 won.getPlayer2().getBukkitPlayer().setGameMode(GameMode.SPECTATOR);
                 won.getPlayer2().getBukkitPlayer().setHealth(20);
                 won.getPlayer2().getBukkitPlayer().sendTitle("§6§lVICTORY!", "§6Run /skywars lobby to return.", 0, 120, 0);
                 if (!game.isCustom()) won.getPlayer2().saveStats(true);
+                won.getPlayer2().getBukkitPlayer().setMaxHealth(20);
+                won.getPlayer2().getBukkitPlayer().setWalkSpeed((float) (0.2));
+                for (PotionEffect effect : won.getPlayer2().getBukkitPlayer().getActivePotionEffects()) won.getPlayer2().getBukkitPlayer().removePotionEffect(effect.getType());
 
                 World map = game.getMap().getBukkitWorld();
 
@@ -84,6 +95,7 @@ public class DeathListener implements Listener {
                         }
                     }
                 }.runTaskLater(Main.instance, 120);
+                game.cancelTasks();
                 game.wipePlayersWithDelay(120);
             }
         }
