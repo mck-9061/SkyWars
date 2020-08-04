@@ -76,10 +76,13 @@ public class Queue {
             game.setMap(oldGame.getMap());
             int maxPlayers = Main.skyWarsConfig.getInt("MaximumPlayers");
 
+            List<Player> fastPassRemove = new ArrayList<>();
+            List<Player> regularRemove = new ArrayList<>();
+
             for (Player p : fastPassQueue) {
                 if (game.getPlayers().size() < maxPlayers) {
                     game.addPlayer(new GamePlayer(p));
-                    fastPassQueue.remove(p);
+                    fastPassRemove.add(p);
 
                     for (GamePlayer gp : game.getPlayers()) gp.getBukkitPlayer().sendMessage(p.getDisplayName()
                             + " joined the game! (" + game.getPlayers().size() + "/" + Main.skyWarsConfig.getInt("MaximumPlayers") + ")");
@@ -91,7 +94,7 @@ public class Queue {
             for (Player p : regularQueue) {
                 if (game.getPlayers().size() < maxPlayers) {
                     game.addPlayer(new GamePlayer(p));
-                    regularQueue.remove(p);
+                    regularRemove.add(p);
 
                     for (GamePlayer gp : game.getPlayers()) gp.getBukkitPlayer().sendMessage(p.getDisplayName()
                             + " joined the game! (" + game.getPlayers().size() + "/" + Main.skyWarsConfig.getInt("MaximumPlayers") + ")");
@@ -99,6 +102,9 @@ public class Queue {
 
                 }
             }
+
+            fastPassQueue.removeAll(fastPassRemove);
+            regularQueue.removeAll(regularRemove);
 
             Main.waitingGames.remove(oldGame);
             Main.waitingGames.add(game);

@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class EventChooserGuiListener implements Listener {
     @EventHandler
@@ -21,6 +22,8 @@ public class EventChooserGuiListener implements Listener {
 
             event.setCancelled(true);
 
+            Main.preventInventoryCloseList.remove((Player) event.getWhoClicked());
+
             Game game = Main.activeCustomGames.get(event.getWhoClicked());
             SkyWarsSettings settings = game.getSettings();
 
@@ -30,6 +33,7 @@ public class EventChooserGuiListener implements Listener {
                     game.setSettings(settings);
                     Main.activeCustomGames.remove(event.getWhoClicked());
                     Main.activeCustomGames.put((Player) event.getWhoClicked(), game);
+
 
                     event.getWhoClicked().closeInventory();
                     event.getWhoClicked().openInventory((new EventChooserGui((Player) event.getWhoClicked(), game)).getBukkitInventory());

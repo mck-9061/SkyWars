@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class IslandLootGuiListener implements Listener {
     @EventHandler
@@ -22,6 +23,8 @@ public class IslandLootGuiListener implements Listener {
             if (event.getClickedInventory() == null) return;
 
             event.setCancelled(true);
+
+            Main.preventInventoryCloseList.remove((Player) event.getWhoClicked());
 
             Game game = Main.activeCustomGames.get(event.getWhoClicked());
             SkyWarsSettings settings = game.getSettings();
@@ -89,6 +92,7 @@ public class IslandLootGuiListener implements Listener {
 
                     event.getWhoClicked().closeInventory();
                     event.getWhoClicked().openInventory((new IslandLootGui((Player) event.getWhoClicked(), game)).getBukkitInventory());
+                    Main.preventInventoryCloseList.add((Player) event.getWhoClicked());
 
                     break;
                 case 14:
@@ -110,7 +114,6 @@ public class IslandLootGuiListener implements Listener {
 
                     event.getWhoClicked().closeInventory();
                     event.getWhoClicked().openInventory((new IslandLootGui((Player) event.getWhoClicked(), game)).getBukkitInventory());
-
                     break;
                 case 15:
                     ArmorLevel currentArmorLevel = table.getArmorLevel();
@@ -159,6 +162,7 @@ public class IslandLootGuiListener implements Listener {
                     event.getWhoClicked().openInventory((new MainCustomGameGui((Player) event.getWhoClicked(), game)).getBukkitInventory());
                     break;
             }
+
         }
     }
 }

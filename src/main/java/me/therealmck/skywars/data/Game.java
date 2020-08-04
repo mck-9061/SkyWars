@@ -53,6 +53,7 @@ public class Game {
 
 
         for (Location islandChestLoc : islandChests) {
+            islandChestLoc.setWorld(Bukkit.getWorld(map.getBukkitWorld().getName()));
             Block islandChest = islandChestLoc.getBlock();
             if (islandChest.getType().equals(Material.CHEST)) {
                 Inventory inv = ((Chest) islandChest.getState()).getBlockInventory();
@@ -89,6 +90,7 @@ public class Game {
 
 
         for (Location midChestLoc : midChests) {
+            midChestLoc.setWorld(Bukkit.getWorld(map.getBukkitWorld().getName()));
             Block midChest = midChestLoc.getBlock();
             if (midChest.getType().equals(Material.CHEST)) {
                 Inventory inv = ((Chest) midChest.getState()).getBlockInventory();
@@ -142,11 +144,12 @@ public class Game {
 
         Utils.unloadWorld(worldName);
         Utils.copyFileStructure(backupWorld.getWorldFolder(), new File(Bukkit.getWorldContainer(), worldName));
-        new WorldCreator(worldName).createWorld();
+        World newWorld = new WorldCreator(worldName).createWorld();
 
-        ConfigurationSection section = Main.mapConfig.getConfigurationSection(worldName);
+        // Reload spawn/chest locations with new World object
+        Main.instance.createSkyWarsConfig();
 
-        this.map = new SkyWarsMap(Bukkit.getWorld(worldName), section.getList("Spawns"), section.getList("IslandChests"), section.getList("MidChests"));
+        this.map = new SkyWarsMap(newWorld.getName());
     }
 
     public List<GamePlayer> getPlayers() {
@@ -198,20 +201,22 @@ public class Game {
         for (GamePlayer player : chosen) {
             int slot = teammatePrefs.get(player.getBukkitPlayer());
 
-            Player preffered = Bukkit.getPlayer(Utils.getPlayerFromSkull(teamPickerGui.getBukkitInventory().getItem(slot)).getName());
-            GamePlayer gp = null;
-            for (GamePlayer g : players) if (g.getBukkitPlayer().equals(preffered)) gp = g;
+            try {
+                Player preferred = Bukkit.getPlayer(Utils.getPlayerFromSkull(teamPickerGui.getBukkitInventory().getItem(slot)).getName());
+                GamePlayer gp = null;
+                for (GamePlayer g : players) if (g.getBukkitPlayer().equals(preferred)) gp = g;
 
-            if (random.contains(gp) || Utils.getPlayerFromSkull(teamPickerGui.getBukkitInventory().getItem(teammatePrefs.get(preffered))).equals(player.getBukkitPlayer())) {
-                editList.remove(player);
-                editList.remove(gp);
-                random.remove(gp);
+                if (random.contains(gp) || Utils.getPlayerFromSkull(teamPickerGui.getBukkitInventory().getItem(teammatePrefs.get(preferred))).equals(player.getBukkitPlayer())) {
+                    editList.remove(player);
+                    editList.remove(gp);
+                    random.remove(gp);
 
-                Team team = new Team();
-                team.setPlayer1(player);
-                team.setPlayer2(gp);
-                teams.add(team);
-            } else random.add(player);
+                    Team team = new Team();
+                    team.setPlayer1(player);
+                    team.setPlayer2(gp);
+                    teams.add(team);
+                } else random.add(player);
+            } catch (Exception e) { random.add(player); }
         }
 
         List<GamePlayer> available = new ArrayList<>(random);
@@ -251,6 +256,11 @@ public class Game {
                 Location spawn = editableSpawnList.get(r.nextInt(editableSpawnList.size()));
                 editableSpawnList.remove(spawn);
 
+                System.out.println(map.getBukkitWorld().getName());
+                System.out.println(spawn.getWorld().getName());
+
+                spawn.setWorld(Bukkit.getWorld(map.getBukkitWorld().getName()));
+
                 // construct cage
                 Location cageBaseBlock = spawn.clone();
                 cageBaseBlock.setY(cageBaseBlock.getY() + 4);
@@ -269,18 +279,22 @@ public class Game {
                 ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-1, cageBaseBlock.getBlockY(), cageBaseBlock.getBlockZ()-1).getBlock());
 
                 for (int height = 1; height < 4; height++) {
+                    ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+2, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()-2).getBlock());
                     ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+2, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()-1).getBlock());
                     ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+2, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()).getBlock());
                     ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+2, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()+1).getBlock());
+                    ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+2, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()+2).getBlock());
                     ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-2, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()-1).getBlock());
                     ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-2, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()).getBlock());
                     ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-2, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()+1).getBlock());
+                    ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-2, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()+2).getBlock());
                     ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-1, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()+2).getBlock());
                     ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX(), cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()+2).getBlock());
                     ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+1, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()+2).getBlock());
                     ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-1, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()-2).getBlock());
                     ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX(), cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()-2).getBlock());
                     ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+1, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()-2).getBlock());
+                    ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-2, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()-2).getBlock());
                 }
 
                 ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX(), cageBaseBlock.getBlockY()+3, cageBaseBlock.getBlockZ()).getBlock());
@@ -302,6 +316,12 @@ public class Game {
                 System.out.println("cages made");
 
                 spawn.setY(spawn.getY()+5);
+
+                System.out.println(p1);
+                System.out.println(p2);
+
+                System.out.println(p1.getBukkitPlayer().getName());
+                System.out.println(p2.getBukkitPlayer().getName());
 
                 p1.getBukkitPlayer().teleport(spawn);
                 p2.getBukkitPlayer().teleport(spawn);
@@ -367,9 +387,9 @@ public class Game {
                                 @Override
                                 public void run() {
                                     Location spawn = players.get(r.nextInt(players.size())).getBukkitPlayer().getLocation();
-                                    spawn.setY(spawn.getY()+8);
-                                    spawn.setX(spawn.getX()+(r.nextInt(10)-5));
-                                    spawn.setZ(spawn.getZ()+(r.nextInt(10)-5));
+                                    spawn.setY(spawn.getY()+16);
+                                    spawn.setX(spawn.getX()+(r.nextInt(6)-3));
+                                    spawn.setZ(spawn.getZ()+(r.nextInt(6)-3));
                                     map.getBukkitWorld().spawnFallingBlock(spawn, Material.ANVIL, (byte) 0);
                                 }
                             }.runTaskLater(Main.instance, i*5);

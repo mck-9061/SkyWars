@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,7 @@ public class MainCustomGameGuiListener implements Listener {
             if (event.getClickedInventory() == null) return;
 
             event.setCancelled(true);
+            Main.preventInventoryCloseList.remove(event.getWhoClicked());
 
             switch (event.getSlot()) {
                 case 10:
@@ -53,6 +55,9 @@ public class MainCustomGameGuiListener implements Listener {
                         if (game.getPlayers().isEmpty()) games.add(game);
                     }
 
+                    Main.preventInventoryCloseList.remove(event.getWhoClicked());
+                    event.getWhoClicked().closeInventory();
+
 
                     if (games.isEmpty()) {
                         for (GamePlayer p : activeGame.getPlayers()) {
@@ -64,7 +69,7 @@ public class MainCustomGameGuiListener implements Listener {
                         Game game = games.get(r.nextInt(games.size()));
 
                         Main.waitingGames.remove(game);
-                        Main.runningGames.add(game);
+                        Main.runningGames.add(activeGame);
 
                         activeGame.setMap(game.getMap());
                         activeGame.fillChests();
@@ -79,6 +84,7 @@ public class MainCustomGameGuiListener implements Listener {
                         player.getBukkitPlayer().sendMessage("The game was cancelled by the host!");
                     }
                     game.wipePlayers();
+                    Main.preventInventoryCloseList.remove(event.getWhoClicked());
                     event.getWhoClicked().closeInventory();
                     Main.activeCustomGames.remove(event.getWhoClicked());
                     break;

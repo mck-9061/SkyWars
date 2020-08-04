@@ -21,6 +21,8 @@ public class ModifierGuiListener implements Listener {
 
             event.setCancelled(true);
 
+            Main.preventInventoryCloseList.remove((Player) event.getWhoClicked());
+
             Game game = Main.activeCustomGames.get(event.getWhoClicked());
             SkyWarsSettings settings = game.getSettings();
 

@@ -43,6 +43,15 @@ public class SkyWarsCommand implements CommandExecutor {
                 break;
             case "create":
                 if (commandSender instanceof Player) {
+                    for (Game game : Main.waitingGames) if (game.getPlayers().contains(commandSender)) return true;
+                    for (Game game : Main.runningGames) if (game.getPlayers().contains(commandSender)) return true;
+                    for (Game game : Main.activeCustomGames.values()) {
+                        if (Main.activeCustomGames.get(commandSender).equals(game)) {
+                            ((Player) commandSender).openInventory(new MainCustomGameGui((Player) commandSender, game).getBukkitInventory());
+                            return true;
+                        }
+                    }
+
                     Game createdGame = new Game();
                     createdGame.setCustom(true);
                     createdGame.addPlayer(new GamePlayer((Player) commandSender));
@@ -57,7 +66,10 @@ public class SkyWarsCommand implements CommandExecutor {
             case "join":
                 if (!(commandSender instanceof Player)) return false;
                 try {
-                    Player p = Bukkit.getPlayer(args[0]);
+                    for (Game game : Main.waitingGames) if (game.getPlayers().contains(commandSender)) return true;
+                    for (Game game : Main.runningGames) if (game.getPlayers().contains(commandSender)) return true;
+                    for (Game game : Main.activeCustomGames.values()) if (game.getPlayers().contains(commandSender)) return true;
+                    Player p = Bukkit.getPlayer(args[1]);
                     Game game = Main.activeCustomGames.get(p);
 
                     if (game.getPlayers().size() < Main.skyWarsConfig.getInt("MaximumPlayers")) {

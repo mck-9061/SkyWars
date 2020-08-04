@@ -32,7 +32,7 @@ public class Main extends JavaPlugin {
     public static List<Game> waitingGames = new ArrayList<>();
     public static List<Game> runningGames = new ArrayList<>();
     public static List<Kit> kits = new ArrayList<>();
-    public static Plugin instance;
+    public static Main instance;
     public static List<Player> pregame = new ArrayList<>();
 
     public static List<Player> preventInventoryCloseList = new ArrayList<>();
@@ -140,7 +140,7 @@ public class Main extends JavaPlugin {
     public static File skyWarsFile;
     public static FileConfiguration skyWarsConfig;
 
-    private void createSkyWarsConfig() {
+    public void createSkyWarsConfig() {
         skyWarsFile = new File(getDataFolder(), "config.yml");
         if (!skyWarsFile.exists()) {
             skyWarsFile.getParentFile().mkdirs();

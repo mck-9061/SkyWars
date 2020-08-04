@@ -7,6 +7,7 @@ me\therealmck\skywars\commands\SkyWarsCommand.class
 me\therealmck\skywars\data\SkyWarsSettings.class
 me\therealmck\skywars\guis\listeners\EventChooserGuiListener.class
 me\therealmck\skywars\commands\AddMidChest.class
+me\therealmck\skywars\data\Game$4.class
 me\therealmck\skywars\data\loot\enums\MiscLevel.class
 me\therealmck\skywars\data\loot\LootTable.class
 me\therealmck\skywars\guis\TeamPickerGui.class
@@ -24,9 +25,11 @@ me\therealmck\skywars\guis\listeners\KitGuiOpenListener.class
 me\therealmck\skywars\data\loot\Loot.class
 me\therealmck\skywars\listeners\InventoryCloseListener.class
 me\therealmck\skywars\data\loot\enums\SwordLevel.class
+me\therealmck\skywars\data\Game$3.class
 me\therealmck\skywars\guis\listeners\MainCustomGameGuiListener.class
 me\therealmck\skywars\listeners\KillListener.class
 me\therealmck\skywars\commands\AddSpawnPoint.class
+me\therealmck\skywars\data\Game$2$1.class
 me\therealmck\skywars\listeners\TeammateDamageListener.class
 me\therealmck\skywars\data\Game.class
 me\therealmck\skywars\data\Kit.class
@@ -42,10 +45,12 @@ me\therealmck\skywars\listeners\DeathListener.class
 me\therealmck\skywars\data\Queue$1.class
 me\therealmck\skywars\guis\customgame\IslandLootGui.class
 me\therealmck\skywars\guis\listeners\ModifierGuiListener.class
+me\therealmck\skywars\data\Game$2.class
 me\therealmck\skywars\data\players\GamePlayer.class
 me\therealmck\skywars\guis\listeners\MidLootGuiListener.class
 me\therealmck\skywars\guis\customgame\MidLootGui.class
 me\therealmck\skywars\listeners\NPCClickListener.class
+me\therealmck\skywars\data\Game$5.class
 me\therealmck\skywars\listeners\InventoryCloseListener$1.class
 me\therealmck\skywars\guis\customgame\MainCustomGameGui.class
 me\therealmck\skywars\data\loot\enums\ProjectileLevel.class
