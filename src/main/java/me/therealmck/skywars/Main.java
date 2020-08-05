@@ -58,7 +58,7 @@ public class Main extends JavaPlugin {
                         ConfigurationSection section = mapConfig.getConfigurationSection(key);
                         assert section != null;
                         System.out.println(Bukkit.getWorld(key));
-                        maps.add(new SkyWarsMap(Bukkit.getWorld(key), section.getList("Spawns"), section.getList("IslandChests"), section.getList("MidChests")));
+                        maps.add(new SkyWarsMap(key));
                     } catch (Exception e) {
                         System.out.println("Map "+key+" couldn't be loaded. Does it exist?");
                     }

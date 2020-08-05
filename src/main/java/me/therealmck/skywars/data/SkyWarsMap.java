@@ -15,19 +15,13 @@ public class SkyWarsMap {
     private List<Location> spawns;
     private List<Location> islandChests;
     private List<Location> midChests;
+    private Location lobby;
 
     public SkyWarsMap(World bukkitWorld) {
         this.bukkitWorld = bukkitWorld;
         this.spawns = new ArrayList<>();
         this.islandChests = new ArrayList<>();
         this.midChests = new ArrayList<>();
-    }
-
-    public SkyWarsMap(World bukkitWorld, List<?> spawns, List<?> islandChests, List<?> midChests) {
-        this.bukkitWorld = bukkitWorld;
-        this.spawns = (List<Location>) spawns;
-        this.islandChests = (List<Location>) islandChests;
-        this.midChests = (List<Location>) midChests;
     }
 
     public SkyWarsMap(String worldName) {
@@ -37,6 +31,8 @@ public class SkyWarsMap {
 
         ConfigurationSection section = Main.mapConfig.getConfigurationSection(worldName);
         this.bukkitWorld = Bukkit.getWorld(worldName);
+
+        this.lobby = section.getLocation("lobby");
         List<Location> spawns = (List<Location>) section.getList("Spawns");
         List<Location> islandChests = (List<Location>) section.get("IslandChests");
         List<Location> midChests = (List<Location>) section.get("MidChests");

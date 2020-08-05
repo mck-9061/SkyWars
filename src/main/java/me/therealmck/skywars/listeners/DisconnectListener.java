@@ -85,7 +85,10 @@ public class DisconnectListener implements Listener {
                 World map = g.getMap().getBukkitWorld();
 
                 List<Player> players = new ArrayList<>();
-                for (GamePlayer p : g.getPlayers()) players.add(p.getBukkitPlayer());
+                for (GamePlayer p : g.getPlayers()) {
+                    players.add(p.getBukkitPlayer());
+                    p.getBukkitPlayer().getInventory().clear();
+                }
 
                 // Boot all players after 6 seconds, reset the game, then process the queue
                 new BukkitRunnable() {

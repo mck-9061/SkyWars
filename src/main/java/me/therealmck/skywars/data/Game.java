@@ -315,7 +315,7 @@ public class Game {
 
                 System.out.println("cages made");
 
-                spawn.setY(spawn.getY()+5);
+                spawn.setY(spawn.getY()+6);
 
                 System.out.println(p1);
                 System.out.println(p2);

@@ -81,7 +81,10 @@ public class DeathListener implements Listener {
                 World map = game.getMap().getBukkitWorld();
 
                 List<Player> players = new ArrayList<>();
-                for (GamePlayer p : game.getPlayers()) players.add(p.getBukkitPlayer());
+                for (GamePlayer p : game.getPlayers()) {
+                    players.add(p.getBukkitPlayer());
+                    p.getBukkitPlayer().getInventory().clear();
+                }
 
                 // Boot all players after 6 seconds, reset the game, then process the queue
                 new BukkitRunnable() {
