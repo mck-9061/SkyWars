@@ -525,4 +525,5 @@ public class Game {
     }
 
     public void setKit(Player player, Kit kit) { kits.put(player, kit); }
+
 }

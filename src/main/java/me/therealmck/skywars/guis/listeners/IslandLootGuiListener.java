@@ -92,7 +92,6 @@ public class IslandLootGuiListener implements Listener {
 
                     event.getWhoClicked().closeInventory();
                     event.getWhoClicked().openInventory((new IslandLootGui((Player) event.getWhoClicked(), game)).getBukkitInventory());
-                    Main.preventInventoryCloseList.add((Player) event.getWhoClicked());
 
                     break;
                 case 14:

@@ -35,9 +35,11 @@ public class SkyWarsCommand implements CommandExecutor {
                 commandSender.sendMessage("§6/skywars create§b: Create a custom game of SkyWars");
                 commandSender.sendMessage("§6/skywars join [IGN of host]§b: Join the specified host's game of SkyWars");
                 commandSender.sendMessage("§6/skywars lobby§b: Teleport to the SkyWars lobby");
+                commandSender.sendMessage("§6/skywars leave§b: Leaves your SkyWars game. Only works in the pre-game lobby.");
 
                 if (commandSender.hasPermission("skywars.admin")) {
                     commandSender.sendMessage("§6/skywars kit [name] [permission]§b: Create a SkyWars kit out of your inventory. Hold the item for the icon in your main hand.");
+                    commandSender.sendMessage("§6/skywars forcestart§b: Starts the game you're in, even if there's less than the minimum players. Still requires at least 2 players in the game.");
                 }
 
                 break;
@@ -150,6 +152,55 @@ public class SkyWarsCommand implements CommandExecutor {
                     }
                 }
                 break;
+            case "forcestart":
+                if (commandSender instanceof Player && commandSender.hasPermission("skywars.admin")) {
+                    Game toStart = null;
+                    for (Game game : Main.waitingGames) {
+                        for (GamePlayer p : game.getPlayers()) {
+                            if (p.getBukkitPlayer().equals(commandSender)) toStart = game;
+                        }
+                    }
+
+                    if (toStart == null) {
+                        commandSender.sendMessage("You're not in a waiting game.");
+                        return true;
+                    }
+
+                    Main.waitingGames.remove(toStart);
+                    Main.runningGames.add(toStart);
+                    toStart.fillChests();
+                    toStart.beginGame();
+                }
+            case "leave":
+                if (commandSender instanceof Player) {
+                    Game toLeave = null;
+                    GamePlayer player = null;
+                    for (Game game : Main.waitingGames) {
+                        for (GamePlayer p : game.getPlayers()) {
+                            if (p.getBukkitPlayer().equals(commandSender)) {
+                                toLeave = game;
+                                player = p;
+                            }
+                        }
+                    }
+
+                    if (toLeave == null) {
+                        commandSender.sendMessage("You're not in a waiting game.");
+                        return true;
+                    }
+
+                    toLeave.removePlayer(player);
+
+                    for (GamePlayer p : toLeave.getPlayers()) {
+                        p.getBukkitPlayer().sendMessage(player.getBukkitPlayer().getDisplayName() + " left the game!");
+                    }
+
+                    player.getBukkitPlayer().teleport(Main.skyWarsConfig.getLocation("LobbyLocation"));
+
+
+                } else {
+                    commandSender.sendMessage("This command can only be ran as a player.");
+                }
         }
         return true;
     }
