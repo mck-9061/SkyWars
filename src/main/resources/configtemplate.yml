@@ -5,10 +5,19 @@
 # Set this position with /setlobby in your SkyWars lobby.
 LobbyLocation:
 
+# The amount of teams in the game. Max 14.
+# There MUST be as many spawn points on a map as this amount.
+# This value also determines how many players can be in each team.
+# For example, if team count is 6 and maximum players is 12, each team will have 2 players.
+# Or, if team count is 3 and maximum players is 12, each team will have 4 players.
+# players in team = maximum players / team count
+# Make sure MaximumPlayers divides perfectly by TeamCount or bugs will ensue.
+# Make this the same as MaximumPlayers to disable teams.
+TeamCount: 6
+
 # The amount of players required in a game before it will start.
 MinimumPlayers: 12
 # The maximum amount of players allowed in a game.
-# There MUST be as many spawn points on a map as half this amount.
 # Due to how matchmaking works it's recommended to make sure this is the same as the minimum.
 # It must also be an even number.
 MaximumPlayers: 12

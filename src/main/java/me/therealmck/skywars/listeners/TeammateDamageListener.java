@@ -33,19 +33,18 @@ public class TeammateDamageListener implements Listener {
 
         Team team = null;
         for (Team t : game.getTeams()) {
-            if (t.getPlayer1().getBukkitPlayer().equals(event.getDamager()) || t.getPlayer2().getBukkitPlayer().equals(event.getDamager())) {
-                team = t;
-                break;
+            for (GamePlayer player : t.getPlayers()) {
+                if (player.getBukkitPlayer().getUniqueId().equals(event.getDamager().getUniqueId())) {
+                    team = t;
+                    break;
+                }
             }
         }
 
         if (team == null) return;
 
-        if ((team.getPlayer1().getBukkitPlayer().equals(event.getDamager()) && team.getPlayer2().getBukkitPlayer().equals(event.getEntity()))
-        || (team.getPlayer2().getBukkitPlayer().equals(event.getDamager()) && team.getPlayer1().getBukkitPlayer().equals(event.getEntity()))) {
-            event.setCancelled(true);
+        for (GamePlayer player : team.getPlayers()) {
+            if (player.getBukkitPlayer().getUniqueId().equals(event.getEntity().getUniqueId())) event.setCancelled(true);
         }
-
-
     }
 }

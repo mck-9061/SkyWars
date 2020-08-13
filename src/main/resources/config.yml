@@ -3,6 +3,8 @@
 
 LobbyLocation:
 
+TeamCount: 6
+
 MinimumPlayers: 12
 MaximumPlayers: 12
 

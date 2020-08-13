@@ -1,32 +1,36 @@
 package me.therealmck.skywars.data;
 
 import me.therealmck.skywars.data.players.GamePlayer;
+import org.bukkit.Material;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Team {
-    private GamePlayer player1;
-    private GamePlayer player2;
+    private List<GamePlayer> players = new ArrayList<>();
+    private Material icon;
 
     public Team() {
 
     }
 
-    public GamePlayer getPlayer1() {
-        return player1;
+    public List<GamePlayer> getPlayers() {
+        return players;
     }
 
-    public void setPlayer1(GamePlayer player1) {
-        this.player1 = player1;
+    public void addPlayer(GamePlayer player) {
+        players.add(player);
     }
 
-    public GamePlayer getPlayer2() {
-        return player2;
+    public void removePlayer(GamePlayer player) {
+        players.remove(player);
     }
 
-    public void setPlayer2(GamePlayer player2) {
-        this.player2 = player2;
+    public Material getIcon() {
+        return icon;
     }
 
-    public boolean containsPlayer(GamePlayer player) {
-        return player.equals(player1) || player.equals(player2);
+    public void setIcon(Material icon) {
+        this.icon = icon;
     }
 }

@@ -65,22 +65,29 @@ public class DisconnectListener implements Listener {
             // Check if a team has won
             List<Team> aliveTeams = new ArrayList<>();
             for (Team team : g.getTeams()) {
-                if ((!team.getPlayer1().isDead() && g.getPlayers().contains(team.getPlayer1()))
-                        || (!team.getPlayer2().isDead() && g.getPlayers().contains(team.getPlayer2()))) aliveTeams.add(team);
+                boolean toAdd = false;
+                for (GamePlayer player : team.getPlayers()) {
+                    if (player.getBukkitPlayer().getGameMode().equals(GameMode.SURVIVAL) && g.getPlayers().contains(player)) toAdd = true;
+                }
+
+                if (toAdd) aliveTeams.add(team);
             }
 
             if (aliveTeams.size() == 1) {
                 Team won = aliveTeams.get(0);
 
-                won.getPlayer1().getBukkitPlayer().setGameMode(GameMode.SPECTATOR);
-                won.getPlayer1().getBukkitPlayer().setHealth(20);
-                won.getPlayer1().getBukkitPlayer().sendTitle("§6§lVICTORY!", "§6Run /skywars lobby to return.", 0, 120, 0);
-                if (!g.isCustom()) won.getPlayer1().saveStats(true);
+                for (GamePlayer player : won.getPlayers()) {
+                    player.getBukkitPlayer().setGameMode(GameMode.SPECTATOR);
+                    player.getBukkitPlayer().setHealth(20);
+                    player.getBukkitPlayer().sendTitle("§6§lVICTORY!", "§6Run /skywars lobby to return.", 0, 120, 0);
+                    if (!g.isCustom()) player.saveStats(true);
+                    player.getBukkitPlayer().setMaxHealth(20);
+                    player.getBukkitPlayer().setWalkSpeed((float) (0.2));
+                    for (PotionEffect effect : player.getBukkitPlayer().getActivePotionEffects())
+                        player.getBukkitPlayer().removePotionEffect(effect.getType());
+                }
 
-                won.getPlayer2().getBukkitPlayer().setGameMode(GameMode.SPECTATOR);
-                won.getPlayer2().getBukkitPlayer().setHealth(20);
-                won.getPlayer2().getBukkitPlayer().sendTitle("§6§lVICTORY!", "§6Run /skywars lobby to return.", 0, 120, 0);
-                if (!g.isCustom()) won.getPlayer2().saveStats(true);
+
 
                 World map = g.getMap().getBukkitWorld();
 
