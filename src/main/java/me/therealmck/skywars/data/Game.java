@@ -184,6 +184,27 @@ public class Game {
 
         // todo: code for players that haven't picked a team
 
+        for (GamePlayer player : players) {
+            boolean inTeam = false;
+            for (Team team : teams) {
+                if (team.getPlayers().contains(player)) inTeam = true;
+            }
+
+            if (!inTeam) {
+                Team addTo = null;
+                for (Team team : teams) {
+                    if (team.getPlayers().size() <= Main.skyWarsConfig.getInt("MaximumPlayers")/Main.skyWarsConfig.getInt("TeamCount")) {
+                        addTo = team;
+                        break;
+                    }
+                }
+
+                if (addTo != null) {
+                    addTo.addPlayer(player);
+                }
+            }
+        }
+
         // OLD TEAM CODE
 
 //        List<GamePlayer> random = new ArrayList<>();
