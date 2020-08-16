@@ -8,6 +8,7 @@ import me.therealmck.skywars.guis.customgame.EventChooserGui;
 import me.therealmck.skywars.guis.customgame.IslandLootGui;
 import me.therealmck.skywars.guis.customgame.MidLootGui;
 import me.therealmck.skywars.guis.customgame.ModifierGui;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -72,8 +73,10 @@ public class MainCustomGameGuiListener implements Listener {
                         Main.runningGames.add(activeGame);
 
                         activeGame.setMap(game.getMap());
-                        activeGame.fillChests();
-                        activeGame.beginGame();
+                        Bukkit.getScheduler().runTask(Main.instance, () -> {
+                            activeGame.fillChests();
+                            activeGame.beginGame();
+                        });
                     }
 
 

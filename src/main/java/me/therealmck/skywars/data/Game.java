@@ -481,7 +481,9 @@ public class Game {
 
         teamPickerGui = new TeamPickerGui(players.get(0).getBukkitPlayer(), this);
         for (GamePlayer player : players) {
+            Main.preventInventoryCloseList.remove(player.getBukkitPlayer());
             player.getBukkitPlayer().openInventory(teamPickerGui.getBukkitInventory());
+            Main.preventInventoryCloseList.remove(player.getBukkitPlayer());
         }
 
         // Give players 15 seconds to pick teammates, then warp them
