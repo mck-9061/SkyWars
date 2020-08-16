@@ -22,7 +22,7 @@ public class TeamPickerGui {
     public TeamPickerGui(Player host, Game game) {
         this.host = host;
         this.game = game;
-        this.bukkitInventory = Bukkit.createInventory(host, 36, "§6Pick your team");
+        this.bukkitInventory = Bukkit.createInventory(host, 18, "§6Pick your team");
 
         for (int slot = 0; slot < 18; slot++) {
             bukkitInventory.setItem(slot, new ItemStack(Material.RED_STAINED_GLASS_PANE));

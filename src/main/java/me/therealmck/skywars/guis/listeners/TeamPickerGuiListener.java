@@ -20,7 +20,7 @@ public class TeamPickerGuiListener implements Listener {
     public void onInventoryClick(InventoryClickEvent event) {
         String title = event.getView().getTitle();
 
-        if (title.equals("§6Pick your teammate")) {
+        if (title.equals("§6Pick your team")) {
             if (event.getClickedInventory() == null) return;
 
             event.setCancelled(true);
@@ -64,6 +64,7 @@ public class TeamPickerGuiListener implements Listener {
                 if (team.getPlayers().contains(player)) {
                     team.removePlayer(player);
                     for (ItemStack i : event.getClickedInventory()) {
+                        if (i == null || i.getType() == null) continue;
                         if (i.getType().equals(team.getIcon())) {
                             ItemMeta meta = i.getItemMeta();
                             List<String> lore;
@@ -73,6 +74,7 @@ public class TeamPickerGuiListener implements Listener {
                             if (lore.contains(player.getBukkitPlayer().getDisplayName())) lore.remove(player.getBukkitPlayer().getDisplayName());
                             meta.setLore(lore);
                             i.setItemMeta(meta);
+                            break;
                         }
                     }
                 }

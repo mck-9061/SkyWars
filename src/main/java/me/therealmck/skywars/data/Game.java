@@ -182,8 +182,6 @@ public class Game {
             Main.pregame.add(player.getBukkitPlayer());
         }
 
-        // todo: code for players that haven't picked a team
-
         for (GamePlayer player : players) {
             boolean inTeam = false;
             for (Team team : teams) {
@@ -193,7 +191,7 @@ public class Game {
             if (!inTeam) {
                 Team addTo = null;
                 for (Team team : teams) {
-                    if (team.getPlayers().size() <= Main.skyWarsConfig.getInt("MaximumPlayers")/Main.skyWarsConfig.getInt("TeamCount")) {
+                    if (team.getPlayers().size() < Main.skyWarsConfig.getInt("MaximumPlayers")/Main.skyWarsConfig.getInt("TeamCount")) {
                         addTo = team;
                         break;
                     }
@@ -299,7 +297,7 @@ public class Game {
                 ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-1, cageBaseBlock.getBlockY(), cageBaseBlock.getBlockZ()+1).getBlock());
                 ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-1, cageBaseBlock.getBlockY(), cageBaseBlock.getBlockZ()-1).getBlock());
 
-                for (int height = 1; height < 4; height++) {
+                for (int height = 1; height < 6; height++) {
                     ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+2, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()-2).getBlock());
                     ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+2, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()-1).getBlock());
                     ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+2, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()).getBlock());
@@ -318,15 +316,15 @@ public class Game {
                     ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-2, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()-2).getBlock());
                 }
 
-                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX(), cageBaseBlock.getBlockY()+3, cageBaseBlock.getBlockZ()).getBlock());
-                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+1, cageBaseBlock.getBlockY()+3, cageBaseBlock.getBlockZ()).getBlock());
-                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-1, cageBaseBlock.getBlockY()+3, cageBaseBlock.getBlockZ()).getBlock());
-                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX(), cageBaseBlock.getBlockY()+3, cageBaseBlock.getBlockZ()+1).getBlock());
-                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX(), cageBaseBlock.getBlockY()+3, cageBaseBlock.getBlockZ()-1).getBlock());
-                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+1, cageBaseBlock.getBlockY()+3, cageBaseBlock.getBlockZ()+1).getBlock());
-                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+1, cageBaseBlock.getBlockY()+3, cageBaseBlock.getBlockZ()-1).getBlock());
-                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-1, cageBaseBlock.getBlockY()+3, cageBaseBlock.getBlockZ()+1).getBlock());
-                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-1, cageBaseBlock.getBlockY()+3, cageBaseBlock.getBlockZ()-1).getBlock());
+                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX(), cageBaseBlock.getBlockY()+5, cageBaseBlock.getBlockZ()).getBlock());
+                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+1, cageBaseBlock.getBlockY()+5, cageBaseBlock.getBlockZ()).getBlock());
+                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-1, cageBaseBlock.getBlockY()+5, cageBaseBlock.getBlockZ()).getBlock());
+                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX(), cageBaseBlock.getBlockY()+5, cageBaseBlock.getBlockZ()+1).getBlock());
+                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX(), cageBaseBlock.getBlockY()+5, cageBaseBlock.getBlockZ()-1).getBlock());
+                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+1, cageBaseBlock.getBlockY()+5, cageBaseBlock.getBlockZ()+1).getBlock());
+                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+1, cageBaseBlock.getBlockY()+5, cageBaseBlock.getBlockZ()-1).getBlock());
+                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-1, cageBaseBlock.getBlockY()+5, cageBaseBlock.getBlockZ()+1).getBlock());
+                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-1, cageBaseBlock.getBlockY()+5, cageBaseBlock.getBlockZ()-1).getBlock());
 
                 cageBlocks.addAll(ironBars);
                 cageBlocks.addAll(ironBlocks);
@@ -382,7 +380,7 @@ public class Game {
                         Random r = new Random();
                         for (int i = 0; i < 20; i++) {
                             Location spawn = map.getMidChests().get(r.nextInt(map.getMidChests().size()));
-                            spawn.setY(spawn.getY()+1);
+                            spawn.setY(spawn.getY()+2);
                             map.getBukkitWorld().spawnEntity(spawn, EntityType.ZOMBIE);
                         }
                     }
@@ -424,6 +422,7 @@ public class Game {
 
                             Horse horse = (Horse) map.getBukkitWorld().spawnEntity(player.getBukkitPlayer().getLocation(), EntityType.HORSE);
                             horse.getInventory().setSaddle(new ItemStack(Material.SADDLE));
+                            horse.setTamed(true);
 
                             horse.addPassenger(player.getBukkitPlayer());
                         }
@@ -483,7 +482,6 @@ public class Game {
         teamPickerGui = new TeamPickerGui(players.get(0).getBukkitPlayer(), this);
         for (GamePlayer player : players) {
             player.getBukkitPlayer().openInventory(teamPickerGui.getBukkitInventory());
-            Main.preventInventoryCloseList.add(player.getBukkitPlayer());
         }
 
         // Give players 15 seconds to pick teammates, then warp them
