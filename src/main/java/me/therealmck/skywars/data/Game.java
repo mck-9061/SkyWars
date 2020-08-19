@@ -178,7 +178,6 @@ public class Game {
         for (GamePlayer player : players) {
             Main.preventInventoryCloseList.remove(player.getBukkitPlayer());
             player.getBukkitPlayer().closeInventory();
-            player.getBukkitPlayer().getInventory().setItem(0, Utils.getItemStackWithNameAndLore(Material.CHEST, "§6Select Kit", new ArrayList<>()));
             Main.pregame.add(player.getBukkitPlayer());
         }
 
@@ -338,6 +337,7 @@ public class Game {
 
                 for (GamePlayer player : team.getPlayers()) {
                     player.getBukkitPlayer().teleport(spawn);
+                    player.getBukkitPlayer().getInventory().setItem(0, Utils.getItemStackWithNameAndLore(Material.CHEST, "§6Select Kit", new ArrayList<>()));
                 }
                 System.out.println("players teleported");
             }

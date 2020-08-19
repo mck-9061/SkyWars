@@ -38,6 +38,8 @@ public class DeathListener implements Listener {
         }
 
         if (killed != null) {
+            event.setKeepInventory(false);
+            event.getEntity().setHealth(20);
             // Save stats of killed player
             if (!game.isCustom()) killed.saveStats(false);
             killed.setDead(true);
@@ -47,7 +49,6 @@ public class DeathListener implements Listener {
             for (PotionEffect effect : killed.getBukkitPlayer().getActivePotionEffects()) killed.getBukkitPlayer().removePotionEffect(effect.getType());
 
             event.getEntity().setGameMode(GameMode.SPECTATOR);
-            event.getEntity().setHealth(20);
             event.getEntity().sendTitle("§c§lYOU DIED!", "§cRun /skywars lobby to return.", 0, 80, 0);
             event.getEntity().teleport(game.getMap().getSpawns().get(0));
 
