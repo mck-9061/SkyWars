@@ -49,14 +49,5 @@ public class KillListener implements Listener {
         if (killer == null || killed == null) return;
 
         killer.addKill();
-
-        // Save stats of killed player
-        if (!game.isCustom()) killed.saveStats(false);
-        killed.setDead(true);
-
-        event.setCancelled(true);
-        ((Player) event.getEntity()).setGameMode(GameMode.SPECTATOR);
-        ((Player) event.getEntity()).setHealth(20);
-        ((Player) event.getEntity()).sendTitle("§c§lYOU DIED!", "§cRun /skywars lobby to return.", 0, 80, 0);
     }
 }

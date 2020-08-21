@@ -7,6 +7,7 @@ import me.therealmck.skywars.data.Team;
 import me.therealmck.skywars.data.players.GamePlayer;
 import org.bukkit.GameMode;
 import org.bukkit.World;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -30,6 +31,9 @@ public class DeathListener implements Listener {
         for (Game g : Main.runningGames) {
             for (GamePlayer player : g.getPlayers()) {
                 if (player.getBukkitPlayer().getUniqueId().equals(event.getEntity().getUniqueId())) {
+                    event.setKeepInventory(false);
+                    player.getBukkitPlayer().setHealth(event.getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+                    player.getBukkitPlayer().setGameMode(GameMode.SPECTATOR);
                     killed = player;
                     game = g;
                     break;
@@ -38,17 +42,13 @@ public class DeathListener implements Listener {
         }
 
         if (killed != null) {
-            event.setKeepInventory(false);
-            event.getEntity().setHealth(20);
             // Save stats of killed player
             if (!game.isCustom()) killed.saveStats(false);
             killed.setDead(true);
 
-            killed.getBukkitPlayer().setMaxHealth(20);
             killed.getBukkitPlayer().setWalkSpeed((float) (0.2));
             for (PotionEffect effect : killed.getBukkitPlayer().getActivePotionEffects()) killed.getBukkitPlayer().removePotionEffect(effect.getType());
 
-            event.getEntity().setGameMode(GameMode.SPECTATOR);
             event.getEntity().sendTitle("§c§lYOU DIED!", "§cRun /skywars lobby to return.", 0, 80, 0);
             event.getEntity().teleport(game.getMap().getSpawns().get(0));
 

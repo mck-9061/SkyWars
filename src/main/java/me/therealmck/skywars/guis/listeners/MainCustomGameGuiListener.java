@@ -52,6 +52,11 @@ public class MainCustomGameGuiListener implements Listener {
                     List<Game> games = new ArrayList<>();
                     Game activeGame = Main.activeCustomGames.get(event.getWhoClicked());
 
+                    if (activeGame.getPlayers().size() == 1) {
+                        event.getWhoClicked().sendMessage("There aren't enough people in your game. Get players to join with /skywars join "+event.getWhoClicked().getName());
+                        return;
+                    }
+
                     for (Game game : Main.waitingGames) {
                         if (game.getPlayers().isEmpty()) games.add(game);
                     }
