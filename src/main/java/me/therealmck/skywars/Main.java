@@ -91,6 +91,10 @@ public class Main extends JavaPlugin {
         getCommand("addworld").setExecutor(new AddWorld());
         getCommand("setlobby").setExecutor(new SetLobby());
 
+        // SkyWars command aliases
+        List<String> aliases = skyWarsConfig.getStringList("Aliases");
+        getCommand("skywars").setAliases(aliases);
+
         // Event listeners
         getServer().getPluginManager().registerEvents(new EventChooserGuiListener(), this);
         getServer().getPluginManager().registerEvents(new IslandLootGuiListener(), this);

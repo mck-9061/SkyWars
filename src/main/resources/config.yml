@@ -1,6 +1,10 @@
 # Below are options for loot levels and other options. You can see detailed explanations in
 # configtemplate.yml.
 
+Aliases:
+  - skywars
+  - sw
+
 LobbyLocation:
 
 TeamCount: 6
