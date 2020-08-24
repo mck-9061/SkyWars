@@ -2,6 +2,7 @@ package me.therealmck.skywars.commands;
 
 import me.therealmck.skywars.Main;
 import me.therealmck.skywars.data.SkyWarsMap;
+import me.therealmck.skywars.utils.MessageHelper;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -14,12 +15,13 @@ public class AddWorld implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+        MessageHelper lang = new MessageHelper();
         if (commandSender instanceof Player && commandSender.hasPermission("skywars.admin.addworld")) {
             World world = ((Player) commandSender).getWorld();
 
             for (SkyWarsMap map : Main.maps) {
                 if (map.getBukkitWorld().getName().equals(world.getName())) {
-                    commandSender.sendMessage("This world is already a SkyWars map.");
+                    commandSender.sendMessage(lang.getAdminMapAlreadyExists());
                     return true;
                 }
             }
@@ -31,10 +33,10 @@ public class AddWorld implements CommandExecutor {
             section.set("MidChests", map.getMidChests());
             Main.saveMapConfig();
             Main.maps.add(map);
-            commandSender.sendMessage("Added map successfully.");
+            commandSender.sendMessage(lang.getAdminMapAdded());
             return true;
         } else {
-            commandSender.sendMessage("Failed to run command. You may not have permission or not a player.");
+            commandSender.sendMessage(lang.getUnauthorized());
         }
 
 

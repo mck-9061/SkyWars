@@ -1,6 +1,7 @@
 package me.therealmck.skywars.guis.customgame;
 
 import me.therealmck.skywars.data.Game;
+import me.therealmck.skywars.utils.MessageHelper;
 import me.therealmck.skywars.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -17,20 +18,21 @@ public class EventChooserGui {
     private Game game;
 
     public EventChooserGui(Player host, Game game) {
+        MessageHelper lang = new MessageHelper();
         this.host = host;
         this.game = game;
-        this.bukkitInventory = Bukkit.createInventory(host, 27, "§6Random Event Settings");
+        this.bukkitInventory = Bukkit.createInventory(host, 27, lang.getCustomGameEventGui());
 
         for (int slot = 0; slot < 27; slot++) {
             bukkitInventory.setItem(slot, new ItemStack(Material.RED_STAINED_GLASS_PANE));
         }
 
-        bukkitInventory.setItem(10, Utils.getItemStackWithNameAndLore(Material.ANVIL, "Anvil Rain", Collections.singletonList(String.valueOf(game.getSettings().isAnvilRainEvent()))));
-        bukkitInventory.setItem(12, Utils.getItemStackWithNameAndLore(Material.DIRT, "Block Decay", Collections.singletonList(String.valueOf(game.getSettings().isBlockDecayEvent()))));
-        bukkitInventory.setItem(14, Utils.getItemStackWithNameAndLore(Material.DIAMOND_HORSE_ARMOR, "Tamed Horse Mount", Collections.singletonList(String.valueOf(game.getSettings().isHorseMountEvent()))));
-        bukkitInventory.setItem(16, Utils.getItemStackWithNameAndLore(Material.ROTTEN_FLESH, "Zombie Horde", Collections.singletonList(String.valueOf(game.getSettings().isZombieHordeEvent()))));
+        bukkitInventory.setItem(10, Utils.getItemStackWithNameAndLore(Material.ANVIL, lang.getAnvilEvent(), Collections.singletonList(String.valueOf(game.getSettings().isAnvilRainEvent()))));
+        bukkitInventory.setItem(12, Utils.getItemStackWithNameAndLore(Material.DIRT, lang.getBlockEvent(), Collections.singletonList(String.valueOf(game.getSettings().isBlockDecayEvent()))));
+        bukkitInventory.setItem(14, Utils.getItemStackWithNameAndLore(Material.DIAMOND_HORSE_ARMOR, lang.getMountEvent(), Collections.singletonList(String.valueOf(game.getSettings().isHorseMountEvent()))));
+        bukkitInventory.setItem(16, Utils.getItemStackWithNameAndLore(Material.ROTTEN_FLESH, lang.getZombieEvent(), Collections.singletonList(String.valueOf(game.getSettings().isZombieHordeEvent()))));
 
-        bukkitInventory.setItem(26, Utils.getItemStackWithNameAndLore(Material.BARRIER, "Back", new ArrayList<>()));
+        bukkitInventory.setItem(26, Utils.getItemStackWithNameAndLore(Material.BARRIER, lang.getGuiBack(), new ArrayList<>()));
 
 
     }

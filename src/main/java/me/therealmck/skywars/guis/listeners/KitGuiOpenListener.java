@@ -5,6 +5,7 @@ import me.therealmck.skywars.data.Game;
 import me.therealmck.skywars.data.Kit;
 import me.therealmck.skywars.data.players.GamePlayer;
 import me.therealmck.skywars.guis.KitGui;
+import me.therealmck.skywars.utils.MessageHelper;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -37,6 +38,7 @@ public class KitGuiOpenListener implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
+        MessageHelper lang = new MessageHelper();
         if (event.getClickedInventory() == null) return;
 
         if (!Main.pregame.contains(event.getWhoClicked())) return;

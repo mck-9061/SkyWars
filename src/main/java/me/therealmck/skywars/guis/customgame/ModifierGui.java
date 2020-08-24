@@ -1,6 +1,7 @@
 package me.therealmck.skywars.guis.customgame;
 
 import me.therealmck.skywars.data.Game;
+import me.therealmck.skywars.utils.MessageHelper;
 import me.therealmck.skywars.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -17,19 +18,20 @@ public class ModifierGui {
     private Game game;
 
     public ModifierGui(Player host, Game game) {
+        MessageHelper lang = new MessageHelper();
         this.host = host;
         this.game = game;
-        this.bukkitInventory = Bukkit.createInventory(host, 27, "§6Modifier Settings");
+        this.bukkitInventory = Bukkit.createInventory(host, 27, lang.getCustomGameModifierGui());
 
         for (int slot = 0; slot < 27; slot++) {
             bukkitInventory.setItem(slot, new ItemStack(Material.RED_STAINED_GLASS_PANE));
         }
 
-        bukkitInventory.setItem(11, Utils.getItemStackWithNameAndLore(Material.RABBIT_FOOT, "Jump Multiplier", Collections.singletonList(String.valueOf(game.getSettings().getJumpMultiplier()))));
-        bukkitInventory.setItem(13, Utils.getItemStackWithNameAndLore(Material.SUGAR, "Speed Multiplier", Collections.singletonList(String.valueOf(game.getSettings().getSpeedMultiplier()))));
-        bukkitInventory.setItem(15, Utils.getItemStackWithNameAndLore(Material.RED_CONCRETE, "Max Health", Collections.singletonList(String.valueOf(game.getSettings().getMaxHealth()))));
+        bukkitInventory.setItem(11, Utils.getItemStackWithNameAndLore(Material.RABBIT_FOOT, lang.getJumpModifier(), Collections.singletonList(String.valueOf(game.getSettings().getJumpMultiplier()))));
+        bukkitInventory.setItem(13, Utils.getItemStackWithNameAndLore(Material.SUGAR, lang.getSpeedModifier(), Collections.singletonList(String.valueOf(game.getSettings().getSpeedMultiplier()))));
+        bukkitInventory.setItem(15, Utils.getItemStackWithNameAndLore(Material.RED_CONCRETE, lang.getHealthModifier(), Collections.singletonList(String.valueOf(game.getSettings().getMaxHealth()))));
 
-        bukkitInventory.setItem(26, Utils.getItemStackWithNameAndLore(Material.BARRIER, "Back", new ArrayList<>()));
+        bukkitInventory.setItem(26, Utils.getItemStackWithNameAndLore(Material.BARRIER, lang.getGuiBack(), new ArrayList<>()));
 
 
     }

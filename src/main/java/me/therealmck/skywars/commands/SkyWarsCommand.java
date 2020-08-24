@@ -5,6 +5,7 @@ import me.therealmck.skywars.data.Game;
 import me.therealmck.skywars.data.Kit;
 import me.therealmck.skywars.data.players.GamePlayer;
 import me.therealmck.skywars.guis.customgame.MainCustomGameGui;
+import me.therealmck.skywars.utils.MessageHelper;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -25,21 +26,17 @@ import java.util.List;
 public class SkyWarsCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
+        MessageHelper lang = new MessageHelper();
         String sub = "";
         try { sub = args[0]; }
-        catch (Exception e) { commandSender.sendMessage("Unknown subcommand. Run [/skywars help] for help."); }
+        catch (Exception e) { commandSender.sendMessage(lang.getCommandFailed()); }
 
         switch (sub) {
             case "help":
-                commandSender.sendMessage("§6/skywars help§b: Display this help menu");
-                commandSender.sendMessage("§6/skywars create§b: Create a custom game of SkyWars");
-                commandSender.sendMessage("§6/skywars join [IGN of host]§b: Join the specified host's game of SkyWars");
-                commandSender.sendMessage("§6/skywars lobby§b: Teleport to the SkyWars lobby");
-                commandSender.sendMessage("§6/skywars leave§b: Leaves your SkyWars game. Only works in the pre-game lobby.");
+                for (String help : lang.getHelpMessages()) commandSender.sendMessage(help);
 
                 if (commandSender.hasPermission("skywars.admin")) {
-                    commandSender.sendMessage("§6/skywars kit [name] [permission]§b: Create a SkyWars kit out of your inventory. Hold the item for the icon in your main hand.");
-                    commandSender.sendMessage("§6/skywars forcestart§b: Starts the game you're in, even if there's less than the minimum players. Still requires at least 2 players in the game.");
+                    for (String help : lang.getAdminHelpMessages()) commandSender.sendMessage(help);
                 }
 
                 break;
@@ -77,11 +74,11 @@ public class SkyWarsCommand implements CommandExecutor {
                     if (game.getPlayers().size() < Main.skyWarsConfig.getInt("MaximumPlayers")) {
                         game.addPlayer(new GamePlayer((Player) commandSender));
                         for (GamePlayer gp : game.getPlayers())
-                            gp.getBukkitPlayer().sendMessage(commandSender.getName()
-                                    + " joined the game! (" + game.getPlayers().size() + "/" + Main.skyWarsConfig.getInt("MaximumPlayers") + ")");
-                    } else commandSender.sendMessage("This game is full.");
+                            gp.getBukkitPlayer().sendMessage(lang.getJoinedGame(commandSender.getName())
+                                    + " (" + game.getPlayers().size() + "/" + Main.skyWarsConfig.getInt("MaximumPlayers") + ")");
+                    } else commandSender.sendMessage(lang.getGameFull());
                 } catch (Exception e) {
-                    commandSender.sendMessage("You didn't specify a player or that player isn't hosting a game.");
+                    commandSender.sendMessage(lang.getCustomGameJoinPlayerUnspecified());
                 }
 
                 break;
@@ -94,13 +91,13 @@ public class SkyWarsCommand implements CommandExecutor {
                     try {
                         for (Kit kit : Main.kits) {
                             if (kit.getName().equals(args[0])) {
-                                commandSender.sendMessage("A kit with that name already exists.");
+                                commandSender.sendMessage(lang.getKitAlreadyExists());
                                 return true;
                             }
                         }
 
                         if (args[1] == null) {
-                            commandSender.sendMessage("Invalid syntax!");
+                            commandSender.sendMessage(lang.getInvalidSyntax());
                             return false;
                         }
                         ConfigurationSection section = Main.kitsConfig.createSection(args[0]);
@@ -111,13 +108,13 @@ public class SkyWarsCommand implements CommandExecutor {
                         Main.saveKitsConfig();
 
                         Main.kits.add(new Kit(args[0]));
-                        commandSender.sendMessage("Added kit successfully.");
+                        commandSender.sendMessage(lang.getKitCreated());
                     } catch (Exception e) {
-                        commandSender.sendMessage("Invalid syntax!");
+                        commandSender.sendMessage(lang.getInvalidSyntax());
                         return false;
                     }
                 } else {
-                    commandSender.sendMessage("Something went wrong. You may not have permission or you may not be a player.");
+                    commandSender.sendMessage(lang.getUnauthorized());
                 }
 
                 break;
@@ -162,7 +159,7 @@ public class SkyWarsCommand implements CommandExecutor {
                     }
 
                     if (toStart == null) {
-                        commandSender.sendMessage("You're not in a waiting game.");
+                        commandSender.sendMessage(lang.getForcestartFailed());
                         return true;
                     }
 
@@ -185,21 +182,21 @@ public class SkyWarsCommand implements CommandExecutor {
                     }
 
                     if (toLeave == null) {
-                        commandSender.sendMessage("You're not in a waiting game.");
+                        commandSender.sendMessage(lang.getLeaveFailed());
                         return true;
                     }
 
                     toLeave.removePlayer(player);
 
                     for (GamePlayer p : toLeave.getPlayers()) {
-                        p.getBukkitPlayer().sendMessage(player.getBukkitPlayer().getDisplayName() + " left the game!");
+                        p.getBukkitPlayer().sendMessage(lang.getLeftGame(commandSender.getName()));
                     }
 
                     player.getBukkitPlayer().teleport(Main.skyWarsConfig.getLocation("LobbyLocation"));
 
 
                 } else {
-                    commandSender.sendMessage("This command can only be ran as a player.");
+                    commandSender.sendMessage(lang.getUnauthorized());
                 }
         }
         return true;

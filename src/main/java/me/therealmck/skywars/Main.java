@@ -50,6 +50,7 @@ public class Main extends JavaPlugin {
                 createPlayerDataConfig();
                 createSkyWarsConfig();
                 createKitsConfig();
+                createMessageConfig();
                 saveResource("configtemplate.yml", true);
 
 
@@ -239,6 +240,32 @@ public class Main extends JavaPlugin {
     public static void saveKitsConfig() {
         try {
             kitsConfig.save(kitsFile);
+        } catch (Exception e) {e.printStackTrace();}
+    }
+
+
+
+    public static File messageFile;
+    public static FileConfiguration messageConfig;
+
+    private void createMessageConfig() {
+        messageFile = new File(getDataFolder(), "language.yml");
+        if (!messageFile.exists()) {
+            messageFile.getParentFile().mkdirs();
+            saveResource("language.yml", false);
+        }
+
+        messageConfig = new YamlConfiguration();
+        try {
+            messageConfig.load(messageFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void saveMessageConfig() {
+        try {
+            messageConfig.save(messageFile);
         } catch (Exception e) {e.printStackTrace();}
     }
 }

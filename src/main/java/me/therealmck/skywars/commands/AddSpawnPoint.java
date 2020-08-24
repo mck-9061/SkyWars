@@ -2,6 +2,7 @@ package me.therealmck.skywars.commands;
 
 import me.therealmck.skywars.Main;
 import me.therealmck.skywars.data.SkyWarsMap;
+import me.therealmck.skywars.utils.MessageHelper;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,6 +14,7 @@ public class AddSpawnPoint implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+        MessageHelper lang = new MessageHelper();
         if (commandSender instanceof Player && commandSender.hasPermission("skywars.admin.addspawnpoint")) {
             Location location = ((Player) commandSender).getLocation();
             SkyWarsMap map = null;
@@ -22,12 +24,12 @@ public class AddSpawnPoint implements CommandExecutor {
             }
 
             if (map == null) {
-                commandSender.sendMessage("This world isn't a skywars map.");
+                commandSender.sendMessage(lang.getAdminLocationAddFail());
                 return true;
             }
 
             map.addSpawn(location);
-            commandSender.sendMessage("Spawn location added successfully.");
+            commandSender.sendMessage(lang.getAdminSpawnAdded());
         }
         return true;
     }

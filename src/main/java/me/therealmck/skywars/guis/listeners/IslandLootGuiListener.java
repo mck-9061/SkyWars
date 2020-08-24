@@ -8,6 +8,7 @@ import me.therealmck.skywars.data.loot.enums.*;
 import me.therealmck.skywars.guis.customgame.EventChooserGui;
 import me.therealmck.skywars.guis.customgame.IslandLootGui;
 import me.therealmck.skywars.guis.customgame.MainCustomGameGui;
+import me.therealmck.skywars.utils.MessageHelper;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,9 +18,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class IslandLootGuiListener implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
+        MessageHelper lang = new MessageHelper();
         String title = event.getView().getTitle();
 
-        if (title.equals("§6Island Loot Settings")) {
+        if (title.equals(lang.getCustomGameIslandLootGui())) {
             if (event.getClickedInventory() == null) return;
 
             event.setCancelled(true);

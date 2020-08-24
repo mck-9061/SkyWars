@@ -2,6 +2,7 @@ package me.therealmck.skywars.commands;
 
 import me.therealmck.skywars.Main;
 import me.therealmck.skywars.data.SkyWarsMap;
+import me.therealmck.skywars.utils.MessageHelper;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -14,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 public class AddMidChest implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
+        MessageHelper lang = new MessageHelper();
         if (commandSender instanceof Player && commandSender.hasPermission("skywars.admin.addislandchest")) {
             Block block = ((Player) commandSender).getTargetBlock(null, 5);
             SkyWarsMap map = null;
@@ -23,15 +25,15 @@ public class AddMidChest implements CommandExecutor {
             }
 
             if (map == null) {
-                commandSender.sendMessage("This world isn't a skywars map.");
+                commandSender.sendMessage(lang.getAdminLocationAddFail());
                 return true;
             }
 
             if (block.getType().equals(Material.CHEST)) {
                 map.addMidChest(block);
-                commandSender.sendMessage("Chest added successfully.");
+                commandSender.sendMessage(lang.getAdminChestAdded());
             } else {
-                commandSender.sendMessage("You're not looking at a chest.");
+                commandSender.sendMessage(lang.getAdminChestFailed());
             }
         }
         return true;

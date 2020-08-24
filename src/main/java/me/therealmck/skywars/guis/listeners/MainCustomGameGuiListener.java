@@ -8,6 +8,7 @@ import me.therealmck.skywars.guis.customgame.EventChooserGui;
 import me.therealmck.skywars.guis.customgame.IslandLootGui;
 import me.therealmck.skywars.guis.customgame.MidLootGui;
 import me.therealmck.skywars.guis.customgame.ModifierGui;
+import me.therealmck.skywars.utils.MessageHelper;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,9 +24,10 @@ import java.util.Random;
 public class MainCustomGameGuiListener implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
+        MessageHelper lang = new MessageHelper();
         String title = event.getView().getTitle();
 
-        if (title.equals("§6Custom Game Settings")) {
+        if (title.equals(lang.getCustomGameMainGui())) {
             if (event.getClickedInventory() == null) return;
 
             event.setCancelled(true);

@@ -5,6 +5,7 @@ import me.therealmck.skywars.data.Game;
 import me.therealmck.skywars.data.SkyWarsSettings;
 import me.therealmck.skywars.data.players.GamePlayer;
 import me.therealmck.skywars.guis.customgame.*;
+import me.therealmck.skywars.utils.MessageHelper;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,9 +16,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class EventChooserGuiListener implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
+        MessageHelper lang = new MessageHelper();
         String title = event.getView().getTitle();
 
-        if (title.equals("§6Random Event Settings")) {
+        if (title.equals(lang.getCustomGameEventGui())) {
             if (event.getClickedInventory() == null) return;
 
             event.setCancelled(true);
