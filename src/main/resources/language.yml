@@ -64,4 +64,5 @@ leave-failed: "You're not in a waiting game."
 return: "Run /skywars lobby to return."
 no-games-available: "There are no games available and you have been placed into a queue."
 no-teleport: "You can't teleport out while a game is running!"
-
+not-enough-in-custom-game: "There aren't enough people in your game. Get people to run /skywars join {player} to join."
+no-maps-for-custom-game: "There aren't any maps available and your game has been placed into a queue."

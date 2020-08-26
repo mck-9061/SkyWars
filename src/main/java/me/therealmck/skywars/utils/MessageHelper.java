@@ -57,6 +57,8 @@ public class MessageHelper {
     private String returnToLobby;
     private String noGamesAvailable;
     private String noTeleport;
+    private String notEnoughInCustomGame;
+    private String noMapsForCustomGame;
 
     private List<String> killMessages;
     private List<String> deathMessages;
@@ -115,6 +117,8 @@ public class MessageHelper {
         this.returnToLobby = Main.messageConfig.getString("return-to-lobby");
         this.noGamesAvailable = Main.messageConfig.getString("no-games-available");
         this.noTeleport = Main.messageConfig.getString("no-teleport");
+        this.notEnoughInCustomGame = Main.messageConfig.getString("not-enough-in-custom-game");
+        this.noMapsForCustomGame = Main.messageConfig.getString("no-maps-for-custom-game");
 
         this.killMessages = Main.messageConfig.getStringList("kill-messages");
         this.deathMessages = Main.messageConfig.getStringList("solo-death-messages");
@@ -355,5 +359,13 @@ public class MessageHelper {
         String message = deathMessages.get(r.nextInt(deathMessages.size()));
         message = message.replace("{player}", player);
         return message;
+    }
+
+    public String getNotEnoughInCustomGame(String playerName) {
+        return notEnoughInCustomGame.replace("{player}", playerName);
+    }
+
+    public String getNoMapsForCustomGame() {
+        return noMapsForCustomGame;
     }
 }

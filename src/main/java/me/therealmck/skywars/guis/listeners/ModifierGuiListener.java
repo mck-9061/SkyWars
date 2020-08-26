@@ -6,6 +6,7 @@ import me.therealmck.skywars.data.SkyWarsSettings;
 import me.therealmck.skywars.guis.customgame.MainCustomGameGui;
 import me.therealmck.skywars.guis.customgame.MidLootGui;
 import me.therealmck.skywars.guis.customgame.ModifierGui;
+import me.therealmck.skywars.utils.MessageHelper;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,9 +15,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 public class ModifierGuiListener implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
+        MessageHelper lang = new MessageHelper();
         String title = event.getView().getTitle();
 
-        if (title.equals("§6Modifier Settings")) {
+        if (title.equals(lang.getCustomGameModifierGui())) {
             if (event.getClickedInventory() == null) return;
 
             event.setCancelled(true);

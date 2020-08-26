@@ -55,7 +55,7 @@ public class MainCustomGameGuiListener implements Listener {
                     Game activeGame = Main.activeCustomGames.get(event.getWhoClicked());
 
                     if (activeGame.getPlayers().size() == 1) {
-                        event.getWhoClicked().sendMessage("There aren't enough people in your game. Get players to join with /skywars join "+event.getWhoClicked().getName());
+                        event.getWhoClicked().sendMessage(lang.getNotEnoughInCustomGame(event.getWhoClicked().getName()));
                         return;
                     }
 
@@ -69,7 +69,7 @@ public class MainCustomGameGuiListener implements Listener {
 
                     if (games.isEmpty()) {
                         for (GamePlayer p : activeGame.getPlayers()) {
-                            p.getBukkitPlayer().sendMessage("There are no maps currently available and your game has been placed into a queue.");
+                            p.getBukkitPlayer().sendMessage(lang.getNoMapsForCustomGame());
                         }
                         Main.queue.addGame(activeGame);
                     } else {
@@ -91,7 +91,7 @@ public class MainCustomGameGuiListener implements Listener {
                 case 26:
                     Game game = Main.activeCustomGames.get(event.getWhoClicked());
                     for (GamePlayer player : game.getPlayers()) {
-                        player.getBukkitPlayer().sendMessage("The game was cancelled by the host!");
+                        player.getBukkitPlayer().sendMessage(lang.getRoomDeleted());
                     }
                     game.wipePlayers();
                     Main.preventInventoryCloseList.remove(event.getWhoClicked());

@@ -5,6 +5,7 @@ import me.therealmck.skywars.data.Game;
 import me.therealmck.skywars.data.SkyWarsSettings;
 import me.therealmck.skywars.data.Team;
 import me.therealmck.skywars.data.players.GamePlayer;
+import me.therealmck.skywars.utils.MessageHelper;
 import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
@@ -24,6 +25,7 @@ public class DeathListener implements Listener {
     // Just in case a player dies on their own (void etc.)
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
+        MessageHelper lang = new MessageHelper();
 
         GamePlayer killed = null;
         Game game = null;
@@ -49,7 +51,7 @@ public class DeathListener implements Listener {
             killed.getBukkitPlayer().setWalkSpeed((float) (0.2));
             for (PotionEffect effect : killed.getBukkitPlayer().getActivePotionEffects()) killed.getBukkitPlayer().removePotionEffect(effect.getType());
 
-            event.getEntity().sendTitle("§c§lYOU DIED!", "§cRun /skywars lobby to return.", 0, 80, 0);
+            event.getEntity().sendTitle(lang.getDied(), lang.getReturnToLobby(), 0, 80, 0);
             event.getEntity().teleport(game.getMap().getSpawns().get(0));
 
 
@@ -70,7 +72,7 @@ public class DeathListener implements Listener {
                 for (GamePlayer player : won.getPlayers()) {
                     player.getBukkitPlayer().setGameMode(GameMode.SPECTATOR);
                     player.getBukkitPlayer().setHealth(20);
-                    player.getBukkitPlayer().sendTitle("§6§lVICTORY!", "§6Run /skywars lobby to return.", 0, 120, 0);
+                    player.getBukkitPlayer().sendTitle(lang.getWin(), lang.getReturnToLobby(), 0, 120, 0);
                     if (!game.isCustom()) player.saveStats(true);
                     player.getBukkitPlayer().setMaxHealth(20);
                     player.getBukkitPlayer().setWalkSpeed((float) (0.2));

@@ -5,6 +5,7 @@ import me.therealmck.skywars.data.Game;
 import me.therealmck.skywars.data.SkyWarsSettings;
 import me.therealmck.skywars.data.Team;
 import me.therealmck.skywars.data.players.GamePlayer;
+import me.therealmck.skywars.utils.MessageHelper;
 import org.bukkit.GameMode;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
@@ -24,6 +25,7 @@ import java.util.List;
 public class DisconnectListener implements Listener {
     @EventHandler
     public void onDisconnect(PlayerQuitEvent event) {
+        MessageHelper lang = new MessageHelper();
         GamePlayer gp = null;
         Game g = null;
 
@@ -79,7 +81,7 @@ public class DisconnectListener implements Listener {
                 for (GamePlayer player : won.getPlayers()) {
                     player.getBukkitPlayer().setGameMode(GameMode.SPECTATOR);
                     player.getBukkitPlayer().setHealth(20);
-                    player.getBukkitPlayer().sendTitle("§6§lVICTORY!", "§6Run /skywars lobby to return.", 0, 120, 0);
+                    player.getBukkitPlayer().sendTitle(lang.getWin(), lang.getReturnToLobby(), 0, 120, 0);
                     if (!g.isCustom()) player.saveStats(true);
                     player.getBukkitPlayer().setMaxHealth(20);
                     player.getBukkitPlayer().setWalkSpeed((float) (0.2));

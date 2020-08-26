@@ -4,6 +4,7 @@ import me.therealmck.skywars.Main;
 import me.therealmck.skywars.data.Game;
 import me.therealmck.skywars.data.Team;
 import me.therealmck.skywars.data.players.GamePlayer;
+import me.therealmck.skywars.utils.MessageHelper;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,6 +19,7 @@ import java.util.List;
 public class TeamPickerGuiListener implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
+        MessageHelper lang = new MessageHelper();
         String title = event.getView().getTitle();
 
         if (title.equals("§6Pick your team")) {
@@ -82,7 +84,7 @@ public class TeamPickerGuiListener implements Listener {
 
 
             addTo.addPlayer(player);
-            player.getBukkitPlayer().sendMessage("Set your team! The game will start soon.");
+            player.getBukkitPlayer().sendMessage(lang.getTeamPicked());
             ItemMeta meta = item.getItemMeta();
             List<String> lore;
             if (meta.hasLore()) lore = meta.getLore();
