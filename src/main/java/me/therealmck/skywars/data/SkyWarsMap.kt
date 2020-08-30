@@ -1,96 +1,84 @@
-package me.therealmck.skywars.data;
+package me.therealmck.skywars.data
 
-import me.therealmck.skywars.Main;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.configuration.ConfigurationSection;
+import me.therealmck.skywars.Main
+import org.bukkit.Bukkit
+import org.bukkit.Location
+import org.bukkit.World
+import org.bukkit.block.Block
+import java.util.*
 
-import java.util.ArrayList;
-import java.util.List;
+class SkyWarsMap {
+    var bukkitWorld: World?
+        private set
+    private var spawns: MutableList<Location>
+    private var islandChests: MutableList<Location>
+    private var midChests: MutableList<Location>
+    private var lobby: Location? = null
 
-public class SkyWarsMap {
-    private World bukkitWorld;
-    private List<Location> spawns;
-    private List<Location> islandChests;
-    private List<Location> midChests;
-    private Location lobby;
-
-    public SkyWarsMap(World bukkitWorld) {
-        this.bukkitWorld = bukkitWorld;
-        this.spawns = new ArrayList<>();
-        this.islandChests = new ArrayList<>();
-        this.midChests = new ArrayList<>();
+    constructor(bukkitWorld: World?) {
+        this.bukkitWorld = bukkitWorld
+        spawns = ArrayList()
+        islandChests = ArrayList()
+        midChests = ArrayList()
     }
 
-    public SkyWarsMap(String worldName) {
-        this.spawns = new ArrayList<>();
-        this.islandChests = new ArrayList<>();
-        this.midChests = new ArrayList<>();
-
-        ConfigurationSection section = Main.mapConfig.getConfigurationSection(worldName);
-        this.bukkitWorld = Bukkit.getWorld(worldName);
-
-        this.lobby = section.getLocation("lobby");
-        List<Location> spawns = (List<Location>) section.getList("Spawns");
-        List<Location> islandChests = (List<Location>) section.get("IslandChests");
-        List<Location> midChests = (List<Location>) section.get("MidChests");
-
-        for (Location spawn : spawns) {
-            Location s = spawn.clone();
-            s.setWorld(Bukkit.getWorld(worldName));
-            this.spawns.add(s);
+    constructor(worldName: String?) {
+        spawns = ArrayList()
+        islandChests = ArrayList()
+        midChests = ArrayList()
+        val section = Main.mapConfig.getConfigurationSection(worldName!!)!!
+        bukkitWorld = Bukkit.getWorld(worldName)
+        lobby = section.getLocation("lobby")
+        val spawns = section.getList("Spawns") as List<Location?>?
+        val islandChests = section["IslandChests"] as List<Location>?
+        val midChests = section["MidChests"] as List<Location>?
+        for (spawn in spawns!!) {
+            val s = spawn!!.clone()
+            s.world = Bukkit.getWorld(worldName)
+            this.spawns.add(s)
         }
-        for (Location chest : islandChests) {
-            Location s = chest.clone();
-            s.setWorld(Bukkit.getWorld(worldName));
-            this.islandChests.add(s);
+        for (chest in islandChests!!) {
+            val s = chest.clone()
+            s.world = Bukkit.getWorld(worldName)
+            this.islandChests.add(s)
         }
-        for (Location chest : midChests) {
-            Location s = chest.clone();
-            s.setWorld(Bukkit.getWorld(worldName));
-            this.midChests.add(s);
+        for (chest in midChests!!) {
+            val s = chest.clone()
+            s.world = Bukkit.getWorld(worldName)
+            this.midChests.add(s)
         }
     }
 
-    public World getBukkitWorld() {
-        return bukkitWorld;
+    fun getSpawns(): List<Location> {
+        return spawns
     }
 
-    public List<Location> getSpawns() {
-        return spawns;
+    fun addSpawn(spawn: Location) {
+        spawns.add(spawn)
+        val section = Main.mapConfig.getConfigurationSection(bukkitWorld!!.name)!!
+        section["Spawns"] = spawns
+        Main.saveMapConfig()
     }
 
-    public void addSpawn(Location spawn) {
-        spawns.add(spawn);
-        ConfigurationSection section = Main.mapConfig.getConfigurationSection(getBukkitWorld().getName());
-        assert section != null;
-        section.set("Spawns", spawns);
-        Main.saveMapConfig();
+    fun addIslandChest(chest: Block) {
+        islandChests.add(chest.location)
+        val section = Main.mapConfig.getConfigurationSection(bukkitWorld!!.name)!!
+        section["IslandChests"] = islandChests
+        Main.saveMapConfig()
     }
 
-    public void addIslandChest(Block chest) {
-        islandChests.add(chest.getLocation());
-        ConfigurationSection section = Main.mapConfig.getConfigurationSection(getBukkitWorld().getName());
-        assert section != null;
-        section.set("IslandChests", islandChests);
-        Main.saveMapConfig();
+    fun addMidChest(chest: Block) {
+        midChests.add(chest.location)
+        val section = Main.mapConfig.getConfigurationSection(bukkitWorld!!.name)!!
+        section["MidChests"] = midChests
+        Main.saveMapConfig()
     }
 
-    public void addMidChest(Block chest) {
-        midChests.add(chest.getLocation());
-        ConfigurationSection section = Main.mapConfig.getConfigurationSection(getBukkitWorld().getName());
-        assert section != null;
-        section.set("MidChests", midChests);
-        Main.saveMapConfig();
+    fun getIslandChests(): List<Location> {
+        return islandChests
     }
 
-    public List<Location> getIslandChests() {
-        return islandChests;
-    }
-
-    public List<Location> getMidChests() {
-        return midChests;
+    fun getMidChests(): List<Location> {
+        return midChests
     }
 }

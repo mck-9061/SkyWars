@@ -30,7 +30,7 @@ public class MidLootGuiListener implements Listener {
 
             Game game = Main.activeCustomGames.get(event.getWhoClicked());
             SkyWarsSettings settings = game.settings;
-            LootTable table = settings.getMidLootTable();
+            LootTable table = settings.midLootTable;
 
             switch (event.getSlot()) {
                 case 9:
@@ -45,7 +45,7 @@ public class MidLootGuiListener implements Listener {
                     }
 
                     table.setSwordLevel(changeTo);
-                    settings.setMidLootTable(table);
+                    settings.midLootTable = table;
                     game.settings = settings;
                     Main.activeCustomGames.remove(event.getWhoClicked());
                     Main.activeCustomGames.put((Player) event.getWhoClicked(), game);
@@ -66,7 +66,7 @@ public class MidLootGuiListener implements Listener {
                     }
 
                     table.setBowLevel(changeToBow);
-                    settings.setMidLootTable(table);
+                    settings.midLootTable = table;
                     game.settings = settings;
                     Main.activeCustomGames.remove(event.getWhoClicked());
                     Main.activeCustomGames.put((Player) event.getWhoClicked(), game);
@@ -87,7 +87,7 @@ public class MidLootGuiListener implements Listener {
                     }
 
                     table.setPearlLevel(changeToPearl);
-                    settings.setMidLootTable(table);
+                    settings.midLootTable = table;
                     game.settings = settings;
                     Main.activeCustomGames.remove(event.getWhoClicked());
                     Main.activeCustomGames.put((Player) event.getWhoClicked(), game);
@@ -108,7 +108,7 @@ public class MidLootGuiListener implements Listener {
                     }
 
                     table.setProjectileLevel(changeToProjectile);
-                    settings.setMidLootTable(table);
+                    settings.midLootTable = table;
                     game.settings = settings;
                     Main.activeCustomGames.remove(event.getWhoClicked());
                     Main.activeCustomGames.put((Player) event.getWhoClicked(), game);
@@ -129,7 +129,7 @@ public class MidLootGuiListener implements Listener {
                     }
 
                     table.setArmorLevel(changeToArmor);
-                    settings.setMidLootTable(table);
+                    settings.midLootTable = table;
                     game.settings = settings;
                     Main.activeCustomGames.remove(event.getWhoClicked());
                     Main.activeCustomGames.put((Player) event.getWhoClicked(), game);
@@ -150,7 +150,7 @@ public class MidLootGuiListener implements Listener {
                     }
 
                     table.setMiscLevel(changeToMisc);
-                    settings.setMidLootTable(table);
+                    settings.midLootTable = table;
                     game.settings = settings;
                     Main.activeCustomGames.remove(event.getWhoClicked());
                     Main.activeCustomGames.put((Player) event.getWhoClicked(), game);

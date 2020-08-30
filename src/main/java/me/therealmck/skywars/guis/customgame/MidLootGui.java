@@ -27,12 +27,12 @@ public class MidLootGui {
             bukkitInventory.setItem(slot, new ItemStack(Material.RED_STAINED_GLASS_PANE));
         }
 
-        bukkitInventory.setItem(9, Utils.getItemStackWithNameAndLore(Material.DIAMOND_SWORD, lang.getSwordLoot(), Collections.singletonList(game.settings.getMidLootTable().getSwordLevel().name().split("_")[1])));
-        bukkitInventory.setItem(11, Utils.getItemStackWithNameAndLore(Material.BOW, lang.getBowLoot(), Collections.singletonList(game.settings.getMidLootTable().getBowLevel().name().split("_")[1])));
-        bukkitInventory.setItem(12, Utils.getItemStackWithNameAndLore(Material.ENDER_PEARL, lang.getPearlLoot(), Collections.singletonList(game.settings.getMidLootTable().getPearlLevel().name().split("_")[1])));
-        bukkitInventory.setItem(14, Utils.getItemStackWithNameAndLore(Material.SNOWBALL, lang.getProjectileLoot(), Collections.singletonList(game.settings.getMidLootTable().getProjectileLevel().name().split("_")[1])));
-        bukkitInventory.setItem(15, Utils.getItemStackWithNameAndLore(Material.DIAMOND_CHESTPLATE, lang.getArmorLoot(), Collections.singletonList(game.settings.getMidLootTable().getArmorLevel().name().split("_")[1])));
-        bukkitInventory.setItem(17, Utils.getItemStackWithNameAndLore(Material.OAK_PLANKS, lang.getMiscLoot(), Collections.singletonList(game.settings.getMidLootTable().getMiscLevel().name().split("_")[1])));
+        bukkitInventory.setItem(9, Utils.getItemStackWithNameAndLore(Material.DIAMOND_SWORD, lang.getSwordLoot(), Collections.singletonList(game.settings.midLootTable.getSwordLevel().name().split("_")[1])));
+        bukkitInventory.setItem(11, Utils.getItemStackWithNameAndLore(Material.BOW, lang.getBowLoot(), Collections.singletonList(game.settings.midLootTable.getBowLevel().name().split("_")[1])));
+        bukkitInventory.setItem(12, Utils.getItemStackWithNameAndLore(Material.ENDER_PEARL, lang.getPearlLoot(), Collections.singletonList(game.settings.midLootTable.getPearlLevel().name().split("_")[1])));
+        bukkitInventory.setItem(14, Utils.getItemStackWithNameAndLore(Material.SNOWBALL, lang.getProjectileLoot(), Collections.singletonList(game.settings.midLootTable.getProjectileLevel().name().split("_")[1])));
+        bukkitInventory.setItem(15, Utils.getItemStackWithNameAndLore(Material.DIAMOND_CHESTPLATE, lang.getArmorLoot(), Collections.singletonList(game.settings.midLootTable.getArmorLevel().name().split("_")[1])));
+        bukkitInventory.setItem(17, Utils.getItemStackWithNameAndLore(Material.OAK_PLANKS, lang.getMiscLoot(), Collections.singletonList(game.settings.midLootTable.getMiscLevel().name().split("_")[1])));
 
         bukkitInventory.setItem(26, Utils.getItemStackWithNameAndLore(Material.BARRIER, lang.getGuiBack(), new ArrayList<>()));
 

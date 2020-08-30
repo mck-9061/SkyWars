@@ -1,66 +1,52 @@
-package me.therealmck.skywars.data;
+package me.therealmck.skywars.data
 
-import me.therealmck.skywars.Main;
-import me.therealmck.skywars.utils.Utils;
-import org.apache.commons.lang.WordUtils;
-import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+import me.therealmck.skywars.Main
+import me.therealmck.skywars.utils.Utils
+import org.apache.commons.lang.WordUtils
+import org.bukkit.Material
+import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
+import java.util.*
 
-import java.util.ArrayList;
-import java.util.List;
+class Kit {
+    var name: String
+        private set
+    var permission: String?
+        private set
+    private var icon: ItemStack?
+    var items: List<ItemStack?>?
+        private set
 
-public class Kit {
-    private String name;
-    private String permission;
-    private ItemStack icon;
-    private List<ItemStack> items;
-
-    public Kit(String identifier) {
-        this.name = identifier;
-
-        ConfigurationSection section = Main.kitsConfig.getConfigurationSection(name);
-        this.permission = section.getString("permission");
-        this.icon = section.getItemStack("icon");
-        this.items = (List<ItemStack>) section.getList("items");
+    constructor(identifier: String) {
+        name = identifier
+        val section = Main.kitsConfig.getConfigurationSection(name)!!
+        permission = section.getString("permission")
+        icon = section.getItemStack("icon")
+        items = section.getList("items") as List<ItemStack?>?
     }
 
-    public Kit(Kit clone) {
-        this.name = clone.name;
-        this.permission = clone.permission;
-        this.items = clone.items;
-        this.icon = clone.icon;
+    constructor(clone: Kit) {
+        name = clone.name
+        permission = clone.permission
+        items = clone.items
+        icon = clone.icon
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getPermission() {
-        return permission;
-    }
-
-    public ItemStack getIcon(Player player) {
-        List<String> lore = new ArrayList<>();
-        for (ItemStack item : items) {
-            String name = WordUtils.capitalize(item.getType().toString().replace("_", " "));
-            lore.add(String.format("%s x %s", name, item.getAmount()));
+    fun getIcon(player: Player): ItemStack {
+        val lore: MutableList<String> = ArrayList()
+        for (item in items!!) {
+            val name = WordUtils.capitalize(item!!.type.toString().replace("_", " "))
+            lore.add(String.format("%s x %s", name, item.amount))
         }
-        ItemStack icon = Utils.getItemStackWithNameAndLore(this.icon.getType(), name, lore);
-
-        if (!player.hasPermission(permission)) {
-            icon.setType(Material.BARRIER);
-            ItemMeta meta = icon.getItemMeta();
-            meta.setLore(new ArrayList<>());
-            meta.setDisplayName("Kit locked!");
-            icon.setItemMeta(meta);
+        val icon = Utils.getItemStackWithNameAndLore(icon!!.type, name, lore)
+        if (!player.hasPermission(permission!!)) {
+            icon.type = Material.BARRIER
+            val meta = icon.itemMeta
+            meta!!.lore = ArrayList()
+            meta.setDisplayName("Kit locked!")
+            icon.itemMeta = meta
         }
-        return icon;
+        return icon
     }
 
-    public List<ItemStack> getItems() {
-        return items;
-    }
 }

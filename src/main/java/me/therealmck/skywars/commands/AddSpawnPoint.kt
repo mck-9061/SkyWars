@@ -1,36 +1,30 @@
-package me.therealmck.skywars.commands;
+package me.therealmck.skywars.commands
 
-import me.therealmck.skywars.Main;
-import me.therealmck.skywars.data.SkyWarsMap;
-import me.therealmck.skywars.utils.MessageHelper;
-import org.bukkit.Location;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import me.therealmck.skywars.Main
+import me.therealmck.skywars.data.SkyWarsMap
+import me.therealmck.skywars.utils.MessageHelper
+import org.bukkit.command.Command
+import org.bukkit.command.CommandExecutor
+import org.bukkit.command.CommandSender
+import org.bukkit.entity.Player
 
-public class AddSpawnPoint implements CommandExecutor {
+class AddSpawnPoint : CommandExecutor {
     // This command sets a spawn point of a SkyWars map.
-
-    @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-        MessageHelper lang = new MessageHelper();
-        if (commandSender instanceof Player && commandSender.hasPermission("skywars.admin.addspawnpoint")) {
-            Location location = ((Player) commandSender).getLocation();
-            SkyWarsMap map = null;
-
-            for (SkyWarsMap m : Main.maps) {
-                if (m.getBukkitWorld().getName().equals(location.getWorld().getName())) map = m;
+    override fun onCommand(commandSender: CommandSender, command: Command, s: String, strings: Array<String>): Boolean {
+        val lang = MessageHelper()
+        if (commandSender is Player && commandSender.hasPermission("skywars.admin.addspawnpoint")) {
+            val location = commandSender.location
+            var map: SkyWarsMap? = null
+            for (m in Main.maps) {
+                if (m.bukkitWorld!!.name == location.world!!.name) map = m
             }
-
             if (map == null) {
-                commandSender.sendMessage(lang.getAdminLocationAddFail());
-                return true;
+                commandSender.sendMessage(lang.adminLocationAddFail)
+                return true
             }
-
-            map.addSpawn(location);
-            commandSender.sendMessage(lang.getAdminSpawnAdded());
+            map.addSpawn(location)
+            commandSender.sendMessage(lang.adminSpawnAdded)
         }
-        return true;
+        return true
     }
 }

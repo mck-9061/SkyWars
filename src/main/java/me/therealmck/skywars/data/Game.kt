@@ -33,10 +33,10 @@ class Game {
     fun fillChests() {
         val islandTable = settings.islandLootTable
         val midTable = settings.midLootTable
-        val islandChests = map!!.islandChests
-        val midChests = map!!.midChests
+        val islandChests = map!!.getIslandChests()
+        val midChests = map!!.getMidChests()
         for (islandChestLoc in islandChests) {
-            islandChestLoc.world = Bukkit.getWorld(map!!.bukkitWorld.name)
+            islandChestLoc.world = Bukkit.getWorld(map!!.bukkitWorld!!.name)
             val islandChest = islandChestLoc.block
             if (islandChest.type == Material.CHEST) {
                 val inv = (islandChest.state as Chest).blockInventory
@@ -68,7 +68,7 @@ class Game {
             }
         }
         for (midChestLoc in midChests) {
-            midChestLoc.world = Bukkit.getWorld(map!!.bukkitWorld.name)
+            midChestLoc.world = Bukkit.getWorld(map!!.bukkitWorld!!.name)
             val midChest = midChestLoc.block
             if (midChest.type == Material.CHEST) {
                 val inv = (midChest.state as Chest).blockInventory
@@ -104,7 +104,7 @@ class Game {
     fun setMap(map: SkyWarsMap) {
         val world = map.bukkitWorld
         // Copy world to backup
-        Utils.unloadWorld(world.name + "_back")
+        Utils.unloadWorld(world!!.name + "_back")
         Utils.copyFileStructure(world.worldFolder, File(Bukkit.getWorldContainer(), world.name + "_back"))
         WorldCreator(world.name + "_back").createWorld()
         this.map = map
@@ -112,7 +112,7 @@ class Game {
 
     fun restoreBackup() {
         val world = map!!.bukkitWorld
-        val worldName = world.name
+        val worldName = world!!.name
         val backupWorld = Bukkit.getWorld(world.name + "_back")
         Utils.unloadWorld(worldName)
         Utils.copyFileStructure(backupWorld!!.worldFolder, File(Bukkit.getWorldContainer(), worldName))
@@ -220,17 +220,19 @@ class Game {
 
 
         // Warp players to starting points.
-        println(map!!.spawns.size)
+        println(map!!.getSpawns().size)
         println(players.size)
-        return if (map!!.spawns.size <= players.size / 2) false else {
-            val editableSpawnList = map!!.spawns
+        return if (map!!.getSpawns().size <= players.size / 2) false else {
+            val editableSpawnList = mutableListOf<Location>()
+            editableSpawnList.addAll(map!!.getSpawns())
+
             for (team in teams) {
                 val r = Random()
                 val spawn = editableSpawnList[r.nextInt(editableSpawnList.size)]
                 editableSpawnList.remove(spawn)
-                println(map!!.bukkitWorld.name)
+                println(map!!.bukkitWorld!!.name)
                 println(spawn.world!!.name)
-                spawn.world = Bukkit.getWorld(map!!.bukkitWorld.name)
+                spawn.world = Bukkit.getWorld(map!!.bukkitWorld!!.name)
 
                 // construct cage
                 val cageBaseBlock = spawn.clone()
@@ -297,7 +299,7 @@ class Game {
                     player.bukkitPlayer.closeInventory()
                     Main.pregame.remove(player.bukkitPlayer)
                     if (kits.containsKey(player.bukkitPlayer)) {
-                        for (item in kits[player.bukkitPlayer]!!.items) player.bukkitPlayer.inventory.addItem(item.clone())
+                        for (item in kits[player.bukkitPlayer]!!.items!!) player.bukkitPlayer.inventory.addItem(item!!.clone())
                     }
                 }
             }, 300)
@@ -318,9 +320,9 @@ class Game {
                         for (player in players) player.bukkitPlayer.sendMessage("Zombie horde event!")
                         val r = Random()
                         for (i in 0..19) {
-                            val spawn = map!!.midChests[r.nextInt(map!!.midChests.size)]
+                            val spawn = map!!.getMidChests()[r.nextInt(map!!.getMidChests().size)]
                             spawn.y = spawn.y + 2
-                            map!!.bukkitWorld.spawnEntity(spawn, EntityType.ZOMBIE)
+                            map!!.bukkitWorld!!.spawnEntity(spawn, EntityType.ZOMBIE)
                         }
                     }
                 }
@@ -339,7 +341,7 @@ class Game {
                                     spawn.y = spawn.y + 16
                                     spawn.x = spawn.x + (r.nextInt(6) - 3)
                                     spawn.z = spawn.z + (r.nextInt(6) - 3)
-                                    map!!.bukkitWorld.spawnFallingBlock(spawn, Material.ANVIL, 0.toByte())
+                                    map!!.bukkitWorld!!.spawnFallingBlock(spawn, Material.ANVIL, 0.toByte())
                                 }
                             }.runTaskLater(Main.instance, i * 5.toLong())
                         }
@@ -353,7 +355,7 @@ class Game {
                     override fun run() {
                         for (player in players) {
                             player.bukkitPlayer.sendMessage("Horse mount event!")
-                            val horse = map!!.bukkitWorld.spawnEntity(player.bukkitPlayer.location, EntityType.HORSE) as Horse
+                            val horse = map!!.bukkitWorld!!.spawnEntity(player.bukkitPlayer.location, EntityType.HORSE) as Horse
                             horse.inventory.saddle = ItemStack(Material.SADDLE)
                             horse.isTamed = true
                             horse.addPassenger(player.bukkitPlayer)

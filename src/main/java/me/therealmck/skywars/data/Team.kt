@@ -1,36 +1,22 @@
-package me.therealmck.skywars.data;
+package me.therealmck.skywars.data
 
-import me.therealmck.skywars.data.players.GamePlayer;
-import org.bukkit.Material;
+import me.therealmck.skywars.data.players.GamePlayer
+import org.bukkit.Material
+import java.util.*
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class Team {
-    private List<GamePlayer> players = new ArrayList<>();
-    private Material icon;
-
-    public Team() {
-
+class Team {
+    private val players: MutableList<GamePlayer> = ArrayList()
+    var icon: Material? = null
+    fun getPlayers(): List<GamePlayer> {
+        return players
     }
 
-    public List<GamePlayer> getPlayers() {
-        return players;
+    fun addPlayer(player: GamePlayer) {
+        players.add(player)
     }
 
-    public void addPlayer(GamePlayer player) {
-        players.add(player);
+    fun removePlayer(player: GamePlayer?) {
+        players.remove(player)
     }
 
-    public void removePlayer(GamePlayer player) {
-        players.remove(player);
-    }
-
-    public Material getIcon() {
-        return icon;
-    }
-
-    public void setIcon(Material icon) {
-        this.icon = icon;
-    }
 }

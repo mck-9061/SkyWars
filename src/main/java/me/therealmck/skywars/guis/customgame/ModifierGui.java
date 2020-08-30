@@ -27,9 +27,9 @@ public class ModifierGui {
             bukkitInventory.setItem(slot, new ItemStack(Material.RED_STAINED_GLASS_PANE));
         }
 
-        bukkitInventory.setItem(11, Utils.getItemStackWithNameAndLore(Material.RABBIT_FOOT, lang.getJumpModifier(), Collections.singletonList(String.valueOf(game.settings.getJumpMultiplier()))));
-        bukkitInventory.setItem(13, Utils.getItemStackWithNameAndLore(Material.SUGAR, lang.getSpeedModifier(), Collections.singletonList(String.valueOf(game.settings.getSpeedMultiplier()))));
-        bukkitInventory.setItem(15, Utils.getItemStackWithNameAndLore(Material.RED_CONCRETE, lang.getHealthModifier(), Collections.singletonList(String.valueOf(game.settings.getMaxHealth()))));
+        bukkitInventory.setItem(11, Utils.getItemStackWithNameAndLore(Material.RABBIT_FOOT, lang.getJumpModifier(), Collections.singletonList(String.valueOf(game.settings.jumpMultiplier))));
+        bukkitInventory.setItem(13, Utils.getItemStackWithNameAndLore(Material.SUGAR, lang.getSpeedModifier(), Collections.singletonList(String.valueOf(game.settings.speedMultiplier))));
+        bukkitInventory.setItem(15, Utils.getItemStackWithNameAndLore(Material.RED_CONCRETE, lang.getHealthModifier(), Collections.singletonList(String.valueOf(game.settings.maxHealth))));
 
         bukkitInventory.setItem(26, Utils.getItemStackWithNameAndLore(Material.BARRIER, lang.getGuiBack(), new ArrayList<>()));
 

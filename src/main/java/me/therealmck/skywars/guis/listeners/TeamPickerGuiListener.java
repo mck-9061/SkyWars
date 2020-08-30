@@ -48,7 +48,7 @@ public class TeamPickerGuiListener implements Listener {
             Team addTo = null;
 
             for (Team team : game.getTeams()) {
-                if (team.getIcon().equals(item.getType())) {
+                if (team.icon.equals(item.getType())) {
                     int maxPlayers = Main.skyWarsConfig.getInt("MaximumPlayers");
                     int teamCount = Main.skyWarsConfig.getInt("TeamCount");
                     int teamSize = maxPlayers / teamCount;
@@ -67,7 +67,7 @@ public class TeamPickerGuiListener implements Listener {
                     team.removePlayer(player);
                     for (ItemStack i : event.getClickedInventory()) {
                         if (i == null || i.getType() == null) continue;
-                        if (i.getType().equals(team.getIcon())) {
+                        if (i.getType().equals(team.icon)) {
                             ItemMeta meta = i.getItemMeta();
                             List<String> lore;
                             if (meta.hasLore()) lore = meta.getLore();

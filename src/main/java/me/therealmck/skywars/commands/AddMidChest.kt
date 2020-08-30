@@ -1,41 +1,34 @@
-package me.therealmck.skywars.commands;
+package me.therealmck.skywars.commands
 
-import me.therealmck.skywars.Main;
-import me.therealmck.skywars.data.SkyWarsMap;
-import me.therealmck.skywars.utils.MessageHelper;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.Chest;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
+import me.therealmck.skywars.Main
+import me.therealmck.skywars.data.SkyWarsMap
+import me.therealmck.skywars.utils.MessageHelper
+import org.bukkit.Material
+import org.bukkit.command.Command
+import org.bukkit.command.CommandExecutor
+import org.bukkit.command.CommandSender
+import org.bukkit.entity.Player
 
-public class AddMidChest implements CommandExecutor {
-    @Override
-    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
-        MessageHelper lang = new MessageHelper();
-        if (commandSender instanceof Player && commandSender.hasPermission("skywars.admin.addislandchest")) {
-            Block block = ((Player) commandSender).getTargetBlock(null, 5);
-            SkyWarsMap map = null;
-
-            for (SkyWarsMap m : Main.maps) {
-                if (m.getBukkitWorld().getName().equals(block.getWorld().getName())) map = m;
+class AddMidChest : CommandExecutor {
+    override fun onCommand(commandSender: CommandSender, command: Command, s: String, args: Array<String>): Boolean {
+        val lang = MessageHelper()
+        if (commandSender is Player && commandSender.hasPermission("skywars.admin.addislandchest")) {
+            val block = commandSender.getTargetBlock(null, 5)
+            var map: SkyWarsMap? = null
+            for (m in Main.maps) {
+                if (m.bukkitWorld!!.name == block.world.name) map = m
             }
-
             if (map == null) {
-                commandSender.sendMessage(lang.getAdminLocationAddFail());
-                return true;
+                commandSender.sendMessage(lang.adminLocationAddFail)
+                return true
             }
-
-            if (block.getType().equals(Material.CHEST)) {
-                map.addMidChest(block);
-                commandSender.sendMessage(lang.getAdminChestAdded());
+            if (block.type == Material.CHEST) {
+                map.addMidChest(block)
+                commandSender.sendMessage(lang.adminChestAdded)
             } else {
-                commandSender.sendMessage(lang.getAdminChestFailed());
+                commandSender.sendMessage(lang.adminChestFailed)
             }
         }
-        return true;
+        return true
     }
 }

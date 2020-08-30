@@ -1,114 +1,94 @@
-package me.therealmck.skywars.data;
+package me.therealmck.skywars.data
 
-import me.therealmck.skywars.Main;
-import me.therealmck.skywars.data.players.GamePlayer;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
+import me.therealmck.skywars.Main
+import me.therealmck.skywars.data.players.GamePlayer
+import org.bukkit.entity.Player
+import org.bukkit.scheduler.BukkitRunnable
+import java.util.*
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class Queue {
-    private List<Player> regularQueue;
-    private List<Player> fastPassQueue;
-    private List<Game> customGameQueue;
-    private BukkitRunnable reminder;
-
-    public Queue() {
-        this.regularQueue = new ArrayList<>();
-        this.fastPassQueue = new ArrayList<>();
-        this.customGameQueue = new ArrayList<>();
-
-        reminder = new BukkitRunnable() {
-            @Override
-            public void run() {
-                for (Player p : regularQueue) p.sendMessage("Postion "+regularQueue.indexOf(p)+" in the queue.");
-                for (Player p : fastPassQueue) p.sendMessage("Postion "+fastPassQueue.indexOf(p)+" in the Fast Pass queue.");
-                for (Game game : customGameQueue) {
-                    for (GamePlayer gp : game.getPlayers()) gp.getBukkitPlayer().sendMessage("Postion "+customGameQueue.indexOf(game)+" in the Custom Game queue.");
-                }
-            }
-        };
-
-        reminder.runTaskTimer(Main.instance, 0, 200);
+class Queue {
+    private val regularQueue: MutableList<Player>
+    private val fastPassQueue: MutableList<Player>
+    private val customGameQueue: MutableList<Game>
+    private val reminder: BukkitRunnable
+    fun getRegularQueue(): List<Player> {
+        return regularQueue
     }
 
-    public List<Player> getRegularQueue() {
-        return regularQueue;
+    fun getFastPassQueue(): List<Player> {
+        return fastPassQueue
     }
 
-    public List<Player> getFastPassQueue() {
-        return fastPassQueue;
+    fun getCustomGameQueue(): List<Game> {
+        return customGameQueue
     }
 
-    public List<Game> getCustomGameQueue() {
-        return customGameQueue;
+    fun addRegularPlayer(player: Player) {
+        regularQueue.add(player)
     }
 
-    public void addRegularPlayer(Player player) {
-        regularQueue.add(player);
+    fun addFastPlayer(player: Player) {
+        fastPassQueue.add(player)
     }
 
-    public void addFastPlayer(Player player) {
-        fastPassQueue.add(player);
+    fun addGame(game: Game) {
+        customGameQueue.add(game)
     }
 
-    public void addGame(Game game) {
-        customGameQueue.add(game);
-    }
-
-    public void processQueue(Game oldGame) {
+    fun processQueue(oldGame: Game) {
         // Logic to add queued players and games to a running game.
         if (!customGameQueue.isEmpty()) {
             // Add a queued custom game to a running game.
-            Game game = customGameQueue.get(0);
-            customGameQueue.remove(game);
-
-            game.setMap(oldGame.getMap());
-            game.fillChests();
-            game.beginGame();
-            Main.waitingGames.remove(oldGame);
-            Main.runningGames.add(game);
-
+            val game = customGameQueue[0]
+            customGameQueue.remove(game)
+            game.setMap(oldGame.map!!)
+            game.fillChests()
+            game.beginGame()
+            Main.waitingGames.remove(oldGame)
+            Main.runningGames.add(game)
         } else {
             // Process fast pass queue before regular queue
-            Game game = new Game();
-            game.setMap(oldGame.getMap());
-            int maxPlayers = Main.skyWarsConfig.getInt("MaximumPlayers");
-
-            List<Player> fastPassRemove = new ArrayList<>();
-            List<Player> regularRemove = new ArrayList<>();
-
-            for (Player p : fastPassQueue) {
-                if (game.getPlayers().size() < maxPlayers) {
-                    game.addPlayer(new GamePlayer(p));
-                    fastPassRemove.add(p);
-
-                    for (GamePlayer gp : game.getPlayers()) gp.getBukkitPlayer().sendMessage(p.getDisplayName()
-                            + " joined the game! (" + game.getPlayers().size() + "/" + Main.skyWarsConfig.getInt("MaximumPlayers") + ")");
-
-
+            val game = Game()
+            game.setMap(oldGame.map!!)
+            val maxPlayers = Main.skyWarsConfig.getInt("MaximumPlayers")
+            val fastPassRemove: MutableList<Player> = ArrayList()
+            val regularRemove: MutableList<Player> = ArrayList()
+            for (p in fastPassQueue) {
+                if (game.getPlayers().size < maxPlayers) {
+                    game.addPlayer(GamePlayer(p))
+                    fastPassRemove.add(p)
+                    for (gp in game.getPlayers()) gp.bukkitPlayer.sendMessage(p.displayName
+                            + " joined the game! (" + game.getPlayers().size + "/" + Main.skyWarsConfig.getInt("MaximumPlayers") + ")")
                 }
             }
-
-            for (Player p : regularQueue) {
-                if (game.getPlayers().size() < maxPlayers) {
-                    game.addPlayer(new GamePlayer(p));
-                    regularRemove.add(p);
-
-                    for (GamePlayer gp : game.getPlayers()) gp.getBukkitPlayer().sendMessage(p.getDisplayName()
-                            + " joined the game! (" + game.getPlayers().size() + "/" + Main.skyWarsConfig.getInt("MaximumPlayers") + ")");
-
-
+            for (p in regularQueue) {
+                if (game.getPlayers().size < maxPlayers) {
+                    game.addPlayer(GamePlayer(p))
+                    regularRemove.add(p)
+                    for (gp in game.getPlayers()) gp.bukkitPlayer.sendMessage(p.displayName
+                            + " joined the game! (" + game.getPlayers().size + "/" + Main.skyWarsConfig.getInt("MaximumPlayers") + ")")
                 }
             }
-
-            fastPassQueue.removeAll(fastPassRemove);
-            regularQueue.removeAll(regularRemove);
-
-            Main.waitingGames.remove(oldGame);
-            Main.waitingGames.add(game);
-
+            fastPassQueue.removeAll(fastPassRemove)
+            regularQueue.removeAll(regularRemove)
+            Main.waitingGames.remove(oldGame)
+            Main.waitingGames.add(game)
         }
+    }
+
+    init {
+        regularQueue = ArrayList()
+        fastPassQueue = ArrayList()
+        customGameQueue = ArrayList()
+        reminder = object : BukkitRunnable() {
+            override fun run() {
+                for (p in regularQueue) p.sendMessage("Postion " + regularQueue.indexOf(p) + " in the queue.")
+                for (p in fastPassQueue) p.sendMessage("Postion " + fastPassQueue.indexOf(p) + " in the Fast Pass queue.")
+                for (game in customGameQueue) {
+                    for (gp in game.getPlayers()) gp.bukkitPlayer.sendMessage("Postion " + customGameQueue.indexOf(game) + " in the Custom Game queue.")
+                }
+            }
+        }
+        reminder.runTaskTimer(Main.instance, 0, 200)
     }
 }

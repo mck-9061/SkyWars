@@ -30,11 +30,11 @@ public class ModifierGuiListener implements Listener {
 
             switch (event.getSlot()) {
                 case 11:
-                    int currentJumpLevel = settings.getJumpMultiplier();
+                    int currentJumpLevel = settings.jumpMultiplier;
                     if (currentJumpLevel == 4) currentJumpLevel = 1;
                     else currentJumpLevel++;
 
-                    settings.setJumpMultiplier(currentJumpLevel);
+                    settings.jumpMultiplier = currentJumpLevel;
                     game.settings = settings;
                     Main.activeCustomGames.remove(event.getWhoClicked());
                     Main.activeCustomGames.put((Player) event.getWhoClicked(), game);
@@ -44,11 +44,11 @@ public class ModifierGuiListener implements Listener {
 
                     break;
                 case 13:
-                    int currentSpeedLevel = settings.getSpeedMultiplier();
+                    int currentSpeedLevel = settings.speedMultiplier;
                     if (currentSpeedLevel == 4) currentSpeedLevel = 1;
                     else currentSpeedLevel++;
 
-                    settings.setSpeedMultiplier(currentSpeedLevel);
+                    settings.speedMultiplier = currentSpeedLevel;
                     game.settings = settings;
                     Main.activeCustomGames.remove(event.getWhoClicked());
                     Main.activeCustomGames.put((Player) event.getWhoClicked(), game);
@@ -58,13 +58,13 @@ public class ModifierGuiListener implements Listener {
 
                     break;
                 case 15:
-                    int currentMaxHealth = settings.getMaxHealth();
+                    int currentMaxHealth = settings.maxHealth;
                     if (currentMaxHealth == 20) currentMaxHealth = 30;
                     else if (currentMaxHealth == 30) currentMaxHealth = 40;
                     else if (currentMaxHealth == 40) currentMaxHealth = 10;
                     else if (currentMaxHealth == 10) currentMaxHealth = 20;
 
-                    settings.setMaxHealth(currentMaxHealth);
+                    settings.maxHealth = currentMaxHealth;
                     game.settings = settings;
                     Main.activeCustomGames.remove(event.getWhoClicked());
                     Main.activeCustomGames.put((Player) event.getWhoClicked(), game);
