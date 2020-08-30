@@ -1,204 +1,163 @@
-package me.therealmck.skywars.data;
+package me.therealmck.skywars.data
 
-import me.therealmck.skywars.Main;
-import me.therealmck.skywars.data.loot.LootTable;
-import me.therealmck.skywars.data.players.GamePlayer;
-import me.therealmck.skywars.guis.TeamPickerGui;
-import me.therealmck.skywars.utils.Utils;
-import org.bukkit.*;
-import org.bukkit.block.Block;
-import org.bukkit.block.Chest;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.FallingBlock;
-import org.bukkit.entity.Horse;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitScheduler;
+import me.therealmck.skywars.Main
+import me.therealmck.skywars.data.players.GamePlayer
+import me.therealmck.skywars.guis.TeamPickerGui
+import me.therealmck.skywars.utils.Utils
+import org.bukkit.Bukkit
+import org.bukkit.Location
+import org.bukkit.Material
+import org.bukkit.WorldCreator
+import org.bukkit.block.Block
+import org.bukkit.block.Chest
+import org.bukkit.entity.EntityType
+import org.bukkit.entity.Horse
+import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
+import org.bukkit.potion.PotionEffect
+import org.bukkit.potion.PotionEffectType
+import org.bukkit.scheduler.BukkitRunnable
+import java.io.File
+import java.util.*
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
-
-public class Game {
-    private SkyWarsMap map;
-    private List<GamePlayer> players;
-    private SkyWarsSettings settings;
-    private List<Team> teams;
-    private boolean isCustom = false;
-    private TeamPickerGui teamPickerGui;
-    private HashMap<Player, Kit> kits = new HashMap<>();
-    private List<BukkitRunnable> tasks = new ArrayList<>();
-
-    public Game() {
-        this.players = new ArrayList<>();
-        this.settings = new SkyWarsSettings();
-        this.teams = new ArrayList<>();
-    }
-
-
-
-    public void fillChests() {
-        LootTable islandTable = settings.getIslandLootTable();
-        LootTable midTable = settings.getMidLootTable();
-        List<Location> islandChests = map.getIslandChests();
-        List<Location> midChests = map.getMidChests();
-
-
-        for (Location islandChestLoc : islandChests) {
-            islandChestLoc.setWorld(Bukkit.getWorld(map.getBukkitWorld().getName()));
-            Block islandChest = islandChestLoc.getBlock();
-            if (islandChest.getType().equals(Material.CHEST)) {
-                Inventory inv = ((Chest) islandChest.getState()).getBlockInventory();
-                Random r = new Random();
-                
-                
-
-                for (int i = 0; i < islandTable.getSwordLoot().getRolls(); i++) {
-                    boolean shouldFill = r.nextInt(100) <= islandTable.getSwordLoot().getChance();
-                    if (shouldFill) inv.setItem(r.nextInt(inv.getSize()), islandTable.getSwordLoot().getItems().get(r.nextInt(islandTable.getSwordLoot().getItems().size())));
+class Game {
+    var map: SkyWarsMap? = null
+        private set
+    private var players: MutableList<GamePlayer>
+    var settings: SkyWarsSettings
+    private var teams: MutableList<Team>
+    var isCustom = false
+    private var teamPickerGui: TeamPickerGui? = null
+    private var kits = HashMap<Player, Kit?>()
+    private var tasks: MutableList<BukkitRunnable> = ArrayList()
+    fun fillChests() {
+        val islandTable = settings.islandLootTable
+        val midTable = settings.midLootTable
+        val islandChests = map!!.islandChests
+        val midChests = map!!.midChests
+        for (islandChestLoc in islandChests) {
+            islandChestLoc.world = Bukkit.getWorld(map!!.bukkitWorld.name)
+            val islandChest = islandChestLoc.block
+            if (islandChest.type == Material.CHEST) {
+                val inv = (islandChest.state as Chest).blockInventory
+                val r = Random()
+                for (i in 0 until islandTable.swordLoot.rolls) {
+                    val shouldFill = r.nextInt(100) <= islandTable.swordLoot.chance
+                    if (shouldFill) inv.setItem(r.nextInt(inv.size), islandTable.swordLoot.items[r.nextInt(islandTable.swordLoot.items.size)])
                 }
-                for (int i = 0; i < islandTable.getBowLoot().getRolls(); i++) {
-                    boolean shouldFill = r.nextInt(100) <= islandTable.getBowLoot().getChance();
-                    if (shouldFill) inv.setItem(r.nextInt(inv.getSize()), islandTable.getBowLoot().getItems().get(r.nextInt(islandTable.getBowLoot().getItems().size())));
+                for (i in 0 until islandTable.bowLoot.rolls) {
+                    val shouldFill = r.nextInt(100) <= islandTable.bowLoot.chance
+                    if (shouldFill) inv.setItem(r.nextInt(inv.size), islandTable.bowLoot.items[r.nextInt(islandTable.bowLoot.items.size)])
                 }
-                for (int i = 0; i < islandTable.getPearlLoot().getRolls(); i++) {
-                    boolean shouldFill = r.nextInt(100) <= islandTable.getPearlLoot().getChance();
-                    if (shouldFill) inv.setItem(r.nextInt(inv.getSize()), islandTable.getPearlLoot().getItems().get(r.nextInt(islandTable.getPearlLoot().getItems().size())));
+                for (i in 0 until islandTable.pearlLoot.rolls) {
+                    val shouldFill = r.nextInt(100) <= islandTable.pearlLoot.chance
+                    if (shouldFill) inv.setItem(r.nextInt(inv.size), islandTable.pearlLoot.items[r.nextInt(islandTable.pearlLoot.items.size)])
                 }
-                for (int i = 0; i < islandTable.getProjectileLoot().getRolls(); i++) {
-                    boolean shouldFill = r.nextInt(100) <= islandTable.getProjectileLoot().getChance();
-                    if (shouldFill) inv.setItem(r.nextInt(inv.getSize()), islandTable.getProjectileLoot().getItems().get(r.nextInt(islandTable.getProjectileLoot().getItems().size())));
+                for (i in 0 until islandTable.projectileLoot.rolls) {
+                    val shouldFill = r.nextInt(100) <= islandTable.projectileLoot.chance
+                    if (shouldFill) inv.setItem(r.nextInt(inv.size), islandTable.projectileLoot.items[r.nextInt(islandTable.projectileLoot.items.size)])
                 }
-                for (int i = 0; i < islandTable.getArmorLoot().getRolls(); i++) {
-                    boolean shouldFill = r.nextInt(100) <= islandTable.getArmorLoot().getChance();
-                    if (shouldFill) inv.setItem(r.nextInt(inv.getSize()), islandTable.getArmorLoot().getItems().get(r.nextInt(islandTable.getArmorLoot().getItems().size())));
+                for (i in 0 until islandTable.armorLoot.rolls) {
+                    val shouldFill = r.nextInt(100) <= islandTable.armorLoot.chance
+                    if (shouldFill) inv.setItem(r.nextInt(inv.size), islandTable.armorLoot.items[r.nextInt(islandTable.armorLoot.items.size)])
                 }
-                for (int i = 0; i < islandTable.getMiscLoot().getRolls(); i++) {
-                    boolean shouldFill = r.nextInt(100) <= islandTable.getMiscLoot().getChance();
-                    if (shouldFill) inv.setItem(r.nextInt(inv.getSize()), islandTable.getMiscLoot().getItems().get(r.nextInt(islandTable.getMiscLoot().getItems().size())));
+                for (i in 0 until islandTable.miscLoot.rolls) {
+                    val shouldFill = r.nextInt(100) <= islandTable.miscLoot.chance
+                    if (shouldFill) inv.setItem(r.nextInt(inv.size), islandTable.miscLoot.items[r.nextInt(islandTable.miscLoot.items.size)])
                 }
             }
         }
-
-
-        for (Location midChestLoc : midChests) {
-            midChestLoc.setWorld(Bukkit.getWorld(map.getBukkitWorld().getName()));
-            Block midChest = midChestLoc.getBlock();
-            if (midChest.getType().equals(Material.CHEST)) {
-                Inventory inv = ((Chest) midChest.getState()).getBlockInventory();
-                Random r = new Random();
-
-                for (int i = 0; i < midTable.getSwordLoot().getRolls(); i++) {
-                    boolean shouldFill = r.nextInt(100) <= midTable.getSwordLoot().getChance();
-                    if (shouldFill) inv.setItem(r.nextInt(inv.getSize()), midTable.getSwordLoot().getItems().get(r.nextInt(midTable.getSwordLoot().getItems().size())));
+        for (midChestLoc in midChests) {
+            midChestLoc.world = Bukkit.getWorld(map!!.bukkitWorld.name)
+            val midChest = midChestLoc.block
+            if (midChest.type == Material.CHEST) {
+                val inv = (midChest.state as Chest).blockInventory
+                val r = Random()
+                for (i in 0 until midTable.swordLoot.rolls) {
+                    val shouldFill = r.nextInt(100) <= midTable.swordLoot.chance
+                    if (shouldFill) inv.setItem(r.nextInt(inv.size), midTable.swordLoot.items[r.nextInt(midTable.swordLoot.items.size)])
                 }
-                for (int i = 0; i < midTable.getBowLoot().getRolls(); i++) {
-                    boolean shouldFill = r.nextInt(100) <= midTable.getBowLoot().getChance();
-                    if (shouldFill) inv.setItem(r.nextInt(inv.getSize()), midTable.getBowLoot().getItems().get(r.nextInt(midTable.getBowLoot().getItems().size())));
+                for (i in 0 until midTable.bowLoot.rolls) {
+                    val shouldFill = r.nextInt(100) <= midTable.bowLoot.chance
+                    if (shouldFill) inv.setItem(r.nextInt(inv.size), midTable.bowLoot.items[r.nextInt(midTable.bowLoot.items.size)])
                 }
-                for (int i = 0; i < midTable.getPearlLoot().getRolls(); i++) {
-                    boolean shouldFill = r.nextInt(100) <= midTable.getPearlLoot().getChance();
-                    if (shouldFill) inv.setItem(r.nextInt(inv.getSize()), midTable.getPearlLoot().getItems().get(r.nextInt(midTable.getPearlLoot().getItems().size())));
+                for (i in 0 until midTable.pearlLoot.rolls) {
+                    val shouldFill = r.nextInt(100) <= midTable.pearlLoot.chance
+                    if (shouldFill) inv.setItem(r.nextInt(inv.size), midTable.pearlLoot.items[r.nextInt(midTable.pearlLoot.items.size)])
                 }
-                for (int i = 0; i < midTable.getProjectileLoot().getRolls(); i++) {
-                    boolean shouldFill = r.nextInt(100) <= midTable.getProjectileLoot().getChance();
-                    if (shouldFill) inv.setItem(r.nextInt(inv.getSize()), midTable.getProjectileLoot().getItems().get(r.nextInt(midTable.getProjectileLoot().getItems().size())));
+                for (i in 0 until midTable.projectileLoot.rolls) {
+                    val shouldFill = r.nextInt(100) <= midTable.projectileLoot.chance
+                    if (shouldFill) inv.setItem(r.nextInt(inv.size), midTable.projectileLoot.items[r.nextInt(midTable.projectileLoot.items.size)])
                 }
-                for (int i = 0; i < midTable.getArmorLoot().getRolls(); i++) {
-                    boolean shouldFill = r.nextInt(100) <= midTable.getArmorLoot().getChance();
-                    if (shouldFill) inv.setItem(r.nextInt(inv.getSize()), midTable.getArmorLoot().getItems().get(r.nextInt(midTable.getArmorLoot().getItems().size())));
+                for (i in 0 until midTable.armorLoot.rolls) {
+                    val shouldFill = r.nextInt(100) <= midTable.armorLoot.chance
+                    if (shouldFill) inv.setItem(r.nextInt(inv.size), midTable.armorLoot.items[r.nextInt(midTable.armorLoot.items.size)])
                 }
-                for (int i = 0; i < midTable.getMiscLoot().getRolls(); i++) {
-                    boolean shouldFill = r.nextInt(100) <= midTable.getMiscLoot().getChance();
-                    if (shouldFill) inv.setItem(r.nextInt(inv.getSize()), midTable.getMiscLoot().getItems().get(r.nextInt(midTable.getMiscLoot().getItems().size())));
+                for (i in 0 until midTable.miscLoot.rolls) {
+                    val shouldFill = r.nextInt(100) <= midTable.miscLoot.chance
+                    if (shouldFill) inv.setItem(r.nextInt(inv.size), midTable.miscLoot.items[r.nextInt(midTable.miscLoot.items.size)])
                 }
             }
         }
     }
 
-    public SkyWarsMap getMap() {
-        return map;
-    }
-
-    public void setMap(SkyWarsMap map) {
-        World world = map.getBukkitWorld();
+    fun setMap(map: SkyWarsMap) {
+        val world = map.bukkitWorld
         // Copy world to backup
-        Utils.unloadWorld(world.getName()+"_back");
-        Utils.copyFileStructure(world.getWorldFolder(), new File(Bukkit.getWorldContainer(), world.getName()+"_back"));
-        new WorldCreator(world.getName()+"_back").createWorld();
-        this.map = map;
+        Utils.unloadWorld(world.name + "_back")
+        Utils.copyFileStructure(world.worldFolder, File(Bukkit.getWorldContainer(), world.name + "_back"))
+        WorldCreator(world.name + "_back").createWorld()
+        this.map = map
     }
 
-    public void restoreBackup() {
-        World world = map.getBukkitWorld();
-        String worldName = world.getName();
-        World backupWorld = Bukkit.getWorld(world.getName()+"_back");
-
-        Utils.unloadWorld(worldName);
-        Utils.copyFileStructure(backupWorld.getWorldFolder(), new File(Bukkit.getWorldContainer(), worldName));
-        World newWorld = new WorldCreator(worldName).createWorld();
+    fun restoreBackup() {
+        val world = map!!.bukkitWorld
+        val worldName = world.name
+        val backupWorld = Bukkit.getWorld(world.name + "_back")
+        Utils.unloadWorld(worldName)
+        Utils.copyFileStructure(backupWorld!!.worldFolder, File(Bukkit.getWorldContainer(), worldName))
+        val newWorld = WorldCreator(worldName).createWorld()
 
         // Reload spawn/chest locations with new World object
-        Main.instance.createSkyWarsConfig();
-
-        this.map = new SkyWarsMap(newWorld.getName());
+        Main.instance.createSkyWarsConfig()
+        map = SkyWarsMap(newWorld!!.name)
     }
 
-    public List<GamePlayer> getPlayers() {
-        return players;
+    fun getPlayers(): List<GamePlayer> {
+        return players
     }
 
-    public void addPlayer(GamePlayer player) {
-        this.players.add(player);
+    fun addPlayer(player: GamePlayer) {
+        players.add(player)
     }
 
-    public SkyWarsSettings getSettings() {
-        return settings;
+    fun wipePlayers() {
+        players = ArrayList()
+        kits = HashMap()
+        teams = ArrayList()
     }
 
-    public void setSettings(SkyWarsSettings settings) {
-        this.settings = settings;
-    }
-
-    public void wipePlayers() {
-        this.players = new ArrayList<>();
-        kits = new HashMap<>();
-        teams = new ArrayList<>();
-    }
-
-    public boolean warpPlayers() {
-        System.out.println("warp players called");
-        for (GamePlayer player : players) {
-            Main.preventInventoryCloseList.remove(player.getBukkitPlayer());
-            player.getBukkitPlayer().closeInventory();
-            Main.pregame.add(player.getBukkitPlayer());
+    fun warpPlayers(): Boolean {
+        println("warp players called")
+        for (player in players) {
+            Main.preventInventoryCloseList.remove(player.bukkitPlayer)
+            player.bukkitPlayer.closeInventory()
+            Main.pregame.add(player.bukkitPlayer)
         }
-
-        for (GamePlayer player : players) {
-            boolean inTeam = false;
-            for (Team team : teams) {
-                if (team.getPlayers().contains(player)) inTeam = true;
+        for (player in players) {
+            var inTeam = false
+            for (team in teams) {
+                if (team.players.contains(player)) inTeam = true
             }
-
             if (!inTeam) {
-                Team addTo = null;
-                for (Team team : teams) {
-                    if (team.getPlayers().size() < Main.skyWarsConfig.getInt("MaximumPlayers")/Main.skyWarsConfig.getInt("TeamCount")) {
-                        addTo = team;
-                        break;
+                var addTo: Team? = null
+                for (team in teams) {
+                    if (team.players.size < Main.skyWarsConfig.getInt("MaximumPlayers") / Main.skyWarsConfig.getInt("TeamCount")) {
+                        addTo = team
+                        break
                     }
                 }
-
-                if (addTo != null) {
-                    addTo.addPlayer(player);
-                }
+                addTo?.addPlayer(player)
             }
         }
 
@@ -257,294 +216,259 @@ public class Game {
 //        }
 //
 //        System.out.print("teams found");
-
-        List<Block> cageBlocks = new ArrayList<>();
-
+        val cageBlocks: MutableList<Block> = ArrayList()
 
 
         // Warp players to starting points.
-        System.out.println(map.getSpawns().size());
-        System.out.println(players.size());
-        if (map.getSpawns().size() <= players.size()/2) return false;
-        else {
-            List<Location> editableSpawnList = map.getSpawns();
-
-            for (Team team : teams) {
-                Random r = new Random();
-                Location spawn = editableSpawnList.get(r.nextInt(editableSpawnList.size()));
-                editableSpawnList.remove(spawn);
-
-                System.out.println(map.getBukkitWorld().getName());
-                System.out.println(spawn.getWorld().getName());
-
-                spawn.setWorld(Bukkit.getWorld(map.getBukkitWorld().getName()));
+        println(map!!.spawns.size)
+        println(players.size)
+        return if (map!!.spawns.size <= players.size / 2) false else {
+            val editableSpawnList = map!!.spawns
+            for (team in teams) {
+                val r = Random()
+                val spawn = editableSpawnList[r.nextInt(editableSpawnList.size)]
+                editableSpawnList.remove(spawn)
+                println(map!!.bukkitWorld.name)
+                println(spawn.world!!.name)
+                spawn.world = Bukkit.getWorld(map!!.bukkitWorld.name)
 
                 // construct cage
-                Location cageBaseBlock = spawn.clone();
-                cageBaseBlock.setY(cageBaseBlock.getY() + 4);
-
-                List<Block> ironBlocks = new ArrayList<>();
-                List<Block> ironBars = new ArrayList<>();
-
-                ironBlocks.add(cageBaseBlock.getBlock());
-                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+1, cageBaseBlock.getBlockY(), cageBaseBlock.getBlockZ()).getBlock());
-                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-1, cageBaseBlock.getBlockY(), cageBaseBlock.getBlockZ()).getBlock());
-                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX(), cageBaseBlock.getBlockY(), cageBaseBlock.getBlockZ()+1).getBlock());
-                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX(), cageBaseBlock.getBlockY(), cageBaseBlock.getBlockZ()-1).getBlock());
-                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+1, cageBaseBlock.getBlockY(), cageBaseBlock.getBlockZ()+1).getBlock());
-                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+1, cageBaseBlock.getBlockY(), cageBaseBlock.getBlockZ()-1).getBlock());
-                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-1, cageBaseBlock.getBlockY(), cageBaseBlock.getBlockZ()+1).getBlock());
-                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-1, cageBaseBlock.getBlockY(), cageBaseBlock.getBlockZ()-1).getBlock());
-
-                for (int height = 1; height < 6; height++) {
-                    ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+2, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()-2).getBlock());
-                    ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+2, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()-1).getBlock());
-                    ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+2, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()).getBlock());
-                    ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+2, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()+1).getBlock());
-                    ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+2, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()+2).getBlock());
-                    ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-2, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()-1).getBlock());
-                    ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-2, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()).getBlock());
-                    ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-2, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()+1).getBlock());
-                    ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-2, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()+2).getBlock());
-                    ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-1, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()+2).getBlock());
-                    ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX(), cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()+2).getBlock());
-                    ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+1, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()+2).getBlock());
-                    ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-1, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()-2).getBlock());
-                    ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX(), cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()-2).getBlock());
-                    ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+1, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()-2).getBlock());
-                    ironBars.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-2, cageBaseBlock.getBlockY()+height, cageBaseBlock.getBlockZ()-2).getBlock());
+                val cageBaseBlock = spawn.clone()
+                cageBaseBlock.y = cageBaseBlock.y + 4
+                val ironBlocks: MutableList<Block> = ArrayList()
+                val ironBars: MutableList<Block> = ArrayList()
+                ironBlocks.add(cageBaseBlock.block)
+                ironBlocks.add(Location(cageBaseBlock.world, (cageBaseBlock.blockX + 1).toDouble(), cageBaseBlock.blockY.toDouble(), cageBaseBlock.blockZ.toDouble()).block)
+                ironBlocks.add(Location(cageBaseBlock.world, (cageBaseBlock.blockX - 1).toDouble(), cageBaseBlock.blockY.toDouble(), cageBaseBlock.blockZ.toDouble()).block)
+                ironBlocks.add(Location(cageBaseBlock.world, cageBaseBlock.blockX.toDouble(), cageBaseBlock.blockY.toDouble(), (cageBaseBlock.blockZ + 1).toDouble()).block)
+                ironBlocks.add(Location(cageBaseBlock.world, cageBaseBlock.blockX.toDouble(), cageBaseBlock.blockY.toDouble(), (cageBaseBlock.blockZ - 1).toDouble()).block)
+                ironBlocks.add(Location(cageBaseBlock.world, (cageBaseBlock.blockX + 1).toDouble(), cageBaseBlock.blockY.toDouble(), (cageBaseBlock.blockZ + 1).toDouble()).block)
+                ironBlocks.add(Location(cageBaseBlock.world, (cageBaseBlock.blockX + 1).toDouble(), cageBaseBlock.blockY.toDouble(), (cageBaseBlock.blockZ - 1).toDouble()).block)
+                ironBlocks.add(Location(cageBaseBlock.world, (cageBaseBlock.blockX - 1).toDouble(), cageBaseBlock.blockY.toDouble(), (cageBaseBlock.blockZ + 1).toDouble()).block)
+                ironBlocks.add(Location(cageBaseBlock.world, (cageBaseBlock.blockX - 1).toDouble(), cageBaseBlock.blockY.toDouble(), (cageBaseBlock.blockZ - 1).toDouble()).block)
+                for (height in 1..5) {
+                    ironBars.add(Location(cageBaseBlock.world, (cageBaseBlock.blockX + 2).toDouble(), (cageBaseBlock.blockY + height).toDouble(), (cageBaseBlock.blockZ - 2).toDouble()).block)
+                    ironBars.add(Location(cageBaseBlock.world, (cageBaseBlock.blockX + 2).toDouble(), (cageBaseBlock.blockY + height).toDouble(), (cageBaseBlock.blockZ - 1).toDouble()).block)
+                    ironBars.add(Location(cageBaseBlock.world, (cageBaseBlock.blockX + 2).toDouble(), (cageBaseBlock.blockY + height).toDouble(), cageBaseBlock.blockZ.toDouble()).block)
+                    ironBars.add(Location(cageBaseBlock.world, (cageBaseBlock.blockX + 2).toDouble(), (cageBaseBlock.blockY + height).toDouble(), (cageBaseBlock.blockZ + 1).toDouble()).block)
+                    ironBars.add(Location(cageBaseBlock.world, (cageBaseBlock.blockX + 2).toDouble(), (cageBaseBlock.blockY + height).toDouble(), (cageBaseBlock.blockZ + 2).toDouble()).block)
+                    ironBars.add(Location(cageBaseBlock.world, (cageBaseBlock.blockX - 2).toDouble(), (cageBaseBlock.blockY + height).toDouble(), (cageBaseBlock.blockZ - 1).toDouble()).block)
+                    ironBars.add(Location(cageBaseBlock.world, (cageBaseBlock.blockX - 2).toDouble(), (cageBaseBlock.blockY + height).toDouble(), cageBaseBlock.blockZ.toDouble()).block)
+                    ironBars.add(Location(cageBaseBlock.world, (cageBaseBlock.blockX - 2).toDouble(), (cageBaseBlock.blockY + height).toDouble(), (cageBaseBlock.blockZ + 1).toDouble()).block)
+                    ironBars.add(Location(cageBaseBlock.world, (cageBaseBlock.blockX - 2).toDouble(), (cageBaseBlock.blockY + height).toDouble(), (cageBaseBlock.blockZ + 2).toDouble()).block)
+                    ironBars.add(Location(cageBaseBlock.world, (cageBaseBlock.blockX - 1).toDouble(), (cageBaseBlock.blockY + height).toDouble(), (cageBaseBlock.blockZ + 2).toDouble()).block)
+                    ironBars.add(Location(cageBaseBlock.world, cageBaseBlock.blockX.toDouble(), (cageBaseBlock.blockY + height).toDouble(), (cageBaseBlock.blockZ + 2).toDouble()).block)
+                    ironBars.add(Location(cageBaseBlock.world, (cageBaseBlock.blockX + 1).toDouble(), (cageBaseBlock.blockY + height).toDouble(), (cageBaseBlock.blockZ + 2).toDouble()).block)
+                    ironBars.add(Location(cageBaseBlock.world, (cageBaseBlock.blockX - 1).toDouble(), (cageBaseBlock.blockY + height).toDouble(), (cageBaseBlock.blockZ - 2).toDouble()).block)
+                    ironBars.add(Location(cageBaseBlock.world, cageBaseBlock.blockX.toDouble(), (cageBaseBlock.blockY + height).toDouble(), (cageBaseBlock.blockZ - 2).toDouble()).block)
+                    ironBars.add(Location(cageBaseBlock.world, (cageBaseBlock.blockX + 1).toDouble(), (cageBaseBlock.blockY + height).toDouble(), (cageBaseBlock.blockZ - 2).toDouble()).block)
+                    ironBars.add(Location(cageBaseBlock.world, (cageBaseBlock.blockX - 2).toDouble(), (cageBaseBlock.blockY + height).toDouble(), (cageBaseBlock.blockZ - 2).toDouble()).block)
                 }
-
-                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX(), cageBaseBlock.getBlockY()+5, cageBaseBlock.getBlockZ()).getBlock());
-                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+1, cageBaseBlock.getBlockY()+5, cageBaseBlock.getBlockZ()).getBlock());
-                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-1, cageBaseBlock.getBlockY()+5, cageBaseBlock.getBlockZ()).getBlock());
-                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX(), cageBaseBlock.getBlockY()+5, cageBaseBlock.getBlockZ()+1).getBlock());
-                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX(), cageBaseBlock.getBlockY()+5, cageBaseBlock.getBlockZ()-1).getBlock());
-                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+1, cageBaseBlock.getBlockY()+5, cageBaseBlock.getBlockZ()+1).getBlock());
-                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()+1, cageBaseBlock.getBlockY()+5, cageBaseBlock.getBlockZ()-1).getBlock());
-                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-1, cageBaseBlock.getBlockY()+5, cageBaseBlock.getBlockZ()+1).getBlock());
-                ironBlocks.add(new Location(cageBaseBlock.getWorld(), cageBaseBlock.getBlockX()-1, cageBaseBlock.getBlockY()+5, cageBaseBlock.getBlockZ()-1).getBlock());
-
-                cageBlocks.addAll(ironBars);
-                cageBlocks.addAll(ironBlocks);
-
-                for (Block b : ironBlocks) b.setType(Material.IRON_BLOCK);
-                for (Block b : ironBars) b.setType(Material.IRON_BARS);
-
-                System.out.println("cages made");
-
-                spawn.setY(spawn.getY()+6);
-
-                for (GamePlayer player : team.getPlayers()) {
-                    player.getBukkitPlayer().teleport(spawn);
-                    player.getBukkitPlayer().getInventory().setItem(0, Utils.getItemStackWithNameAndLore(Material.CHEST, "§6Select Kit", new ArrayList<>()));
+                ironBlocks.add(Location(cageBaseBlock.world, cageBaseBlock.blockX.toDouble(), (cageBaseBlock.blockY + 5).toDouble(), cageBaseBlock.blockZ.toDouble()).block)
+                ironBlocks.add(Location(cageBaseBlock.world, (cageBaseBlock.blockX + 1).toDouble(), (cageBaseBlock.blockY + 5).toDouble(), cageBaseBlock.blockZ.toDouble()).block)
+                ironBlocks.add(Location(cageBaseBlock.world, (cageBaseBlock.blockX - 1).toDouble(), (cageBaseBlock.blockY + 5).toDouble(), cageBaseBlock.blockZ.toDouble()).block)
+                ironBlocks.add(Location(cageBaseBlock.world, cageBaseBlock.blockX.toDouble(), (cageBaseBlock.blockY + 5).toDouble(), (cageBaseBlock.blockZ + 1).toDouble()).block)
+                ironBlocks.add(Location(cageBaseBlock.world, cageBaseBlock.blockX.toDouble(), (cageBaseBlock.blockY + 5).toDouble(), (cageBaseBlock.blockZ - 1).toDouble()).block)
+                ironBlocks.add(Location(cageBaseBlock.world, (cageBaseBlock.blockX + 1).toDouble(), (cageBaseBlock.blockY + 5).toDouble(), (cageBaseBlock.blockZ + 1).toDouble()).block)
+                ironBlocks.add(Location(cageBaseBlock.world, (cageBaseBlock.blockX + 1).toDouble(), (cageBaseBlock.blockY + 5).toDouble(), (cageBaseBlock.blockZ - 1).toDouble()).block)
+                ironBlocks.add(Location(cageBaseBlock.world, (cageBaseBlock.blockX - 1).toDouble(), (cageBaseBlock.blockY + 5).toDouble(), (cageBaseBlock.blockZ + 1).toDouble()).block)
+                ironBlocks.add(Location(cageBaseBlock.world, (cageBaseBlock.blockX - 1).toDouble(), (cageBaseBlock.blockY + 5).toDouble(), (cageBaseBlock.blockZ - 1).toDouble()).block)
+                cageBlocks.addAll(ironBars)
+                cageBlocks.addAll(ironBlocks)
+                for (b in ironBlocks) b.type = Material.IRON_BLOCK
+                for (b in ironBars) b.type = Material.IRON_BARS
+                println("cages made")
+                spawn.y = spawn.y + 6
+                for (player in team.players) {
+                    player.bukkitPlayer.teleport(spawn)
+                    player.bukkitPlayer.inventory.setItem(0, Utils.getItemStackWithNameAndLore(Material.CHEST, "§6Select Kit", ArrayList()))
                 }
-                System.out.println("players teleported");
+                println("players teleported")
             }
-
-            Bukkit.getScheduler().runTaskLater(Main.instance, () -> { for (GamePlayer player : players) player.getBukkitPlayer().sendTitle("5", "", 0, 20, 0); }, 200);
-            Bukkit.getScheduler().runTaskLater(Main.instance, () -> { for (GamePlayer player : players) player.getBukkitPlayer().sendTitle("4", "", 0, 20, 0); }, 220);
-            Bukkit.getScheduler().runTaskLater(Main.instance, () -> { for (GamePlayer player : players) player.getBukkitPlayer().sendTitle("3", "", 0, 20, 0); }, 240);
-            Bukkit.getScheduler().runTaskLater(Main.instance, () -> { for (GamePlayer player : players) player.getBukkitPlayer().sendTitle("2", "", 0, 20, 0); }, 260);
-            Bukkit.getScheduler().runTaskLater(Main.instance, () -> { for (GamePlayer player : players) player.getBukkitPlayer().sendTitle("1", "", 0, 20, 0); }, 280);
-
-            Bukkit.getScheduler().runTaskLater(Main.instance, () -> {
-                for (Block b : cageBlocks) b.setType(Material.AIR);
-
-                for (GamePlayer player : players) {
-                    player.getBukkitPlayer().getInventory().setItem(0, new ItemStack(Material.AIR));
-                    player.getBukkitPlayer().closeInventory();
-                    Main.pregame.remove(player.getBukkitPlayer());
-                    if (kits.containsKey(player.getBukkitPlayer())) {
-                        for (ItemStack item : kits.get(player.getBukkitPlayer()).getItems()) player.getBukkitPlayer().getInventory().addItem(item.clone());
+            Bukkit.getScheduler().runTaskLater(Main.instance, Runnable { for (player in players) player.bukkitPlayer.sendTitle("5", "", 0, 20, 0) }, 200)
+            Bukkit.getScheduler().runTaskLater(Main.instance, Runnable { for (player in players) player.bukkitPlayer.sendTitle("4", "", 0, 20, 0) }, 220)
+            Bukkit.getScheduler().runTaskLater(Main.instance, Runnable { for (player in players) player.bukkitPlayer.sendTitle("3", "", 0, 20, 0) }, 240)
+            Bukkit.getScheduler().runTaskLater(Main.instance, Runnable { for (player in players) player.bukkitPlayer.sendTitle("2", "", 0, 20, 0) }, 260)
+            Bukkit.getScheduler().runTaskLater(Main.instance, Runnable { for (player in players) player.bukkitPlayer.sendTitle("1", "", 0, 20, 0) }, 280)
+            Bukkit.getScheduler().runTaskLater(Main.instance, Runnable {
+                for (b in cageBlocks) b.type = Material.AIR
+                for (player in players) {
+                    player.bukkitPlayer.inventory.setItem(0, ItemStack(Material.AIR))
+                    player.bukkitPlayer.closeInventory()
+                    Main.pregame.remove(player.bukkitPlayer)
+                    if (kits.containsKey(player.bukkitPlayer)) {
+                        for (item in kits[player.bukkitPlayer]!!.items) player.bukkitPlayer.inventory.addItem(item.clone())
                     }
                 }
-            }, 300);
+            }, 300)
 
             // Modifiers
-            for (GamePlayer player : players) {
-                player.getBukkitPlayer().setMaxHealth(settings.getMaxHealth());
-                player.getBukkitPlayer().setWalkSpeed((float) (0.2*settings.getSpeedMultiplier()));
-                if (settings.getJumpMultiplier() > 1) {
-                    player.getBukkitPlayer().addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 9999, settings.getJumpMultiplier()-1));
+            for (player in players) {
+                player.bukkitPlayer.maxHealth = settings.maxHealth.toDouble()
+                player.bukkitPlayer.walkSpeed = (0.2 * settings.speedMultiplier).toFloat()
+                if (settings.jumpMultiplier > 1) {
+                    player.bukkitPlayer.addPotionEffect(PotionEffect(PotionEffectType.JUMP, 9999, settings.jumpMultiplier - 1))
                 }
             }
-
-            Random r = new Random();
+            val r = Random()
             // Schedule random events
-            if (settings.isZombieHordeEvent()) {
-                BukkitRunnable task = new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        for (GamePlayer player : players) player.getBukkitPlayer().sendMessage("Zombie horde event!");
-                        Random r = new Random();
-                        for (int i = 0; i < 20; i++) {
-                            Location spawn = map.getMidChests().get(r.nextInt(map.getMidChests().size()));
-                            spawn.setY(spawn.getY()+2);
-                            map.getBukkitWorld().spawnEntity(spawn, EntityType.ZOMBIE);
+            if (settings.isZombieHordeEvent) {
+                val task: BukkitRunnable = object : BukkitRunnable() {
+                    override fun run() {
+                        for (player in players) player.bukkitPlayer.sendMessage("Zombie horde event!")
+                        val r = Random()
+                        for (i in 0..19) {
+                            val spawn = map!!.midChests[r.nextInt(map!!.midChests.size)]
+                            spawn.y = spawn.y + 2
+                            map!!.bukkitWorld.spawnEntity(spawn, EntityType.ZOMBIE)
                         }
                     }
-                };
-                task.runTaskLater(Main.instance, r.nextInt(6700)+300);
-                tasks.add(task);
+                }
+                task.runTaskLater(Main.instance, r.nextInt(6700) + 300.toLong())
+                tasks.add(task)
             }
-
-            if (settings.isAnvilRainEvent()) {
-                BukkitRunnable task = new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        for (GamePlayer player : players) player.getBukkitPlayer().sendMessage("Anvil rain event!");
-                        Random r = new Random();
-                        for (int i = 0; i < 20; i++) {
-                            new BukkitRunnable() {
-                                @Override
-                                public void run() {
-                                    Location spawn = players.get(r.nextInt(players.size())).getBukkitPlayer().getLocation();
-                                    spawn.setY(spawn.getY()+16);
-                                    spawn.setX(spawn.getX()+(r.nextInt(6)-3));
-                                    spawn.setZ(spawn.getZ()+(r.nextInt(6)-3));
-                                    map.getBukkitWorld().spawnFallingBlock(spawn, Material.ANVIL, (byte) 0);
+            if (settings.isAnvilRainEvent) {
+                val task: BukkitRunnable = object : BukkitRunnable() {
+                    override fun run() {
+                        for (player in players) player.bukkitPlayer.sendMessage("Anvil rain event!")
+                        val r = Random()
+                        for (i in 0..19) {
+                            object : BukkitRunnable() {
+                                override fun run() {
+                                    val spawn = players[r.nextInt(players.size)].bukkitPlayer.location
+                                    spawn.y = spawn.y + 16
+                                    spawn.x = spawn.x + (r.nextInt(6) - 3)
+                                    spawn.z = spawn.z + (r.nextInt(6) - 3)
+                                    map!!.bukkitWorld.spawnFallingBlock(spawn, Material.ANVIL, 0.toByte())
                                 }
-                            }.runTaskLater(Main.instance, i*5);
+                            }.runTaskLater(Main.instance, i * 5.toLong())
                         }
                     }
-                };
-                task.runTaskLater(Main.instance, r.nextInt(6700)+300);
-                tasks.add(task);
+                }
+                task.runTaskLater(Main.instance, r.nextInt(6700) + 300.toLong())
+                tasks.add(task)
             }
-
-            if (settings.isHorseMountEvent()) {
-                BukkitRunnable task = new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        for (GamePlayer player : players) {
-                            player.getBukkitPlayer().sendMessage("Horse mount event!");
-
-                            Horse horse = (Horse) map.getBukkitWorld().spawnEntity(player.getBukkitPlayer().getLocation(), EntityType.HORSE);
-                            horse.getInventory().setSaddle(new ItemStack(Material.SADDLE));
-                            horse.setTamed(true);
-
-                            horse.addPassenger(player.getBukkitPlayer());
+            if (settings.isHorseMountEvent) {
+                val task: BukkitRunnable = object : BukkitRunnable() {
+                    override fun run() {
+                        for (player in players) {
+                            player.bukkitPlayer.sendMessage("Horse mount event!")
+                            val horse = map!!.bukkitWorld.spawnEntity(player.bukkitPlayer.location, EntityType.HORSE) as Horse
+                            horse.inventory.saddle = ItemStack(Material.SADDLE)
+                            horse.isTamed = true
+                            horse.addPassenger(player.bukkitPlayer)
                         }
                     }
-                };
-                task.runTaskLater(Main.instance, r.nextInt(6700)+300);
-                tasks.add(task);
+                }
+                task.runTaskLater(Main.instance, r.nextInt(6700) + 300.toLong())
+                tasks.add(task)
             }
-
-            if (settings.isBlockDecayEvent()) {
-                BukkitRunnable task = new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        for (GamePlayer player : players) {
-                            player.getBukkitPlayer().sendMessage("Block decay event!");
+            if (settings.isBlockDecayEvent) {
+                val task: BukkitRunnable = object : BukkitRunnable() {
+                    override fun run() {
+                        for (player in players) {
+                            player.bukkitPlayer.sendMessage("Block decay event!")
 
                             // TODO: This
                         }
                     }
-                };
-                task.runTaskLater(Main.instance, r.nextInt(6700)+300);
-                tasks.add(task);
+                }
+                task.runTaskLater(Main.instance, r.nextInt(6700) + 300.toLong())
+                tasks.add(task)
             }
-            return true;
+            true
         }
     }
 
-    public void beginGame() {
+    fun beginGame() {
         // Populate the Teams list with teams.
-        List<Material> wools = new ArrayList<>();
-        wools.add(Material.WHITE_WOOL);
-        wools.add(Material.BLACK_WOOL);
-        wools.add(Material.BLUE_WOOL);
-        wools.add(Material.BROWN_WOOL);
-        wools.add(Material.CYAN_WOOL);
-        wools.add(Material.GRAY_WOOL);
-        wools.add(Material.GREEN_WOOL);
-        wools.add(Material.LIME_WOOL);
-        wools.add(Material.MAGENTA_WOOL);
-        wools.add(Material.ORANGE_WOOL);
-        wools.add(Material.PINK_WOOL);
-        wools.add(Material.PURPLE_WOOL);
-        wools.add(Material.RED_WOOL);
-        wools.add(Material.YELLOW_WOOL);
-
-
-        for (int i = 0; i < Main.skyWarsConfig.getInt("TeamCount"); i++) {
-            Team team = new Team();
-            Material icon = wools.get(i);
-            team.setIcon(icon);
-            teams.add(team);
+        val wools: MutableList<Material> = ArrayList()
+        wools.add(Material.WHITE_WOOL)
+        wools.add(Material.BLACK_WOOL)
+        wools.add(Material.BLUE_WOOL)
+        wools.add(Material.BROWN_WOOL)
+        wools.add(Material.CYAN_WOOL)
+        wools.add(Material.GRAY_WOOL)
+        wools.add(Material.GREEN_WOOL)
+        wools.add(Material.LIME_WOOL)
+        wools.add(Material.MAGENTA_WOOL)
+        wools.add(Material.ORANGE_WOOL)
+        wools.add(Material.PINK_WOOL)
+        wools.add(Material.PURPLE_WOOL)
+        wools.add(Material.RED_WOOL)
+        wools.add(Material.YELLOW_WOOL)
+        for (i in 0 until Main.skyWarsConfig.getInt("TeamCount")) {
+            val team = Team()
+            val icon = wools[i]
+            team.icon = icon
+            teams.add(team)
         }
 
         // Begin the game. Chests have already been filled.
         // Show every player an inventory to choose teams, then warp teams once everyone has picked a teammate.
-
-        teamPickerGui = new TeamPickerGui(players.get(0).getBukkitPlayer(), this);
-        for (GamePlayer player : players) {
-            Main.preventInventoryCloseList.remove(player.getBukkitPlayer());
-            player.getBukkitPlayer().openInventory(teamPickerGui.getBukkitInventory());
-            Main.preventInventoryCloseList.remove(player.getBukkitPlayer());
+        teamPickerGui = TeamPickerGui(players[0].bukkitPlayer, this)
+        for (player in players) {
+            Main.preventInventoryCloseList.remove(player.bukkitPlayer)
+            player.bukkitPlayer.openInventory(teamPickerGui!!.bukkitInventory)
+            Main.preventInventoryCloseList.remove(player.bukkitPlayer)
         }
 
         // Give players 15 seconds to pick teammates, then warp them
-
-        Bukkit.getScheduler().runTaskLater(Main.instance, () -> {
-            for (GamePlayer player : players) {
-                Main.preventInventoryCloseList.remove(player.getBukkitPlayer());
-                player.getBukkitPlayer().closeInventory();
+        Bukkit.getScheduler().runTaskLater(Main.instance, Runnable {
+            for (player in players) {
+                Main.preventInventoryCloseList.remove(player.bukkitPlayer)
+                player.bukkitPlayer.closeInventory()
             }
-            warpPlayers();
-        }, 300);
+            warpPlayers()
+        }, 300)
     }
 
-    public void setPlayers(List<GamePlayer> players) {
-        this.players = players;
+    fun setPlayers(players: MutableList<GamePlayer>) {
+        this.players = players
     }
 
-    public List<Team> getTeams() {
-        return teams;
+    fun getTeams(): List<Team> {
+        return teams
     }
 
-    public void setTeams(List<Team> teams) {
-        this.teams = teams;
+    fun setTeams(teams: MutableList<Team>) {
+        this.teams = teams
     }
 
-    public void wipePlayersWithDelay(int delay) {
-        Game game = this;
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                tasks = new ArrayList<>();
-                players = new ArrayList<>();
-                kits = new HashMap<>();
-                teams = new ArrayList<>();
-                restoreBackup();
-                setSettings(new SkyWarsSettings());
-                Main.runningGames.remove(game);
-                Main.waitingGames.add(game);
-                Main.queue.processQueue(game);
+    fun wipePlayersWithDelay(delay: Int) {
+        val game = this
+        object : BukkitRunnable() {
+            override fun run() {
+                tasks = ArrayList()
+                players = ArrayList()
+                kits = HashMap()
+                teams = ArrayList()
+                restoreBackup()
+                settings = SkyWarsSettings()
+                Main.runningGames.remove(game)
+                Main.waitingGames.add(game)
+                Main.queue.processQueue(game)
             }
-        }.runTaskLater(Main.instance, delay);
+        }.runTaskLater(Main.instance, delay.toLong())
     }
 
-    public void cancelTasks() {
-        for (BukkitRunnable task : tasks) {
-            task.cancel();
+    fun cancelTasks() {
+        for (task in tasks) {
+            task.cancel()
         }
     }
 
-    public boolean isCustom() {
-        return isCustom;
+    fun removePlayer(player: GamePlayer?) {
+        players.remove(player)
     }
 
-    public void setCustom(boolean custom) {
-        isCustom = custom;
+    fun setKit(player: Player, kit: Kit?) {
+        kits[player] = kit
     }
 
-    public void removePlayer(GamePlayer player) {
-        players.remove(player);
+    init {
+        players = ArrayList()
+        settings = SkyWarsSettings()
+        teams = ArrayList()
     }
-
-    public void setKit(Player player, Kit kit) { kits.put(player, kit); }
-
 }

@@ -26,7 +26,7 @@ public class ModifierGuiListener implements Listener {
             Main.preventInventoryCloseList.remove((Player) event.getWhoClicked());
 
             Game game = Main.activeCustomGames.get(event.getWhoClicked());
-            SkyWarsSettings settings = game.getSettings();
+            SkyWarsSettings settings = game.settings;
 
             switch (event.getSlot()) {
                 case 11:
@@ -35,7 +35,7 @@ public class ModifierGuiListener implements Listener {
                     else currentJumpLevel++;
 
                     settings.setJumpMultiplier(currentJumpLevel);
-                    game.setSettings(settings);
+                    game.settings = settings;
                     Main.activeCustomGames.remove(event.getWhoClicked());
                     Main.activeCustomGames.put((Player) event.getWhoClicked(), game);
 
@@ -49,7 +49,7 @@ public class ModifierGuiListener implements Listener {
                     else currentSpeedLevel++;
 
                     settings.setSpeedMultiplier(currentSpeedLevel);
-                    game.setSettings(settings);
+                    game.settings = settings;
                     Main.activeCustomGames.remove(event.getWhoClicked());
                     Main.activeCustomGames.put((Player) event.getWhoClicked(), game);
 
@@ -65,7 +65,7 @@ public class ModifierGuiListener implements Listener {
                     else if (currentMaxHealth == 10) currentMaxHealth = 20;
 
                     settings.setMaxHealth(currentMaxHealth);
-                    game.setSettings(settings);
+                    game.settings = settings;
                     Main.activeCustomGames.remove(event.getWhoClicked());
                     Main.activeCustomGames.put((Player) event.getWhoClicked(), game);
 

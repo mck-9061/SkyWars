@@ -27,12 +27,12 @@ public class IslandLootGui {
             bukkitInventory.setItem(slot, new ItemStack(Material.RED_STAINED_GLASS_PANE));
         }
 
-        bukkitInventory.setItem(9, Utils.getItemStackWithNameAndLore(Material.DIAMOND_SWORD, lang.getSwordLoot(), Collections.singletonList(game.getSettings().getIslandLootTable().getSwordLevel().name().split("_")[1])));
-        bukkitInventory.setItem(11, Utils.getItemStackWithNameAndLore(Material.BOW, lang.getBowLoot(), Collections.singletonList(game.getSettings().getIslandLootTable().getBowLevel().name().split("_")[1])));
-        bukkitInventory.setItem(12, Utils.getItemStackWithNameAndLore(Material.ENDER_PEARL, lang.getPearlLoot(), Collections.singletonList(game.getSettings().getIslandLootTable().getPearlLevel().name().split("_")[1])));
-        bukkitInventory.setItem(14, Utils.getItemStackWithNameAndLore(Material.SNOWBALL, lang.getProjectileLoot(), Collections.singletonList(game.getSettings().getIslandLootTable().getProjectileLevel().name().split("_")[1])));
-        bukkitInventory.setItem(15, Utils.getItemStackWithNameAndLore(Material.DIAMOND_CHESTPLATE, lang.getArmorLoot(), Collections.singletonList(game.getSettings().getIslandLootTable().getArmorLevel().name().split("_")[1])));
-        bukkitInventory.setItem(17, Utils.getItemStackWithNameAndLore(Material.OAK_PLANKS, lang.getMiscLoot(), Collections.singletonList(game.getSettings().getIslandLootTable().getMiscLevel().name().split("_")[1])));
+        bukkitInventory.setItem(9, Utils.getItemStackWithNameAndLore(Material.DIAMOND_SWORD, lang.getSwordLoot(), Collections.singletonList(game.settings.getIslandLootTable().getSwordLevel().name().split("_")[1])));
+        bukkitInventory.setItem(11, Utils.getItemStackWithNameAndLore(Material.BOW, lang.getBowLoot(), Collections.singletonList(game.settings.getIslandLootTable().getBowLevel().name().split("_")[1])));
+        bukkitInventory.setItem(12, Utils.getItemStackWithNameAndLore(Material.ENDER_PEARL, lang.getPearlLoot(), Collections.singletonList(game.settings.getIslandLootTable().getPearlLevel().name().split("_")[1])));
+        bukkitInventory.setItem(14, Utils.getItemStackWithNameAndLore(Material.SNOWBALL, lang.getProjectileLoot(), Collections.singletonList(game.settings.getIslandLootTable().getProjectileLevel().name().split("_")[1])));
+        bukkitInventory.setItem(15, Utils.getItemStackWithNameAndLore(Material.DIAMOND_CHESTPLATE, lang.getArmorLoot(), Collections.singletonList(game.settings.getIslandLootTable().getArmorLevel().name().split("_")[1])));
+        bukkitInventory.setItem(17, Utils.getItemStackWithNameAndLore(Material.OAK_PLANKS, lang.getMiscLoot(), Collections.singletonList(game.settings.getIslandLootTable().getMiscLevel().name().split("_")[1])));
 
         bukkitInventory.setItem(26, Utils.getItemStackWithNameAndLore(Material.BARRIER, lang.getGuiBack(), new ArrayList<>()));
 

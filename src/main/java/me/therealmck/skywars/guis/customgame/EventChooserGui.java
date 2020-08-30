@@ -27,10 +27,10 @@ public class EventChooserGui {
             bukkitInventory.setItem(slot, new ItemStack(Material.RED_STAINED_GLASS_PANE));
         }
 
-        bukkitInventory.setItem(10, Utils.getItemStackWithNameAndLore(Material.ANVIL, lang.getAnvilEvent(), Collections.singletonList(String.valueOf(game.getSettings().isAnvilRainEvent()))));
-        bukkitInventory.setItem(12, Utils.getItemStackWithNameAndLore(Material.DIRT, lang.getBlockEvent(), Collections.singletonList(String.valueOf(game.getSettings().isBlockDecayEvent()))));
-        bukkitInventory.setItem(14, Utils.getItemStackWithNameAndLore(Material.DIAMOND_HORSE_ARMOR, lang.getMountEvent(), Collections.singletonList(String.valueOf(game.getSettings().isHorseMountEvent()))));
-        bukkitInventory.setItem(16, Utils.getItemStackWithNameAndLore(Material.ROTTEN_FLESH, lang.getZombieEvent(), Collections.singletonList(String.valueOf(game.getSettings().isZombieHordeEvent()))));
+        bukkitInventory.setItem(10, Utils.getItemStackWithNameAndLore(Material.ANVIL, lang.getAnvilEvent(), Collections.singletonList(String.valueOf(game.settings.isAnvilRainEvent()))));
+        bukkitInventory.setItem(12, Utils.getItemStackWithNameAndLore(Material.DIRT, lang.getBlockEvent(), Collections.singletonList(String.valueOf(game.settings.isBlockDecayEvent()))));
+        bukkitInventory.setItem(14, Utils.getItemStackWithNameAndLore(Material.DIAMOND_HORSE_ARMOR, lang.getMountEvent(), Collections.singletonList(String.valueOf(game.settings.isHorseMountEvent()))));
+        bukkitInventory.setItem(16, Utils.getItemStackWithNameAndLore(Material.ROTTEN_FLESH, lang.getZombieEvent(), Collections.singletonList(String.valueOf(game.settings.isZombieHordeEvent()))));
 
         bukkitInventory.setItem(26, Utils.getItemStackWithNameAndLore(Material.BARRIER, lang.getGuiBack(), new ArrayList<>()));
 

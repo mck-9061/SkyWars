@@ -29,7 +29,7 @@ public class IslandLootGuiListener implements Listener {
             Main.preventInventoryCloseList.remove((Player) event.getWhoClicked());
 
             Game game = Main.activeCustomGames.get(event.getWhoClicked());
-            SkyWarsSettings settings = game.getSettings();
+            SkyWarsSettings settings = game.settings;
             LootTable table = settings.getIslandLootTable();
 
             switch (event.getSlot()) {
@@ -46,7 +46,7 @@ public class IslandLootGuiListener implements Listener {
 
                     table.setSwordLevel(changeTo);
                     settings.setIslandLootTable(table);
-                    game.setSettings(settings);
+                    game.settings = settings;
                     Main.activeCustomGames.remove(event.getWhoClicked());
                     Main.activeCustomGames.put((Player) event.getWhoClicked(), game);
 
@@ -67,7 +67,7 @@ public class IslandLootGuiListener implements Listener {
 
                     table.setBowLevel(changeToBow);
                     settings.setIslandLootTable(table);
-                    game.setSettings(settings);
+                    game.settings = settings;
                     Main.activeCustomGames.remove(event.getWhoClicked());
                     Main.activeCustomGames.put((Player) event.getWhoClicked(), game);
 
@@ -88,7 +88,7 @@ public class IslandLootGuiListener implements Listener {
 
                     table.setPearlLevel(changeToPearl);
                     settings.setIslandLootTable(table);
-                    game.setSettings(settings);
+                    game.settings = settings;
                     Main.activeCustomGames.remove(event.getWhoClicked());
                     Main.activeCustomGames.put((Player) event.getWhoClicked(), game);
 
@@ -109,7 +109,7 @@ public class IslandLootGuiListener implements Listener {
 
                     table.setProjectileLevel(changeToProjectile);
                     settings.setIslandLootTable(table);
-                    game.setSettings(settings);
+                    game.settings = settings;
                     Main.activeCustomGames.remove(event.getWhoClicked());
                     Main.activeCustomGames.put((Player) event.getWhoClicked(), game);
 
@@ -129,7 +129,7 @@ public class IslandLootGuiListener implements Listener {
 
                     table.setArmorLevel(changeToArmor);
                     settings.setIslandLootTable(table);
-                    game.setSettings(settings);
+                    game.settings = settings;
                     Main.activeCustomGames.remove(event.getWhoClicked());
                     Main.activeCustomGames.put((Player) event.getWhoClicked(), game);
 
@@ -150,7 +150,7 @@ public class IslandLootGuiListener implements Listener {
 
                     table.setMiscLevel(changeToMisc);
                     settings.setIslandLootTable(table);
-                    game.setSettings(settings);
+                    game.settings = settings;
                     Main.activeCustomGames.remove(event.getWhoClicked());
                     Main.activeCustomGames.put((Player) event.getWhoClicked(), game);
 

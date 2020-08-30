@@ -27,12 +27,12 @@ public class EventChooserGuiListener implements Listener {
             Main.preventInventoryCloseList.remove((Player) event.getWhoClicked());
 
             Game game = Main.activeCustomGames.get(event.getWhoClicked());
-            SkyWarsSettings settings = game.getSettings();
+            SkyWarsSettings settings = game.settings;
 
             switch (event.getSlot()) {
                 case 10:
                     settings.setAnvilRainEvent(!settings.isAnvilRainEvent());
-                    game.setSettings(settings);
+                    game.settings = settings;
                     Main.activeCustomGames.remove(event.getWhoClicked());
                     Main.activeCustomGames.put((Player) event.getWhoClicked(), game);
 
@@ -43,7 +43,7 @@ public class EventChooserGuiListener implements Listener {
                     break;
                 case 12:
                     settings.setBlockDecayEvent(!settings.isBlockDecayEvent());
-                    game.setSettings(settings);
+                    game.settings = settings;
                     Main.activeCustomGames.remove(event.getWhoClicked());
                     Main.activeCustomGames.put((Player) event.getWhoClicked(), game);
 
@@ -53,7 +53,7 @@ public class EventChooserGuiListener implements Listener {
                     break;
                 case 14:
                     settings.setHorseMountEvent(!settings.isHorseMountEvent());
-                    game.setSettings(settings);
+                    game.settings = settings;
                     Main.activeCustomGames.remove(event.getWhoClicked());
                     Main.activeCustomGames.put((Player) event.getWhoClicked(), game);
 
@@ -63,7 +63,7 @@ public class EventChooserGuiListener implements Listener {
                     break;
                 case 16:
                     settings.setZombieHordeEvent(!settings.isZombieHordeEvent());
-                    game.setSettings(settings);
+                    game.settings = settings;
                     Main.activeCustomGames.remove(event.getWhoClicked());
                     Main.activeCustomGames.put((Player) event.getWhoClicked(), game);
 
