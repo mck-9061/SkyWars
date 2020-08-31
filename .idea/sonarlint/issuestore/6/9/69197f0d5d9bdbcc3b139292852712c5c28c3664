@@ -1,0 +1,83 @@
+
+Q
+java:S2696%"6Make the enclosing method "static" or remove this set.(ñõîÙşÿÿÿÿ
+I
+java:S1444".Make this "public static instance" field final(á–¾›üÿÿÿÿ
+x
+java:S1104¡"\Make playerDataConfig a static final constant or non-public and provide accessors if needed.(İ»öˆùÿÿÿÿ
+”
+java:S1319"yThe type of the "activeCustomGames" object should be an interface such as "Map" rather than the implementation "HashMap".(†È·Òÿÿÿÿÿ
+N	java:S1065"9Replace this use of System.out or System.err by a logger.(Ğ·„Ü
+Q
+java:S2696q"6Make the enclosing method "static" or remove this set.(×ÿ™Öıÿÿÿÿ
+M
+java:S2696‘"6Make the enclosing method "static" or remove this set.(óä…ä
+t
+java:S1104n"YMake skyWarsConfig a static final constant or non-public and provide accessors if needed.(¹øˆüÿÿÿÿ
+Z
+java:S1444!"?Make this "public static preventInventoryCloseList" field final(•¾—¯úÿÿÿÿ
+R
+java:S1444¡"6Make this "public static playerDataConfig" field final(İ»öˆùÿÿÿÿ
+R
+java:S1444"7Make this "public static activeCustomGames" field final(†È·Òÿÿÿÿÿ
+v
+java:S1104 "ZMake playerDataFile a static final constant or non-public and provide accessors if needed.(æû¹“úÿÿÿÿ
+H
+java:S1444"2Make this "public static waitingGames" field final(«°ò
+q
+java:S1104ˆ"UMake mapConfig a static final constant or non-public and provide accessors if needed.(¡ˆÌºüÿÿÿÿ
+8
+java:S2386"Make this member "protected".(³¡Ößşÿÿÿÿ
+R
+java:S2696ª"6Make the enclosing method "static" or remove this set.(£¿Ú›øÿÿÿÿ
+P
+java:S1444 "4Make this "public static playerDataFile" field final(æû¹“úÿÿÿÿ
+D
+java:S1444‡"-Make this "public static mapFile" field final(€€‡¹
+S	java:S1068"9Replace this use of System.out or System.err by a logger.(Š¹ÿÍúÿÿÿÿ
+x
+java:S1104"]Make activeCustomGames a static final constant or non-public and provide accessors if needed.(†È·Òÿÿÿÿÿ
+€
+java:S1104!"eMake preventInventoryCloseList a static final constant or non-public and provide accessors if needed.(•¾—¯úÿÿÿÿ
+L
+java:S2696w"6Make the enclosing method "static" or remove this set.(ñÀ«Ÿ
+M
+java:S2696¤"6Make the enclosing method "static" or remove this set.(ÆÂ‘ë
+K
+java:S1444ˆ"/Make this "public static mapConfig" field final(¡ˆÌºüÿÿÿÿ
+–
+java:S1186g"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(â¶œ4
+3
+java:S2386"Make this member "protected".(½«šè
+j
+java:S1104‡"SMake mapFile a static final constant or non-public and provide accessors if needed.(€€‡¹
+s
+java:S1104"XMake runningGames a static final constant or non-public and provide accessors if needed.(³¡Ößşÿÿÿÿ
+l
+java:S1104"QMake queue a static final constant or non-public and provide accessors if needed.(…ñÙøÿÿÿÿ
+N
+java:S1444n"3Make this "public static skyWarsConfig" field final(¹øˆüÿÿÿÿ
+n
+java:S1104"XMake waitingGames a static final constant or non-public and provide accessors if needed.(«°ò
+8
+java:S2386!"Make this member "protected".(•¾—¯úÿÿÿÿ
+R
+java:S2696‹"6Make the enclosing method "static" or remove this set.(Áºßıÿÿÿÿ
+L
+java:S1444m"1Make this "public static skyWarsFile" field final(ã¯äşÿÿÿÿ
+F
+java:S1444"+Make this "public static queue" field final(…ñÙøÿÿÿÿ
+f
+java:S1104"PMake maps a static final constant or non-public and provide accessors if needed.(½«šè
+r
+java:S1104m"WMake skyWarsFile a static final constant or non-public and provide accessors if needed.(ã¯äşÿÿÿÿ
+@
+java:S1444"*Make this "public static maps" field final(½«šè
+8
+java:S2386"Make this member "protected".(†È·Òÿÿÿÿÿ
+3
+java:S2386"Make this member "protected".(«°ò
+o
+java:S1104"TMake instance a static final constant or non-public and provide accessors if needed.(á–¾›üÿÿÿÿ
+M
+java:S1444"2Make this "public static runningGames" field final(³¡Ößşÿÿÿÿ

@@ -35,8 +35,8 @@ public class NPCClickListener implements Listener {
             if (toJoin != null) {
                 toJoin.addPlayer(new GamePlayer(event.getClicker()));
 
-                for (GamePlayer gp : toJoin.getPlayers()) gp.getBukkitPlayer().sendMessage(event.getClicker().getDisplayName()
-                        + " joined the game! (" + toJoin.getPlayers().size() + "/" + Main.skyWarsConfig.getInt("MaximumPlayers") + ")");
+                for (GamePlayer gp : toJoin.getPlayers()) gp.getBukkitPlayer().sendMessage(lang.getJoinedGame(event.getClicker().getDisplayName()) + "(" + toJoin.getPlayers().size() + "/" + Main.skyWarsConfig.getInt("MaximumPlayers") + ")");
+                event.getClicker().teleport(toJoin.getMap().getLobby());
             }
             else {
                 event.getClicker().sendMessage(lang.getNoGamesAvailable());

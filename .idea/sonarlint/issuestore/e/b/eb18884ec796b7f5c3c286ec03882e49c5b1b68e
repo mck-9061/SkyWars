@@ -1,0 +1,27 @@
+
+<
+java:S2119‘"Save and re-use this "Random".(°≈î¶8¢´˘ﬁ∂.
+\
+java:S1192{"FDefine a constant instead of duplicating this literal "_back" 4 times.(ò€ÎÖ
+u
+java:S3776ü"RRefactor this method to reduce its Cognitive Complexity from 25 to the 15 allowed.(Ç∫Õ˜˛ˇˇˇˇ8Ùóˆﬁ∂.
+4
+java:S2119V"Save and re-use this "Random".(°≈î¶
+N
+java:S1135ﬁ"2Complete the task associated to this TODO comment.(Í„ëî˚ˇˇˇˇ
+4
+java:S21192"Save and re-use this "Random".(°≈î¶
+G
+java:S1940ø")Use the opposite operator ("!=") instead.(‡‹∑«8Œ•òﬂ∂.
+U
+java:S1135ﬂ"2Complete the task associated to this TODO comment.(¯±ë≠˝ˇˇˇˇ8¢´˘ﬁ∂.
+\
+java:S1155ø">Use isEmpty() to check whether the collection is empty or not.(‡‹∑«8Œ•òﬂ∂.
+<
+java:S2119º"Save and re-use this "Random".(°≈î¶8Úõëﬂ∂.
+ã
+java:S1319ô"mThe return type of this method should be an interface such as "Map" rather than the implementation "HashMap".(¿≥‡Î8¢´˘ﬁ∂.
+]
+java:S1128";Remove this unused import 'org.bukkit.inventory.ItemStack'.(âÇˆΩ˘ˇˇˇˇ8⁄¥–ﬁ∂.
+m
+java:S3776'"RRefactor this method to reduce its Cognitive Complexity from 90 to the 15 allowed.(Àºêﬂ˘ˇˇˇˇ

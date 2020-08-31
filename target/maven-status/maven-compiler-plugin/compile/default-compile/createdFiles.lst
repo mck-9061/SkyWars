@@ -13,10 +13,12 @@ me\therealmck\skywars\data\loot\LootTable.class
 me\therealmck\skywars\guis\TeamPickerGui.class
 me\therealmck\skywars\data\loot\enums\ArmorLevel.class
 me\therealmck\skywars\guis\listeners\IslandLootGuiListener.class
+me\therealmck\skywars\commands\SetWorldLobby.class
 me\therealmck\skywars\data\loot\enums\BowLevel.class
 me\therealmck\skywars\Main.class
 me\therealmck\skywars\guis\customgame\EventChooserGui.class
 me\therealmck\skywars\listeners\LoginListener.class
+me\therealmck\skywars\utils\MessageHelper.class
 me\therealmck\skywars\data\SkyWarsMap.class
 me\therealmck\skywars\data\Queue.class
 me\therealmck\skywars\Main$1.class

@@ -2,6 +2,7 @@ package me.therealmck.skywars.data;
 
 import me.therealmck.skywars.Main;
 import me.therealmck.skywars.data.players.GamePlayer;
+import me.therealmck.skywars.utils.MessageHelper;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -58,6 +59,7 @@ public class Queue {
     }
 
     public void processQueue(Game oldGame) {
+        MessageHelper lang = new MessageHelper();
         // Logic to add queued players and games to a running game.
         if (!customGameQueue.isEmpty()) {
             // Add a queued custom game to a running game.

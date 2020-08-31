@@ -16,6 +16,7 @@ D:\Downloads\JChroma-master\SkyWars\src\main\java\me\therealmck\skywars\commands
 D:\Downloads\JChroma-master\SkyWars\src\main\java\me\therealmck\skywars\data\Queue.java
 D:\Downloads\JChroma-master\SkyWars\src\main\java\me\therealmck\skywars\guis\TeamPickerGui.java
 D:\Downloads\JChroma-master\SkyWars\src\main\java\me\therealmck\skywars\guis\customgame\EventChooserGui.java
+D:\Downloads\JChroma-master\SkyWars\src\main\java\me\therealmck\skywars\commands\SetWorldLobby.java
 D:\Downloads\JChroma-master\SkyWars\src\main\java\me\therealmck\skywars\guis\listeners\IslandLootGuiListener.java
 D:\Downloads\JChroma-master\SkyWars\src\main\java\me\therealmck\skywars\listeners\DisconnectListener.java
 D:\Downloads\JChroma-master\SkyWars\src\main\java\me\therealmck\skywars\data\SkyWarsMap.java
@@ -29,6 +30,7 @@ D:\Downloads\JChroma-master\SkyWars\src\main\java\me\therealmck\skywars\data\loo
 D:\Downloads\JChroma-master\SkyWars\src\main\java\me\therealmck\skywars\guis\listeners\MainCustomGameGuiListener.java
 D:\Downloads\JChroma-master\SkyWars\src\main\java\me\therealmck\skywars\data\loot\enums\SwordLevel.java
 D:\Downloads\JChroma-master\SkyWars\src\main\java\me\therealmck\skywars\guis\customgame\MidLootGui.java
+D:\Downloads\JChroma-master\SkyWars\src\main\java\me\therealmck\skywars\utils\MessageHelper.java
 D:\Downloads\JChroma-master\SkyWars\src\main\java\me\therealmck\skywars\guis\listeners\EventChooserGuiListener.java
 D:\Downloads\JChroma-master\SkyWars\src\main\java\me\therealmck\skywars\Main.java
 D:\Downloads\JChroma-master\SkyWars\src\main\java\me\therealmck\skywars\listeners\KillListener.java

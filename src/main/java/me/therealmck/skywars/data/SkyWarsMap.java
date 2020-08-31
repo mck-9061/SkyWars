@@ -54,6 +54,10 @@ public class SkyWarsMap {
         }
     }
 
+    public Location getLobby() {
+        return lobby;
+    }
+
     public World getBukkitWorld() {
         return bukkitWorld;
     }
@@ -83,6 +87,14 @@ public class SkyWarsMap {
         ConfigurationSection section = Main.mapConfig.getConfigurationSection(getBukkitWorld().getName());
         assert section != null;
         section.set("MidChests", midChests);
+        Main.saveMapConfig();
+    }
+
+    public void setLobby(Location lobby) {
+        this.lobby = lobby;
+        ConfigurationSection section = Main.mapConfig.getConfigurationSection(getBukkitWorld().getName());
+        assert section != null;
+        section.set("lobby", lobby);
         Main.saveMapConfig();
     }
 

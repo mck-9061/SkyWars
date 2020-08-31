@@ -522,7 +522,12 @@ public class Game {
                 setSettings(new SkyWarsSettings());
                 Main.runningGames.remove(game);
                 Main.waitingGames.add(game);
-                Main.queue.processQueue(game);
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        Main.queue.processQueue(game);
+                    }
+                }.runTaskLater(Main.instance, 20L);
             }
         }.runTaskLater(Main.instance, delay);
     }
