@@ -22,6 +22,7 @@ public class SkyWarsMap {
         this.spawns = new ArrayList<>();
         this.islandChests = new ArrayList<>();
         this.midChests = new ArrayList<>();
+        this.lobby = null;
     }
 
     public SkyWarsMap(String worldName) {

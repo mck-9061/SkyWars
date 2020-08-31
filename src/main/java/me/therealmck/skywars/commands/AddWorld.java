@@ -31,6 +31,7 @@ public class AddWorld implements CommandExecutor {
             section.set("Spawns", map.getSpawns());
             section.set("IslandChests", map.getIslandChests());
             section.set("MidChests", map.getMidChests());
+            section.set("lobby", map.getLobby());
             Main.saveMapConfig();
             Main.maps.add(map);
             commandSender.sendMessage(lang.getAdminMapAdded());
