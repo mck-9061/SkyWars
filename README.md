@@ -22,6 +22,7 @@ An Open-source 1.15.2 SkyWars plugin with features such as configurable kits and
 - Drop the latest jar into your server's plugin directory.
 - Restart the server
 - Go to the position where your lobby is and run <code>/setlobby</code>. This will be the location players are teleported to after a game is finished or when running <code>/skywars lobby</code>.
+- Add an NPC near the lobby position with the name SkyWars. This NPC will be how players access public games.
 - Teleport to every world you want as a map and run <code>/addworld</code>.
 - Restart the server
 - Set up each world and edit the configuration files to customise everything. Take a look at the wiki for a detailed explanation of each option.
