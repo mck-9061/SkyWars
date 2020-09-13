@@ -32,3 +32,8 @@ An Open-source 1.15.2 SkyWars plugin with features such as configurable kits and
 - Look at an island chest and run <code>/addislandchest</code>. Repeat for every island chest.
 - Look at a mid chest and run <code>/addmidchest</code>. Repeat for every mid chest.
 - Go to every island and run <code>/addspawn</code>. Players will spawn in a cage a few blocks above this position so make sure there is space for that.
+
+## Planned features
+
+- Language file
+- Pre-game lobby
