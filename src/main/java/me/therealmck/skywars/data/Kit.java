@@ -2,7 +2,7 @@ package me.therealmck.skywars.data;
 
 import me.therealmck.skywars.Main;
 import me.therealmck.skywars.utils.Utils;
-import org.apache.commons.lang.WordUtils;
+import org.apache.commons.lang3.text.WordUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;

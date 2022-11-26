@@ -4,7 +4,7 @@ import me.therealmck.skywars.Main;
 import me.therealmck.skywars.data.Game;
 import me.therealmck.skywars.data.players.GamePlayer;
 import me.therealmck.skywars.utils.Utils;
-import org.apache.commons.lang.WordUtils;
+import org.apache.commons.lang3.text.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

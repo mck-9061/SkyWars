@@ -10,11 +10,13 @@ import me.therealmck.skywars.guis.listeners.*;
 import me.therealmck.skywars.listeners.*;
 import me.therealmck.skywars.placeholderapi.SkyWarsPlaceholderExpansion;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -41,6 +43,14 @@ public class Main extends JavaPlugin {
     public void onEnable() {
         instance = this;
         queue = new Queue();
+        createSkyWarsConfig();
+
+        // add test item to config
+        ItemStack goodItem = new ItemStack(Material.ACACIA_LEAVES);
+        skyWarsConfig.set("testItem", goodItem);
+        saveSkyWarConfig();
+
+
         // Get all maps from config
         new BukkitRunnable() {
             @Override
@@ -48,7 +58,6 @@ public class Main extends JavaPlugin {
                 // Config
                 createMapConfig();
                 createPlayerDataConfig();
-                createSkyWarsConfig();
                 createKitsConfig();
                 createMessageConfig();
                 saveResource("configtemplate.yml", true);

@@ -1,6 +1,6 @@
 # OpenSkyWars
 
-An Open-source 1.15.2 SkyWars plugin with features such as configurable kits and custom games with modifiers.
+An Open-source 1.19.2 SkyWars plugin with features such as configurable kits and custom games with modifiers.
 
 ## Features
 
